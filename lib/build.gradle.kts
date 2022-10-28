@@ -37,4 +37,6 @@ dependencies {
 
     // This dependency is exported to consumers, that is to say found on their compile classpath.
     api("org.apache.commons:commons-math3:3.6.1")
+
+    implementation("com.google.devtools.ksp:symbol-processing-api:1.6.20-1.0.5")
 }

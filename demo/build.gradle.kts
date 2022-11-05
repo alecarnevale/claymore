@@ -53,4 +53,8 @@ dependencies {
 
   implementation("com.google.dagger:hilt-android:2.44")
   kapt("com.google.dagger:hilt-compiler:2.44")
+
+  // claymore library dependency added from maven central (not local)
+  implementation("io.github.alecarnevale:claymore:1.0.0")
+  ksp("io.github.alecarnevale:claymore:1.0.0")
 }

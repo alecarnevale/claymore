@@ -35,6 +35,8 @@ interface MyInterface
 ```
 _clamyore_ will automatically generate necessary module for you.
 
+Take a look at :demo module for a [sample usage](https://github.com/alecarnevale/claymore/tree/master/demo/src/main/java/com/alessandro/claymore/demo).
+
 ## Installation
 
 ### Download

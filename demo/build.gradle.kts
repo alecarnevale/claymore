@@ -57,4 +57,8 @@ dependencies {
   // claymore library dependency added from maven central (not local)
   implementation("io.github.alecarnevale:claymore:1.0.0")
   ksp("io.github.alecarnevale:claymore:1.0.0")
+
+  // only for developing phase, remember comment previous
+  // implementation(project(":claymore"))
+  // ksp(project(":claymore"))
 }

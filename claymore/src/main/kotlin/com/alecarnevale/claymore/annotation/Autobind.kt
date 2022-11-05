@@ -10,4 +10,6 @@ import kotlin.reflect.KClass
 @Retention(AnnotationRetention.SOURCE)
 annotation class Autobind(
   val implementationClass: KClass<*>
+  // TODO add a parameter to accept custom component
+  // val component: KClass<*> = SingletonComponent
 )

@@ -1,46 +1,48 @@
 package com.alecarnevale.claymore.generator
 
-import com.alecarnevale.claymore.generator.utils.*
-import com.google.devtools.ksp.symbol.KSDeclaration
+import com.alecarnevale.claymore.Constants
+import com.alecarnevale.claymore.generator.utils.bindsAnnotation
+import com.alecarnevale.claymore.generator.utils.installInAnnotation
+import com.alecarnevale.claymore.generator.utils.moduleAnnotation
+import com.alecarnevale.claymore.generator.utils.moduleClassName
+import com.google.devtools.ksp.symbol.KSClassDeclaration
+import com.squareup.kotlinpoet.FileSpec
+import com.squareup.kotlinpoet.FunSpec
+import com.squareup.kotlinpoet.KModifier
+import com.squareup.kotlinpoet.TypeSpec
+import com.squareup.kotlinpoet.ksp.toClassName
 
-// TODO replace with KotlinPoet
 /**
  * Write a hilt module that binds [implementationDeclaration] for [interfaceDeclaration].
  */
 internal class ModuleWriter(
-  private val interfaceDeclaration: KSDeclaration,
-  private val implementationDeclaration: KSDeclaration
+  private val interfaceDeclaration: KSClassDeclaration,
+  private val implementationDeclaration: KSClassDeclaration
 ) {
 
-  fun text() = buildString {
-    packageName()
-    newLine()
+  fun write(): FileSpec {
+    val fileSpec = FileSpec.builder(
+      packageName = Constants.packageName,
+      fileName = interfaceDeclaration.moduleClassName()
+    )
 
-    staticImport()
-    classImport(interfaceDeclaration)
-    classImport(implementationDeclaration)
-    newLine()
+    val functionName =
+      interfaceDeclaration.simpleName.asString().replaceFirstChar { it.lowercase() }
 
-    moduleAnnotations()
-    interfaceDefinition()
-    append("\t")
-    bindAnnotation()
-    funDefinition()
-    appendLine("}")
-  }
-
-  private fun StringBuilder.interfaceDefinition(): StringBuilder {
-    return appendLine("interface ${interfaceDeclaration.moduleClassName()} {")
-  }
-
-  private fun StringBuilder.funDefinition(): StringBuilder {
-    return append("\t fun")
-      .append(" ")
-      .append(interfaceDeclaration.simpleName.asString().replaceFirstChar { it.lowercase() })
-      .append("(impl: ${implementationDeclaration.simpleName.asString()}")
-      .append("):")
-      .append(" ")
-      .append(interfaceDeclaration.simpleName.asString())
-      .appendLine()
+    return fileSpec.addType(
+      TypeSpec
+        .interfaceBuilder(interfaceDeclaration.moduleClassName())
+        .addModifiers(KModifier.INTERNAL)
+        .addAnnotation(moduleAnnotation)
+        .addAnnotation(installInAnnotation)
+        .addFunction(
+          FunSpec.builder(functionName)
+            .addAnnotation(bindsAnnotation)
+            .addModifiers(KModifier.ABSTRACT)
+            .addParameter("impl", implementationDeclaration.toClassName())
+            .returns(interfaceDeclaration.toClassName())
+            .build()
+        ).build()
+    ).build()
   }
 }

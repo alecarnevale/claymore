@@ -2,14 +2,13 @@ package com.alecarnevale.claymore.visitor
 
 import com.alecarnevale.claymore.annotation.Autobind
 import com.alecarnevale.claymore.generator.ModuleWriter
-import com.alecarnevale.claymore.generator.utils.moduleClassName
-import com.alecarnevale.claymore.utils.createFile
 import com.google.devtools.ksp.processing.CodeGenerator
 import com.google.devtools.ksp.processing.KSPLogger
 import com.google.devtools.ksp.processing.Resolver
 import com.google.devtools.ksp.symbol.KSClassDeclaration
 import com.google.devtools.ksp.symbol.KSType
 import com.google.devtools.ksp.symbol.KSVisitorVoid
+import com.squareup.kotlinpoet.ksp.writeTo
 
 /**
  * This visitor check if provided implementation of [Autobind] is a descendant of the annotated interface.
@@ -47,7 +46,11 @@ class AutobindVisitor(
 
     classDeclaration.containingFile?.let { sourceFile ->
       val writer = ModuleWriter(classDeclaration, classImplementationProvided)
-      codeGenerator.createFile(sourceFile, writer.text(), classDeclaration.moduleClassName())
+      writer.write().writeTo(
+        codeGenerator = codeGenerator,
+        aggregating = false,
+        originatingKSFiles = listOf(sourceFile)
+      )
     }
   }
 }

@@ -1,6 +1,5 @@
 package com.alecarnevale.claymore.generator
 
-import com.alecarnevale.claymore.Constants
 import com.alecarnevale.claymore.generator.utils.bindsAnnotation
 import com.alecarnevale.claymore.generator.utils.installInAnnotation
 import com.alecarnevale.claymore.generator.utils.moduleAnnotation
@@ -22,7 +21,7 @@ internal class ModuleWriter(
 
   fun write(): FileSpec {
     val fileSpec = FileSpec.builder(
-      packageName = Constants.packageName,
+      packageName = interfaceDeclaration.toClassName().packageName,
       fileName = interfaceDeclaration.moduleClassName()
     )
 

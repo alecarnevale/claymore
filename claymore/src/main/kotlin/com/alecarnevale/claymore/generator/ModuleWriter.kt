@@ -1,6 +1,5 @@
 package com.alecarnevale.claymore.generator
 
-import com.alecarnevale.claymore.Constants
 import com.alecarnevale.claymore.generator.utils.bindsAnnotation
 import com.alecarnevale.claymore.generator.utils.installInAnnotation
 import com.alecarnevale.claymore.generator.utils.moduleAnnotation

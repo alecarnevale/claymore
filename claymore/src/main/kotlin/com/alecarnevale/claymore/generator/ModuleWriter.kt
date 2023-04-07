@@ -22,7 +22,7 @@ internal class ModuleWriter(
 
   fun write(): FileSpec {
     val fileSpec = FileSpec.builder(
-      packageName = Constants.packageName,
+      packageName = interfaceDeclaration.toClassName().packageName,
       fileName = interfaceDeclaration.moduleClassName()
     )
 

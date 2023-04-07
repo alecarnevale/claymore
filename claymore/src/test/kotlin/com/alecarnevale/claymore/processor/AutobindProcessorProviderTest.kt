@@ -129,14 +129,12 @@ class AutobindProcessorProviderTest {
 
     assertEquals(KotlinCompilation.ExitCode.OK, result.result.exitCode)
 
-    result.assertGeneratedSources("com/alecarnevale/claymore/FooModule.kt")
+    result.assertGeneratedSources("com/example/FooModule.kt")
     result.assertGeneratedContent(
-      "com/alecarnevale/claymore/FooModule.kt",
+      "com/example/FooModule.kt",
       """
-      package com.alecarnevale.claymore
+      package com.example
       
-      import com.example.Bar
-      import com.example.Foo
       import dagger.Binds
       import dagger.Module
       import dagger.hilt.InstallIn

@@ -55,8 +55,8 @@ dependencies {
   kapt("com.google.dagger:hilt-compiler:2.46.1")
 
   // claymore library dependency added from maven central (not local)
-  implementation("io.github.alecarnevale:claymore:1.0.0")
-  ksp("io.github.alecarnevale:claymore:1.0.0")
+  implementation("io.github.alecarnevale:claymore:1.2.0")
+  ksp("io.github.alecarnevale:claymore:1.2.0")
 
   // only for developing phase, remember comment previous
   // implementation(project(":claymore"))

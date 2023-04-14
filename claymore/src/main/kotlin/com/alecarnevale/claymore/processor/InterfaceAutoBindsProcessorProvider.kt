@@ -4,8 +4,8 @@ import com.google.devtools.ksp.processing.SymbolProcessor
 import com.google.devtools.ksp.processing.SymbolProcessorEnvironment
 import com.google.devtools.ksp.processing.SymbolProcessorProvider
 
-internal class AutobindProcessorProvider : SymbolProcessorProvider {
+internal class InterfaceAutoBindsProcessorProvider : SymbolProcessorProvider {
   override fun create(environment: SymbolProcessorEnvironment): SymbolProcessor {
-    return AutobindProcessor(logger = environment.logger, codeGenerator = environment.codeGenerator)
+    return InterfaceAutoBindsProcessor(logger = environment.logger, codeGenerator = environment.codeGenerator)
   }
 }

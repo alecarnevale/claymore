@@ -1,6 +1,6 @@
 package com.alecarnevale.claymore.visitor
 
-import com.alecarnevale.claymore.annotation.Autobind
+import com.alecarnevale.claymore.annotation.InterfaceAutoBinds
 import com.alecarnevale.claymore.generator.ModuleWriter
 import com.google.devtools.ksp.processing.CodeGenerator
 import com.google.devtools.ksp.processing.KSPLogger
@@ -11,10 +11,10 @@ import com.google.devtools.ksp.symbol.KSVisitorVoid
 import com.squareup.kotlinpoet.ksp.writeTo
 
 /**
- * This visitor check if provided implementation of [Autobind] is a descendant of the annotated interface.
+ * This visitor check if provided implementation of [InterfaceAutoBinds] is a descendant of the annotated interface.
  * If true it generates the necessary hilt module.
  */
-class AutobindVisitor(
+class InterfaceAutoBindsVisitor(
   private val codeGenerator: CodeGenerator,
   private val resolver: Resolver,
   private val logger: KSPLogger
@@ -24,7 +24,7 @@ class AutobindVisitor(
     logger.info("$TAG visitClassDeclaration of $classDeclaration")
     val arguments = classDeclaration.annotations.iterator().next().arguments
     val ksType = arguments[0].value as KSType
-    logger.info("$TAG first arguemnt provided is $ksType")
+    logger.info("$TAG first argument provided is $ksType")
 
     val qualifiedName = ksType.declaration.qualifiedName
     if (qualifiedName == null) {
@@ -55,4 +55,4 @@ class AutobindVisitor(
   }
 }
 
-private const val TAG = "Claymore - AutobindVisitor:"
+private const val TAG = "Claymore - InterfaceAutoBindsVisitor:"

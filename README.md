@@ -27,10 +27,10 @@ interface MyModule {
 ```
 
 ### Benefit
-With _claymore_ you can avoid to manually write that `Module`, using `@Autobind` annotation instead:
+With _claymore_ you can avoid to manually write that `Module`, using `@InterfaceAutoBinds` annotation instead:
 
 ```
-@Autobind(implementationClass = MyImplementation::class)
+@InterfaceAutoBinds(implementationClass = MyImplementation::class)
 interface MyInterface
 ```
 _clamyore_ will automatically generate necessary module for you.

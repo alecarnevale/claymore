@@ -75,7 +75,7 @@ class InterfaceAutoBindsProcessorProviderTest {
       @InterfaceAutoBinds(implementationClass = Bar::class)
       interface Foo
 
-      class Bar @Inject constructor()
+      class Bar
       """,
     )
 
@@ -99,7 +99,7 @@ class InterfaceAutoBindsProcessorProviderTest {
 
       interface Tar
 
-      class Bar @Inject constructor(): Tar
+      class Bar: Tar
       """,
     )
 
@@ -121,7 +121,7 @@ class InterfaceAutoBindsProcessorProviderTest {
       @InterfaceAutoBinds(implementationClass = Bar::class)
       interface Foo
 
-      class Bar @Inject constructor() : Foo
+      class Bar: Foo
       """,
     )
 

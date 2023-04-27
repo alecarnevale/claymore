@@ -33,25 +33,35 @@ class InterfaceAutoBindsVisitor(
     }
 
     val classImplementationProvided = resolver.getClassDeclarationByName(qualifiedName)
-    val superTypes = classImplementationProvided?.superTypes?.map { it.resolve() }
-    if (superTypes == null) {
-      logger.error("$TAG superTypes is null")
+    if (classImplementationProvided == null) {
+      logger.error("$TAG implementation class not found")
       return
     }
 
+    val superTypes = classImplementationProvided.superTypes.map { it.resolve() }
     if (classDeclaration !in superTypes.map { it.declaration }) {
       logger.error("$TAG $classDeclaration is not a superType of $classImplementationProvided")
       return
     }
 
-    classDeclaration.containingFile?.let { sourceFile ->
-      val writer = ModuleWriter(classDeclaration, classImplementationProvided)
-      writer.write().writeTo(
-        codeGenerator = codeGenerator,
-        aggregating = false,
-        originatingKSFiles = listOf(sourceFile)
-      )
+    val interfaceSourceFile = classDeclaration.containingFile
+    if (interfaceSourceFile == null) {
+      logger.error("$TAG can not find source file of $classDeclaration")
+      return
     }
+    val implementationSourceFile = classImplementationProvided.containingFile
+    if (implementationSourceFile == null) {
+      logger.error("$TAG can not find source file of $classImplementationProvided")
+      return
+    }
+
+    // this is and isolating output, since no new change on other files will affect this
+    val writer = ModuleWriter(classDeclaration, classImplementationProvided)
+    writer.write().writeTo(
+      codeGenerator = codeGenerator,
+      aggregating = false,
+      originatingKSFiles = listOf(interfaceSourceFile, implementationSourceFile)
+    )
   }
 }
 

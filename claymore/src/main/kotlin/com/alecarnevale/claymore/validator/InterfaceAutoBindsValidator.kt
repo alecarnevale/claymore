@@ -12,15 +12,11 @@ import com.google.devtools.ksp.validate
  */
 class InterfaceAutoBindsValidator(private val logger: KSPLogger) {
   fun isValid(symbol: KSAnnotated): Boolean {
-    return symbol.isAnInterface() && symbol.validate()
+    return symbol.validate() && symbol.isAnInterface()
   }
 
   private fun KSAnnotated.isAnInterface(): Boolean {
-    if (this !is KSClassDeclaration) {
-      logger.error("$TAG ${InterfaceAutoBinds::class.simpleName} annotation must annotates interface")
-      return false
-    }
-    if (this.classKind != ClassKind.INTERFACE) {
+    if (this !is KSClassDeclaration || this.classKind != ClassKind.INTERFACE) {
       logger.error("$TAG ${InterfaceAutoBinds::class.simpleName} annotation must annotates interface")
       return false
     }

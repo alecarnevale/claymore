@@ -10,11 +10,13 @@ import org.junit.jupiter.api.Test
 class InterfaceAutoBindsProcessorProviderTest {
 
   @Test
-  fun `WHEN @InterfaceAutoBinds is applied to a val, THEN hilt module are not generated`() {
+  fun `WHEN @InterfaceAutoBinds is applied to a val, THEN compilation error and hilt module are not generated`() {
     val src = SourceFile.kotlin(
       "Foo.kt",
       """
       package com.example
+
+      import com.alecarnevale.claymore.annotation.InterfaceAutoBinds
       
       @InterfaceAutoBinds
       val foo: String = "this is a variable, not an interface"
@@ -23,16 +25,18 @@ class InterfaceAutoBindsProcessorProviderTest {
 
     val result = compileSourceFiles(src)
 
-    assertEquals(KotlinCompilation.ExitCode.OK, result.result.exitCode)
+    assertEquals(KotlinCompilation.ExitCode.COMPILATION_ERROR, result.result.exitCode)
     result.assertZeroGeneratedSources()
   }
 
   @Test
-  fun `WHEN @InterfaceAutoBinds is applied to a fun, THEN hilt module are not generated`() {
+  fun `WHEN @InterfaceAutoBinds is applied to a fun, THEN compilation error and hilt module are not generated`() {
     val src = SourceFile.kotlin(
       "Foo.kt",
       """
       package com.example
+
+      import com.alecarnevale.claymore.annotation.InterfaceAutoBinds
       
       @InterfaceAutoBinds
       fun foo() = "this is a fun, not an interface"
@@ -41,16 +45,18 @@ class InterfaceAutoBindsProcessorProviderTest {
 
     val result = compileSourceFiles(src)
 
-    assertEquals(KotlinCompilation.ExitCode.OK, result.result.exitCode)
+    assertEquals(KotlinCompilation.ExitCode.COMPILATION_ERROR, result.result.exitCode)
     result.assertZeroGeneratedSources()
   }
 
   @Test
-  fun `WHEN @InterfaceAutoBinds is applied to a class, THEN hilt module are not generated`() {
+  fun `WHEN @InterfaceAutoBinds is applied to a class, THEN compilation error and hilt module are not generated`() {
     val src = SourceFile.kotlin(
       "Foo.kt",
       """
       package com.example
+
+      import com.alecarnevale.claymore.annotation.InterfaceAutoBinds
       
       @InterfaceAutoBinds
       class Foo
@@ -59,7 +65,7 @@ class InterfaceAutoBindsProcessorProviderTest {
 
     val result = compileSourceFiles(src)
 
-    assertEquals(KotlinCompilation.ExitCode.OK, result.result.exitCode)
+    assertEquals(KotlinCompilation.ExitCode.COMPILATION_ERROR, result.result.exitCode)
     result.assertZeroGeneratedSources()
   }
 

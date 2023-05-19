@@ -7,75 +7,81 @@ import com.tschuchort.compiletesting.symbolProcessorProviders
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
-class AutobindProcessorProviderTest {
+class InterfaceAutoBindsProcessorProviderTest {
 
   @Test
-  fun `WHEN @Autobind is applied to a val, THEN hilt module are not generated`() {
+  fun `WHEN @InterfaceAutoBinds is applied to a val, THEN compilation error and hilt module are not generated`() {
     val src = SourceFile.kotlin(
       "Foo.kt",
       """
       package com.example
+
+      import com.alecarnevale.claymore.annotation.InterfaceAutoBinds
       
-      @Autobind
+      @InterfaceAutoBinds
       val foo: String = "this is a variable, not an interface"
       """,
     )
 
     val result = compileSourceFiles(src)
 
-    assertEquals(KotlinCompilation.ExitCode.OK, result.result.exitCode)
+    assertEquals(KotlinCompilation.ExitCode.COMPILATION_ERROR, result.result.exitCode)
     result.assertZeroGeneratedSources()
   }
 
   @Test
-  fun `WHEN @Autobind is applied to a fun, THEN hilt module are not generated`() {
+  fun `WHEN @InterfaceAutoBinds is applied to a fun, THEN compilation error and hilt module are not generated`() {
     val src = SourceFile.kotlin(
       "Foo.kt",
       """
       package com.example
+
+      import com.alecarnevale.claymore.annotation.InterfaceAutoBinds
       
-      @Autobind
+      @InterfaceAutoBinds
       fun foo() = "this is a fun, not an interface"
       """,
     )
 
     val result = compileSourceFiles(src)
 
-    assertEquals(KotlinCompilation.ExitCode.OK, result.result.exitCode)
+    assertEquals(KotlinCompilation.ExitCode.COMPILATION_ERROR, result.result.exitCode)
     result.assertZeroGeneratedSources()
   }
 
   @Test
-  fun `WHEN @Autobind is applied to a class, THEN hilt module are not generated`() {
+  fun `WHEN @InterfaceAutoBinds is applied to a class, THEN compilation error and hilt module are not generated`() {
     val src = SourceFile.kotlin(
       "Foo.kt",
       """
       package com.example
+
+      import com.alecarnevale.claymore.annotation.InterfaceAutoBinds
       
-      @Autobind
+      @InterfaceAutoBinds
       class Foo
       """,
     )
 
     val result = compileSourceFiles(src)
 
-    assertEquals(KotlinCompilation.ExitCode.OK, result.result.exitCode)
+    assertEquals(KotlinCompilation.ExitCode.COMPILATION_ERROR, result.result.exitCode)
     result.assertZeroGeneratedSources()
   }
 
   @Test
-  fun `GIVEN an interface Foo and a class Bar that doesn't implement Foo, WHEN @Autobind is applied to Foo with Bar as implementationClass argument, THEN compilation error returned and hilt module are not generated`() {
+  fun `GIVEN an interface Foo and a class Bar that doesn't implement Foo, WHEN @InterfaceAutoBinds is applied to Foo with Bar as implementationClass argument, THEN compilation error returned and hilt module are not generated`() {
     val src = SourceFile.kotlin(
       "Foo.kt",
       """
       package com.example
 
-      import com.alecarnevale.claymore.annotation.Autobind
+      import com.alecarnevale.claymore.annotation.InterfaceAutoBinds
       
-      @Autobind(implementationClass = Bar::class)
+      @InterfaceAutoBinds(implementationClass = Bar::class)
       interface Foo
 
-      class Bar @Inject constructor()
+      class Bar
       """,
     )
 
@@ -86,20 +92,20 @@ class AutobindProcessorProviderTest {
   }
 
   @Test
-  fun `GIVEN interfaces Foo, Tar and a class Bar that implements Tar, WHEN @Autobind is applied to Foo with Bar as implementationClass argument, THEN compilation error returned and hilt module are not generated`() {
+  fun `GIVEN interfaces Foo, Tar and a class Bar that implements Tar, WHEN @InterfaceAutoBinds is applied to Foo with Bar as implementationClass argument, THEN compilation error returned and hilt module are not generated`() {
     val src = SourceFile.kotlin(
       "Foo.kt",
       """
       package com.example
 
-      import com.alecarnevale.claymore.annotation.Autobind
+      import com.alecarnevale.claymore.annotation.InterfaceAutoBinds
       
-      @Autobind(implementationClass = Bar::class)
+      @InterfaceAutoBinds(implementationClass = Bar::class)
       interface Foo
 
       interface Tar
 
-      class Bar @Inject constructor(): Tar
+      class Bar: Tar
       """,
     )
 
@@ -110,18 +116,18 @@ class AutobindProcessorProviderTest {
   }
 
   @Test
-  fun `GIVEN an interface Foo and a class Bar that implements Foo, WHEN @Autobind is applied to Foo with Bar as implementationClass argument, THEN hilt module are generated`() {
+  fun `GIVEN an interface Foo and a class Bar that implements Foo, WHEN @InterfaceAutoBinds is applied to Foo with Bar as implementationClass argument, THEN hilt module are generated`() {
     val src = SourceFile.kotlin(
       "Foo.kt",
       """
       package com.example
 
-      import com.alecarnevale.claymore.annotation.Autobind
+      import com.alecarnevale.claymore.annotation.InterfaceAutoBinds
       
-      @Autobind(implementationClass = Bar::class)
+      @InterfaceAutoBinds(implementationClass = Bar::class)
       interface Foo
 
-      class Bar @Inject constructor() : Foo
+      class Bar: Foo
       """,
     )
 
@@ -154,7 +160,7 @@ class AutobindProcessorProviderTest {
   private fun compileSourceFiles(vararg sourceFiles: SourceFile): KspCompilationResult {
     val kotlinCompilation = KotlinCompilation().apply {
       sources = sourceFiles.toList()
-      symbolProcessorProviders = listOf(AutobindProcessorProvider())
+      symbolProcessorProviders = listOf(InterfaceAutoBindsProcessorProvider())
       inheritClassPath = true
     }
     return KspCompilationResult(

@@ -1,9 +1,9 @@
 plugins {
-  id("com.android.application") version "7.3.0"
-  id("org.jetbrains.kotlin.android") version "1.7.20"
-  id("org.jetbrains.kotlin.kapt") version "1.7.20"
-  id("com.google.dagger.hilt.android") version "2.44"
-  id("com.google.devtools.ksp") version "1.7.20-1.0.8"
+  id("com.android.application") version "8.0.1"
+  id("org.jetbrains.kotlin.android") version "1.8.21"
+  id("org.jetbrains.kotlin.kapt") version "1.8.21"
+  id("com.google.dagger.hilt.android") version "2.46.1"
+  id("com.google.devtools.ksp") version "1.8.21-1.0.11"
 }
 
 android {
@@ -27,32 +27,32 @@ android {
     }
   }
   compileOptions {
-    sourceCompatibility = JavaVersion.VERSION_1_8
-    targetCompatibility = JavaVersion.VERSION_1_8
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
   }
   kotlinOptions {
-    jvmTarget = "1.8"
+    jvmTarget = "17"
   }
   buildFeatures {
     compose = true
   }
   composeOptions {
-    kotlinCompilerExtensionVersion = "1.3.2"
+    kotlinCompilerExtensionVersion = "1.4.7"
   }
 }
 
 dependencies {
-  implementation("androidx.appcompat:appcompat:1.5.1")
+  implementation("androidx.appcompat:appcompat:1.6.1")
 
-  implementation("androidx.compose.foundation:foundation:1.3.0")
-  implementation("androidx.compose.material:material:1.3.0")
-  implementation("androidx.compose.ui:ui:1.3.0")
-  implementation("androidx.activity:activity-compose:1.6.1")
-  implementation("androidx.compose.ui:ui-tooling-preview:1.3.0")
-  debugImplementation("androidx.compose.ui:ui-tooling:1.3.0")
+  implementation("androidx.compose.foundation:foundation:1.4.3")
+  implementation("androidx.compose.material:material:1.4.3")
+  implementation("androidx.compose.ui:ui:1.4.3")
+  implementation("androidx.activity:activity-compose:1.7.1")
+  implementation("androidx.compose.ui:ui-tooling-preview:1.4.3")
+  debugImplementation("androidx.compose.ui:ui-tooling:1.4.3")
 
-  implementation("com.google.dagger:hilt-android:2.44")
-  kapt("com.google.dagger:hilt-compiler:2.44")
+  implementation("com.google.dagger:hilt-android:2.46.1")
+  kapt("com.google.dagger:hilt-compiler:2.46.1")
 
   // claymore library dependency added from maven central (not local)
   implementation("io.github.alecarnevale:claymore:1.0.0")

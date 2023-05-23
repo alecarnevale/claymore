@@ -1,11 +1,11 @@
 package com.alessandro.claymore.demo.di
 
-// Not used, InterfaceAutoBinds annotation will generate this automatically ;)
+// Not used, @AutoBinds annotation will generate this automatically ;)
 // after a successful build take a look at :demo/build/generated/ksp/debug/kotlin/com/alessandro/claymore/demo/modelproviders
 
 /*
-import com.alessandro.claymore.demo.modelproviders.FooProvider
-import com.alessandro.claymore.demo.modelproviders.FooProviderImpl
+import com.alessandro.claymore.demo.modelproviders.BarProvider
+import com.alessandro.claymore.demo.modelproviders.BarProviderImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -13,8 +13,8 @@ import dagger.hilt.components.SingletonComponent
 
 @Module
 @InstallIn(SingletonComponent::class)
-interface FooProviderModule {
+interface BarProviderModule {
   @Binds
-  fun fooProvider(impl: FooProviderImpl): FooProvider
+  fun barProvider(impl: BarProviderImpl): BarProvider
 }
 */

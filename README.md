@@ -27,13 +27,19 @@ interface MyModule {
 ```
 
 ### Benefit
-With _claymore_ you can avoid to manually write that `Module`, using `@InterfaceAutoBinds` annotation instead:
+With _claymore_ you can avoid to manually write that `Module`, using either `@AutoBinds` or `@InterfaceAutoBinds` annotation:
+
+```
+@AutoBinds
+class MyImplementation
+```
 
 ```
 @InterfaceAutoBinds(implementationClass = MyImplementation::class)
 interface MyInterface
 ```
-_clamyore_ will automatically generate necessary module for you.
+
+In both case, _clamyore_ will automatically generate necessary module for you.
 
 Take a look at :demo module for a [sample usage](https://github.com/alecarnevale/claymore/tree/master/demo/src/main/java/com/alessandro/claymore/demo).
 
@@ -65,3 +71,6 @@ dependencies {
   ksp 'io.github.alecarnevale:claymore:x.y.z'
 }
 ```
+
+## Thanks to
+- KotlinPoet https://github.com/square/kotlinpoet

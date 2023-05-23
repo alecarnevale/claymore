@@ -39,6 +39,11 @@ android {
   composeOptions {
     kotlinCompilerExtensionVersion = "1.4.7"
   }
+  testOptions {
+    unitTests {
+      isIncludeAndroidResources = true
+    }
+  }
 }
 
 dependencies {
@@ -54,9 +59,14 @@ dependencies {
   implementation("com.google.dagger:hilt-android:2.46.1")
   kapt("com.google.dagger:hilt-compiler:2.46.1")
 
+  testImplementation("junit:junit:4.13.2")
+  testImplementation("org.robolectric:robolectric:4.10.3")
+  testImplementation("androidx.compose.ui:ui-test-junit4:1.4.3")
+  debugImplementation("androidx.compose.ui:ui-test-manifest:1.4.3")
+
   // claymore library dependency added from maven central (not local)
-  implementation("io.github.alecarnevale:claymore:1.0.0")
-  ksp("io.github.alecarnevale:claymore:1.0.0")
+  implementation("io.github.alecarnevale:claymore:1.2.0")
+  ksp("io.github.alecarnevale:claymore:1.2.0")
 
   // only for developing phase, remember comment previous
   // implementation(project(":claymore"))

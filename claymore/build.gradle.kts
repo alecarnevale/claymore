@@ -16,7 +16,7 @@ publishing {
     create<MavenPublication>("nexus") {
       groupId = "io.github.alecarnevale"
       artifactId = "claymore"
-      version = "1.1.0"
+      version = "1.2.0"
       from(components["java"])
 
       repositories {

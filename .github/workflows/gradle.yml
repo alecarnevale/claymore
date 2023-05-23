@@ -30,3 +30,5 @@ jobs:
           distribution: 'temurin'
       - name: Run build with Gradle Wrapper
         run: ./gradlew :claymore:build
+      - name: Run demo test with Gradle Wrapper
+        run: ./gradlew :demo:testDebugUnitTest

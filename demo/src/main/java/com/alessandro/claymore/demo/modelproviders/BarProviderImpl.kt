@@ -1,6 +1,6 @@
 package com.alessandro.claymore.demo.modelproviders
 
-import com.alecarnevale.claymore.annotation.AutoBinds
+import com.alecarnevale.claymore.annotations.AutoBinds
 import com.alessandro.claymore.demo.models.Bar
 import com.alessandro.claymore.demo.models.BarImpl
 import javax.inject.Inject

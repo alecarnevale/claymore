@@ -13,7 +13,7 @@ dependencyResolutionManagement {
   }
 }
 
-rootProject.name = "claymore-root"
-include(":claymore-annotations")
-include(":claymore-processor")
+rootProject.name = "claymore"
+include(":annotations")
+include(":processors")
 include(":demo")

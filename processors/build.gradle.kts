@@ -63,7 +63,7 @@ signing {
 }
 
 dependencies {
-  implementation(project(":claymore-annotations"))
+  implementation(project(":annotations"))
 
   implementation("com.google.devtools.ksp:symbol-processing-api:1.8.21-1.0.11")
   implementation("com.squareup:kotlinpoet:1.13.2")

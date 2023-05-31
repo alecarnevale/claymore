@@ -1,8 +1,8 @@
-package com.alecarnevale.claymore.processor
+package com.alecarnevale.claymore.processors
 
-import com.alecarnevale.claymore.annotation.AutoBinds
-import com.alecarnevale.claymore.validator.AutoBindsValidator
-import com.alecarnevale.claymore.visitor.AutoBindsVisitor
+import com.alecarnevale.claymore.annotations.InterfaceAutoBinds
+import com.alecarnevale.claymore.validators.InterfaceAutoBindsValidator
+import com.alecarnevale.claymore.visitors.InterfaceAutoBindsVisitor
 import com.google.devtools.ksp.processing.CodeGenerator
 import com.google.devtools.ksp.processing.KSPLogger
 import com.google.devtools.ksp.processing.Resolver
@@ -10,19 +10,19 @@ import com.google.devtools.ksp.processing.SymbolProcessor
 import com.google.devtools.ksp.symbol.KSAnnotated
 
 /**
- * Find and process any symbol annotated with [AutoBinds].
+ * Find and process any symbol annotated with [InterfaceAutoBinds].
  */
-internal class AutoBindsProcessor(
+internal class InterfaceAutoBindsProcessor(
   private val logger: KSPLogger,
   private val codeGenerator: CodeGenerator
 ) : SymbolProcessor {
 
-  private val validator = AutoBindsValidator(logger)
+  private val validator = InterfaceAutoBindsValidator(logger)
 
   override fun process(resolver: Resolver): List<KSAnnotated> {
-    val visitor = AutoBindsVisitor(codeGenerator, resolver, logger)
+    val visitor = InterfaceAutoBindsVisitor(codeGenerator, resolver, logger)
 
-    val annotationName = AutoBinds::class.qualifiedName ?: return emptyList()
+    val annotationName = InterfaceAutoBinds::class.qualifiedName ?: return emptyList()
 
     val resolvedSymbols = resolver.getSymbolsWithAnnotation(annotationName)
     val validatedSymbols = resolvedSymbols.filter { validator.isValid(it) }.toSet()

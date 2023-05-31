@@ -1,5 +1,6 @@
-package com.alecarnevale.claymore.processor
+package com.alecarnevale.claymore.processors.providers
 
+import com.alecarnevale.claymore.processors.AutoBindsProcessor
 import com.google.devtools.ksp.processing.SymbolProcessor
 import com.google.devtools.ksp.processing.SymbolProcessorEnvironment
 import com.google.devtools.ksp.processing.SymbolProcessorProvider

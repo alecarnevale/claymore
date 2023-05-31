@@ -1,4 +1,4 @@
-package com.alecarnevale.claymore.annotation
+package com.alecarnevale.claymore.annotations
 
 /**
  * This annotation marks the implementation of an interface for which the hilt module will be generated.

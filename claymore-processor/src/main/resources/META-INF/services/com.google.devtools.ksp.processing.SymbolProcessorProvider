@@ -1,2 +1,2 @@
-com.alecarnevale.claymore.processor.InterfaceAutoBindsProcessorProvider
-com.alecarnevale.claymore.processor.AutoBindsProcessorProvider
+com.alecarnevale.claymore.processors.providers.InterfaceAutoBindsProcessorProvider
+com.alecarnevale.claymore.processors.providers.AutoBindsProcessorProvider

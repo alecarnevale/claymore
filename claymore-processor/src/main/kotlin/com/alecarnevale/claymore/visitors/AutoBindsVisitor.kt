@@ -1,4 +1,4 @@
-package com.alecarnevale.claymore.visitor
+package com.alecarnevale.claymore.visitors
 
 import com.alecarnevale.claymore.generator.ModuleWriter
 import com.google.devtools.ksp.processing.CodeGenerator

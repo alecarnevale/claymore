@@ -1,6 +1,6 @@
-package com.alecarnevale.claymore.validator
+package com.alecarnevale.claymore.validators
 
-import com.alecarnevale.claymore.annotation.InterfaceAutoBinds
+import com.alecarnevale.claymore.annotations.InterfaceAutoBinds
 import com.google.devtools.ksp.processing.KSPLogger
 import com.google.devtools.ksp.symbol.ClassKind
 import com.google.devtools.ksp.symbol.KSAnnotated

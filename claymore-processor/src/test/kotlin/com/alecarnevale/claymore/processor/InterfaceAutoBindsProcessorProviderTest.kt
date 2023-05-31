@@ -1,5 +1,6 @@
 package com.alecarnevale.claymore.processor
 
+import com.alecarnevale.claymore.processors.providers.InterfaceAutoBindsProcessorProvider
 import com.tschuchort.compiletesting.KotlinCompilation
 import com.tschuchort.compiletesting.SourceFile
 import com.tschuchort.compiletesting.kspSourcesDir
@@ -16,7 +17,7 @@ class InterfaceAutoBindsProcessorProviderTest {
       """
       package com.example
 
-      import com.alecarnevale.claymore.annotation.InterfaceAutoBinds
+      import com.alecarnevale.claymore.annotations.InterfaceAutoBinds
       
       @InterfaceAutoBinds
       val foo: String = "this is a variable, not an interface"
@@ -36,7 +37,7 @@ class InterfaceAutoBindsProcessorProviderTest {
       """
       package com.example
 
-      import com.alecarnevale.claymore.annotation.InterfaceAutoBinds
+      import com.alecarnevale.claymore.annotations.InterfaceAutoBinds
       
       @InterfaceAutoBinds
       fun foo() = "this is a fun, not an interface"
@@ -56,7 +57,7 @@ class InterfaceAutoBindsProcessorProviderTest {
       """
       package com.example
 
-      import com.alecarnevale.claymore.annotation.InterfaceAutoBinds
+      import com.alecarnevale.claymore.annotations.InterfaceAutoBinds
       
       @InterfaceAutoBinds
       class Foo
@@ -76,7 +77,7 @@ class InterfaceAutoBindsProcessorProviderTest {
       """
       package com.example
 
-      import com.alecarnevale.claymore.annotation.InterfaceAutoBinds
+      import com.alecarnevale.claymore.annotations.InterfaceAutoBinds
       
       @InterfaceAutoBinds(implementationClass = Bar::class)
       interface Foo
@@ -98,7 +99,7 @@ class InterfaceAutoBindsProcessorProviderTest {
       """
       package com.example
 
-      import com.alecarnevale.claymore.annotation.InterfaceAutoBinds
+      import com.alecarnevale.claymore.annotations.InterfaceAutoBinds
       
       @InterfaceAutoBinds(implementationClass = Bar::class)
       interface Foo
@@ -122,7 +123,7 @@ class InterfaceAutoBindsProcessorProviderTest {
       """
       package com.example
 
-      import com.alecarnevale.claymore.annotation.InterfaceAutoBinds
+      import com.alecarnevale.claymore.annotations.InterfaceAutoBinds
       
       @InterfaceAutoBinds(implementationClass = Bar::class)
       interface Foo

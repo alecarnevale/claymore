@@ -1,5 +1,6 @@
 package com.alecarnevale.claymore.processor
 
+import com.alecarnevale.claymore.processors.providers.AutoBindsProcessorProvider
 import com.tschuchort.compiletesting.KotlinCompilation
 import com.tschuchort.compiletesting.SourceFile
 import com.tschuchort.compiletesting.kspSourcesDir
@@ -16,7 +17,7 @@ class AutoBindsProcessorProviderTest {
       """
       package com.example
 
-      import com.alecarnevale.claymore.annotation.AutoBinds
+      import com.alecarnevale.claymore.annotations.AutoBinds
       
       @AutoBinds
       val foo: String = "this is a variable, not a class"
@@ -36,7 +37,7 @@ class AutoBindsProcessorProviderTest {
       """
       package com.example
 
-      import com.alecarnevale.claymore.annotation.AutoBinds
+      import com.alecarnevale.claymore.annotations.AutoBinds
       
       @AutoBinds
       fun foo() = "this is a fun, not a class"
@@ -56,7 +57,7 @@ class AutoBindsProcessorProviderTest {
       """
       package com.example
 
-      import com.alecarnevale.claymore.annotation.AutoBinds
+      import com.alecarnevale.claymore.annotations.AutoBinds
       
       @AutoBinds
       interface Foo
@@ -76,7 +77,7 @@ class AutoBindsProcessorProviderTest {
       """
       package com.example
 
-      import com.alecarnevale.claymore.annotation.AutoBinds
+      import com.alecarnevale.claymore.annotations.AutoBinds
       
       interface Foo
 
@@ -98,7 +99,7 @@ class AutoBindsProcessorProviderTest {
       """
       package com.example
 
-      import com.alecarnevale.claymore.annotation.AutoBinds
+      import com.alecarnevale.claymore.annotations.AutoBinds
       
       interface Foo
 

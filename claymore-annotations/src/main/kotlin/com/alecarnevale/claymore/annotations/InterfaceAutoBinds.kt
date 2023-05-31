@@ -1,4 +1,4 @@
-package com.alecarnevale.claymore.annotation
+package com.alecarnevale.claymore.annotations
 
 import kotlin.reflect.KClass
 

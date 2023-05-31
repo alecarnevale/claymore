@@ -1,6 +1,6 @@
-package com.alecarnevale.claymore.visitor
+package com.alecarnevale.claymore.visitors
 
-import com.alecarnevale.claymore.annotation.InterfaceAutoBinds
+import com.alecarnevale.claymore.annotations.InterfaceAutoBinds
 import com.alecarnevale.claymore.generator.ModuleWriter
 import com.google.devtools.ksp.processing.CodeGenerator
 import com.google.devtools.ksp.processing.KSPLogger

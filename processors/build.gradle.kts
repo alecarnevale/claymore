@@ -2,8 +2,6 @@ plugins {
   id("org.jetbrains.kotlin.jvm")
   id("maven-publish")
   id("signing")
-
-  `java-library`
 }
 
 java {
@@ -13,9 +11,9 @@ java {
 
 publishing {
   publications {
-    create<MavenPublication>("nexus") {
+    create<MavenPublication>("processors") {
       groupId = "io.github.alecarnevale"
-      artifactId = "claymore"
+      artifactId = "claymore-processors"
       version = "1.2.0"
       from(components["java"])
 
@@ -59,7 +57,7 @@ publishing {
 }
 
 signing {
-  sign(publishing.publications["nexus"])
+  sign(publishing.publications["processors"])
 }
 
 dependencies {

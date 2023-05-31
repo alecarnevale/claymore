@@ -1,9 +1,9 @@
 plugins {
-  id("com.android.application") version "8.0.1"
-  id("org.jetbrains.kotlin.android") version "1.8.21"
-  id("org.jetbrains.kotlin.kapt") version "1.8.21"
-  id("com.google.dagger.hilt.android") version "2.46.1"
-  id("com.google.devtools.ksp") version "1.8.21-1.0.11"
+  id("com.android.application")
+  id("org.jetbrains.kotlin.android")
+  id("org.jetbrains.kotlin.kapt")
+  id("com.google.dagger.hilt.android")
+  id("com.google.devtools.ksp")
 }
 
 android {

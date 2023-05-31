@@ -29,6 +29,6 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
       - name: Run build with Gradle Wrapper
-        run: ./gradlew :claymore:build
+        run: ./gradlew :processors:build
       - name: Run demo test with Gradle Wrapper
         run: ./gradlew :demo:testDebugUnitTest

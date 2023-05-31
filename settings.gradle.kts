@@ -14,5 +14,5 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "claymore-root"
-include(":claymore")
+include(":claymore-processor")
 include(":demo")

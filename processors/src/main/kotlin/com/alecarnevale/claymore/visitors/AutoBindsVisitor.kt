@@ -1,11 +1,13 @@
 package com.alecarnevale.claymore.visitors
 
+import com.alecarnevale.claymore.annotations.InterfaceAutoBinds
 import com.alecarnevale.claymore.generator.ModuleWriter
 import com.google.devtools.ksp.processing.CodeGenerator
 import com.google.devtools.ksp.processing.KSPLogger
 import com.google.devtools.ksp.processing.Resolver
 import com.google.devtools.ksp.symbol.ClassKind
 import com.google.devtools.ksp.symbol.KSClassDeclaration
+import com.google.devtools.ksp.symbol.KSType
 import com.google.devtools.ksp.symbol.KSVisitorVoid
 import com.squareup.kotlinpoet.ksp.writeTo
 
@@ -22,6 +24,7 @@ class AutoBindsVisitor(
   override fun visitClassDeclaration(classDeclaration: KSClassDeclaration, data: Unit) {
     logger.info("$TAG visitClassDeclaration of $classDeclaration")
 
+    // check that the class implements an interface only
     val superTypes = classDeclaration.superTypes
     val superType = when (superTypes.count()) {
       0 -> {
@@ -39,6 +42,7 @@ class AutoBindsVisitor(
       }
     }
 
+    // get the KSClassDeclaration of the interface implemented
     val interfaceDeclaration =
       superType.resolve().declaration.qualifiedName?.let { resolver.getClassDeclarationByName(it) }
     if (interfaceDeclaration == null || interfaceDeclaration.classKind != ClassKind.INTERFACE) {
@@ -46,6 +50,30 @@ class AutoBindsVisitor(
       return
     }
 
+    // extract the KSType of the component argument
+    val arguments = classDeclaration.annotations.iterator().next().arguments
+    val componentKsType = arguments.firstOrNull { it.name?.getShortName() == InterfaceAutoBinds::component.name }?.value as? KSType
+    if (componentKsType == null) {
+      logger.error("$TAG component class not found")
+      return
+    }
+    logger.info("$TAG component argument provided is $componentKsType")
+
+    // extract the KSName of the component argument
+    val componentQualifiedName = componentKsType.declaration.qualifiedName
+    if (componentQualifiedName == null) {
+      logger.error("$TAG qualified name is null")
+      return
+    }
+
+    // extract the KSClassDeclaration of the component argument
+    val componentProvided = resolver.getClassDeclarationByName(componentQualifiedName)
+    if (componentProvided == null) {
+      logger.error("$TAG implementation class not found")
+      return
+    }
+
+    // define the sources file that generated the module
     val interfaceSourceFile = interfaceDeclaration.containingFile
     if (interfaceSourceFile == null) {
       logger.error("$TAG can not find source file of $interfaceDeclaration")
@@ -58,7 +86,11 @@ class AutoBindsVisitor(
     }
 
     // this is and isolating output, since no new change on other files will affect this
-    val writer = ModuleWriter(interfaceDeclaration, classDeclaration)
+    val writer = ModuleWriter(
+      interfaceDeclaration = interfaceDeclaration,
+      implementationDeclaration = classDeclaration,
+      componentDeclaration = componentProvided
+    )
     writer.write().writeTo(
       codeGenerator = codeGenerator,
       aggregating = false,

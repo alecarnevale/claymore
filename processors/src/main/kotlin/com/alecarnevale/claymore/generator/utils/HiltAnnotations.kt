@@ -1,21 +1,32 @@
 package com.alecarnevale.claymore.generator.utils
 
+import com.google.devtools.ksp.symbol.KSClassDeclaration
 import com.squareup.kotlinpoet.AnnotationSpec
 import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.MemberName
+import dagger.Binds
+import dagger.Module
+import dagger.hilt.InstallIn
 
-private val module = ClassName("dagger", "Module")
-private val singletonComponent = MemberName("dagger.hilt.components", "SingletonComponent")
-private val installIn = ClassName("dagger.hilt", "InstallIn")
-private val binds = ClassName("dagger", "Binds")
+private val module = Module::class.java.toClassName()
+private val installIn = InstallIn::class.java.toClassName()
+private val binds = Binds::class.java.toClassName()
 
 internal val moduleAnnotation = AnnotationSpec
   .builder(module)
   .build()
-internal val installInAnnotation = AnnotationSpec
+
+internal fun installInAnnotation(component: KSClassDeclaration) = AnnotationSpec
   .builder(installIn)
-  .addMember("%M::class", singletonComponent)
+  .addMember("%M::class", component.toMemberName())
   .build()
+
 internal val bindsAnnotation = AnnotationSpec
   .builder(binds)
   .build()
+
+private fun KSClassDeclaration.toMemberName(): MemberName =
+  MemberName(packageName = packageName.asString(), simpleName = simpleName.asString())
+
+private fun Class<*>.toClassName(): ClassName =
+  ClassName(packageName = packageName, simpleName)

@@ -12,11 +12,13 @@ import com.squareup.kotlinpoet.TypeSpec
 import com.squareup.kotlinpoet.ksp.toClassName
 
 /**
- * Write a hilt module that binds [implementationDeclaration] for [interfaceDeclaration].
+ * Write a hilt module that binds [implementationDeclaration] for [interfaceDeclaration],
+ * the binds is installed in [componentDeclaration].
  */
 internal class ModuleWriter(
   private val interfaceDeclaration: KSClassDeclaration,
-  private val implementationDeclaration: KSClassDeclaration
+  private val implementationDeclaration: KSClassDeclaration,
+  private val componentDeclaration: KSClassDeclaration
 ) {
 
   fun write(): FileSpec {
@@ -33,7 +35,7 @@ internal class ModuleWriter(
         .interfaceBuilder(interfaceDeclaration.moduleClassName())
         .addModifiers(KModifier.INTERNAL)
         .addAnnotation(moduleAnnotation)
-        .addAnnotation(installInAnnotation)
+        .addAnnotation(installInAnnotation(componentDeclaration))
         .addFunction(
           FunSpec.builder(functionName)
             .addAnnotation(bindsAnnotation)

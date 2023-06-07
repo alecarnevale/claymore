@@ -59,3 +59,7 @@ publishing {
 signing {
   sign(publishing.publications["annotations"])
 }
+
+dependencies {
+  compileOnly("com.google.dagger:hilt-core:2.46.1")
+}

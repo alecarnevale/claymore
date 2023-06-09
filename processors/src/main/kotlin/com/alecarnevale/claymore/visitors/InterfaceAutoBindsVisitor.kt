@@ -25,7 +25,7 @@ class InterfaceAutoBindsVisitor(
 
     // extract the KSType of arguments
     val arguments = classDeclaration.annotations.iterator().next().arguments
-    val implementationKsType = arguments.firstOrNull { it.name?.getShortName() == InterfaceAutoBinds::implementationClass.name }?.value as? KSType
+    val implementationKsType = arguments.firstOrNull { it.name?.getShortName() == InterfaceAutoBinds::implementation.name }?.value as? KSType
     if (implementationKsType == null) {
       logger.error("$TAG implementation class must be provided")
       return

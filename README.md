@@ -59,7 +59,9 @@ If not set, the `SingletonComponent` will be used by default.
 ## Installation
 
 ### Download
-Claymore is available in [Maven Central Repository](https://central.sonatype.dev/artifact/io.github.alecarnevale/claymore/1.0.0/overview).
+Claymore is available in Maven Central Repository:
+- [annotations](https://central.sonatype.com/artifact/io.github.alecarnevale/claymore-annotations/1.3.1)
+- [processors](https://central.sonatype.com/artifact/io.github.alecarnevale/claymore-processors/1.3.1)
 
 ### Gradle
 ```

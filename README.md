@@ -30,18 +30,31 @@ interface MyModule {
 With _claymore_ you can avoid to manually write that `Module`, using either `@AutoBinds` or `@InterfaceAutoBinds` annotation:
 
 ```
+// you can directly annotate the class implementation
 @AutoBinds
-class MyImplementation
+class MyImplementation: MyInterface
 ```
 
 ```
-@InterfaceAutoBinds(implementationClass = MyImplementation::class)
+// otherwise, you can annotate the interface specifying which class implementation want to bind
+@InterfaceAutoBinds(implementation = MyImplementation::class)
 interface MyInterface
 ```
 
 In both case, _clamyore_ will automatically generate necessary module for you.
 
 Take a look at :demo module for a [sample usage](https://github.com/alecarnevale/claymore/tree/master/demo/src/main/java/com/alessandro/claymore/demo).
+
+### Component
+You can optionally request claymore to install the binding in a specific hilt component, using the `component` parameter.
+```
+@AutoBinds(component = ActivityComponent::class)
+class MyImplementation: MyInterface
+// or
+@InterfaceAutoBinds(implementation = MyImplementation::class, component = ActivityComponent::class)
+interface MyInterface
+```
+If not set, the `SingletonComponent` will be used by default.
 
 ## Installation
 
@@ -55,7 +68,7 @@ repositories {
 }
 
 dependencies {
-  implementation 'io.github.alecarnevale:claymore:x.y.z'
+  compileOnly 'io.github.alecarnevale:claymore-annotations:x.y.z'
 }
 ```
 
@@ -68,7 +81,7 @@ plugins {
 }
 
 dependencies {
-  ksp 'io.github.alecarnevale:claymore:x.y.z'
+  ksp 'io.github.alecarnevale:claymore-processors:x.y.z'
 }
 ```
 

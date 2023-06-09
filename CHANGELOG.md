@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.3.0] - 2022-06-09
+## [1.3.0] - 2023-06-09
 
 ### Added
 - `component` added to `InterfaceAutoBinds` and `AutoBinds` annotations
@@ -13,8 +13,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - `claymore` project splitted in two: `claymore-annotations` and `claymore-processors`
 - `InterfaceAutoBinds.implementationClass` renamed as `implementation`
+  
+Internal changes:
+- Added github dependabot.yml
 
-## [1.2.0] - 2022-05-23
+## [1.2.0] - 2023-05-23
 
 ### Added
 - Create new AutoBinds annotation for implementation class

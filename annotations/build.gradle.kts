@@ -9,6 +9,10 @@ java {
   withSourcesJar()
 }
 
+kotlin {
+  jvmToolchain(11)
+}
+
 publishing {
   publications {
     create<MavenPublication>("annotations") {

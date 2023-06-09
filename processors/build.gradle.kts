@@ -61,6 +61,11 @@ signing {
 }
 
 dependencies {
+  // despite the fact those are used only at compile time they cannot be compileOnly,
+  // otherwise access to java class won't be feasible
+  implementation("com.google.dagger:dagger:2.46.1")
+  implementation("com.google.dagger:hilt-core:2.46.1")
+
   implementation(project(":annotations"))
 
   implementation("com.google.devtools.ksp:symbol-processing-api:1.8.21-1.0.11")

@@ -22,41 +22,71 @@ class InterfaceAutoBindsVisitor(
 
   override fun visitClassDeclaration(classDeclaration: KSClassDeclaration, data: Unit) {
     logger.info("$TAG visitClassDeclaration of $classDeclaration")
-    val arguments = classDeclaration.annotations.iterator().next().arguments
-    val ksType = arguments[0].value as KSType
-    logger.info("$TAG first argument provided is $ksType")
 
-    val qualifiedName = ksType.declaration.qualifiedName
-    if (qualifiedName == null) {
+    // extract the KSType of arguments
+    val arguments = classDeclaration.annotations.iterator().next().arguments
+    val implementationKsType = arguments.firstOrNull { it.name?.getShortName() == InterfaceAutoBinds::implementationClass.name }?.value as? KSType
+    if (implementationKsType == null) {
+      logger.error("$TAG implementation class must be provided")
+      return
+    }
+    val componentKsType = arguments.firstOrNull { it.name?.getShortName() == InterfaceAutoBinds::component.name }?.value as? KSType
+    if (componentKsType == null) {
+      logger.error("$TAG component class not found")
+      return
+    }
+    logger.info("$TAG implementation argument provided is $implementationKsType")
+    logger.info("$TAG component argument provided is $componentKsType")
+
+    // extract the KSName of arguments
+    val implementationQualifiedName = implementationKsType.declaration.qualifiedName
+    if (implementationQualifiedName == null) {
+      logger.error("$TAG qualified name is null")
+      return
+    }
+    val componentQualifiedName = componentKsType.declaration.qualifiedName
+    if (componentQualifiedName == null) {
       logger.error("$TAG qualified name is null")
       return
     }
 
-    val classImplementationProvided = resolver.getClassDeclarationByName(qualifiedName)
-    if (classImplementationProvided == null) {
+    // extract the KSClassDeclaration of arguments
+    val implementationProvided = resolver.getClassDeclarationByName(implementationQualifiedName)
+    if (implementationProvided == null) {
+      logger.error("$TAG implementation class not found")
+      return
+    }
+    val componentProvided = resolver.getClassDeclarationByName(componentQualifiedName)
+    if (componentProvided == null) {
       logger.error("$TAG implementation class not found")
       return
     }
 
-    val superTypes = classImplementationProvided.superTypes.map { it.resolve() }
+    // check if the implementation class provided implements the interface
+    val superTypes = implementationProvided.superTypes.map { it.resolve() }
     if (classDeclaration !in superTypes.map { it.declaration }) {
-      logger.error("$TAG $classDeclaration is not a superType of $classImplementationProvided")
+      logger.error("$TAG $classDeclaration is not a superType of $implementationProvided")
       return
     }
 
+    // define the sources file that generated the module
     val interfaceSourceFile = classDeclaration.containingFile
     if (interfaceSourceFile == null) {
       logger.error("$TAG can not find source file of $classDeclaration")
       return
     }
-    val implementationSourceFile = classImplementationProvided.containingFile
+    val implementationSourceFile = implementationProvided.containingFile
     if (implementationSourceFile == null) {
-      logger.error("$TAG can not find source file of $classImplementationProvided")
+      logger.error("$TAG can not find source file of $implementationProvided")
       return
     }
 
     // this is and isolating output, since no new change on other files will affect this
-    val writer = ModuleWriter(classDeclaration, classImplementationProvided)
+    val writer = ModuleWriter(
+      interfaceDeclaration = classDeclaration,
+      implementationDeclaration = implementationProvided,
+      componentDeclaration = componentProvided
+    )
     writer.write().writeTo(
       codeGenerator = codeGenerator,
       aggregating = false,

@@ -71,7 +71,7 @@ class InterfaceAutoBindsProcessorProviderTest {
   }
 
   @Test
-  fun `GIVEN an interface Foo and a class Bar that doesn't implement Foo, WHEN @InterfaceAutoBinds is applied to Foo with Bar as implementationClass argument, THEN compilation error returned and hilt module is not generated`() {
+  fun `GIVEN an interface Foo and a class Bar that doesn't implement Foo, WHEN @InterfaceAutoBinds is applied to Foo with Bar as implementation argument, THEN compilation error returned and hilt module is not generated`() {
     val src = SourceFile.kotlin(
       "Foo.kt",
       """
@@ -79,7 +79,7 @@ class InterfaceAutoBindsProcessorProviderTest {
 
       import com.alecarnevale.claymore.annotations.InterfaceAutoBinds
       
-      @InterfaceAutoBinds(implementationClass = Bar::class)
+      @InterfaceAutoBinds(implementation = Bar::class)
       interface Foo
 
       class Bar
@@ -93,7 +93,7 @@ class InterfaceAutoBindsProcessorProviderTest {
   }
 
   @Test
-  fun `GIVEN interfaces Foo, Tar and a class Bar that implements Tar, WHEN @InterfaceAutoBinds is applied to Foo with Bar as implementationClass argument, THEN compilation error returned and hilt module is not generated`() {
+  fun `GIVEN interfaces Foo, Tar and a class Bar that implements Tar, WHEN @InterfaceAutoBinds is applied to Foo with Bar as implementation argument, THEN compilation error returned and hilt module is not generated`() {
     val src = SourceFile.kotlin(
       "Foo.kt",
       """
@@ -101,7 +101,7 @@ class InterfaceAutoBindsProcessorProviderTest {
 
       import com.alecarnevale.claymore.annotations.InterfaceAutoBinds
       
-      @InterfaceAutoBinds(implementationClass = Bar::class)
+      @InterfaceAutoBinds(implementation = Bar::class)
       interface Foo
 
       interface Tar
@@ -117,7 +117,7 @@ class InterfaceAutoBindsProcessorProviderTest {
   }
 
   @Test
-  fun `GIVEN an interface Foo and a class Bar that implements Foo, WHEN @InterfaceAutoBinds is applied to Foo with Bar as implementationClass argument, THEN hilt module is generated with SingletonComponent as default component`() {
+  fun `GIVEN an interface Foo and a class Bar that implements Foo, WHEN @InterfaceAutoBinds is applied to Foo with Bar as implementation argument, THEN hilt module is generated with SingletonComponent as default component`() {
     val src = SourceFile.kotlin(
       "Foo.kt",
       """
@@ -125,7 +125,7 @@ class InterfaceAutoBindsProcessorProviderTest {
 
       import com.alecarnevale.claymore.annotations.InterfaceAutoBinds
       
-      @InterfaceAutoBinds(implementationClass = Bar::class)
+      @InterfaceAutoBinds(implementation = Bar::class)
       interface Foo
 
       class Bar: Foo
@@ -159,7 +159,7 @@ class InterfaceAutoBindsProcessorProviderTest {
   }
 
   @Test
-  fun `GIVEN an interface Foo and a class Bar that implements Foo, WHEN @InterfaceAutoBinds is applied to Foo with Bar as implementationClass argument and with a specific component, THEN hilt module is generated using the provided component`() {
+  fun `GIVEN an interface Foo and a class Bar that implements Foo, WHEN @InterfaceAutoBinds is applied to Foo with Bar as implementation argument and with a specific component, THEN hilt module is generated using the provided component`() {
     val src = SourceFile.kotlin(
       "Foo.kt",
       """
@@ -168,7 +168,7 @@ class InterfaceAutoBindsProcessorProviderTest {
       import com.alecarnevale.claymore.annotations.InterfaceAutoBinds
       import dagger.hilt.components.SingletonComponent
       
-      @InterfaceAutoBinds(implementationClass = Bar::class, component = SingletonComponent::class)
+      @InterfaceAutoBinds(implementation = Bar::class, component = SingletonComponent::class)
       interface Foo
 
       class Bar: Foo

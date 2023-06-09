@@ -66,7 +66,7 @@ dependencies {
 
   // claymore library dependency added from maven central (not local)
   compileOnly("io.github.alecarnevale:claymore-annotations:1.3.0")
-  ksp("io.github.alecarnevale:claymore-processors:1.3.0")
+  ksp("io.github.alecarnevale:claymore-processors:1.3.1")
 
   // only for developing phase, remember comment previous
   // compileOnly(project(":annotations"))

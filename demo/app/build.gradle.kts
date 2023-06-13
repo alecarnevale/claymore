@@ -47,6 +47,8 @@ android {
 }
 
 dependencies {
+  implementation(project(":demo:impl"))
+
   implementation("androidx.appcompat:appcompat:1.6.1")
 
   implementation("androidx.compose.foundation:foundation:1.4.3")

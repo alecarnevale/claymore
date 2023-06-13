@@ -65,7 +65,7 @@ dependencies {
   debugImplementation("androidx.compose.ui:ui-test-manifest:1.4.3")
 
   // claymore library dependency added from maven central (not local)
-  compileOnly("io.github.alecarnevale:claymore-annotations:1.3.1")
+  compileOnly("io.github.alecarnevale:claymore-annotations:1.3.2")
   ksp("io.github.alecarnevale:claymore-processors:1.3.1")
 
   // only for developing phase, remember comment previous

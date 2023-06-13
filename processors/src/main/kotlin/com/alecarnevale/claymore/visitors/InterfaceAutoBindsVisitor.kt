@@ -75,11 +75,9 @@ class InterfaceAutoBindsVisitor(
       logger.error("$TAG can not find source file of $classDeclaration")
       return
     }
-    val implementationSourceFile = implementationProvided.containingFile
-    if (implementationSourceFile == null) {
-      logger.error("$TAG can not find source file of $implementationProvided")
-      return
-    }
+    // since the implementation class file is a transitive dependency of the interface class file,
+    // it doesn't need to be specified as dependency (originatingKSFiles)
+    val dependencies = listOf(interfaceSourceFile)
 
     // this is and isolating output, since no new change on other files will affect this
     val writer = ModuleWriter(
@@ -90,7 +88,7 @@ class InterfaceAutoBindsVisitor(
     writer.write().writeTo(
       codeGenerator = codeGenerator,
       aggregating = false,
-      originatingKSFiles = listOf(interfaceSourceFile, implementationSourceFile)
+      originatingKSFiles = dependencies
     )
   }
 }

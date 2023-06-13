@@ -18,7 +18,7 @@ publishing {
     create<MavenPublication>("processors") {
       groupId = "io.github.alecarnevale"
       artifactId = "claymore-processors"
-      version = "1.3.1"
+      version = "1.3.2"
       from(components["java"])
 
       repositories {

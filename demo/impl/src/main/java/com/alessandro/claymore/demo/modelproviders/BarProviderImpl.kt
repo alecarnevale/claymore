@@ -5,7 +5,7 @@ import com.alessandro.claymore.demo.models.Bar
 import com.alessandro.claymore.demo.models.BarImpl
 import javax.inject.Inject
 
-//@AutoBinds
+@AutoBinds
 class BarProviderImpl @Inject constructor() : BarProvider {
   override fun get(): Bar {
     return BarImpl("BarProviderImpl")

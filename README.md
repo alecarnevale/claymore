@@ -43,7 +43,7 @@ interface MyInterface
 
 In both case, _clamyore_ will automatically generate necessary module for you.
 
-Take a look at :demo module for a [sample usage](https://github.com/alecarnevale/claymore/tree/master/demo/src/main/java/com/alessandro/claymore/demo).
+Take a look at :demo module for a [sample usage](https://github.com/alecarnevale/claymore/tree/master/demo).
 
 ### Component
 You can optionally request claymore to install the binding in a specific hilt component, using the `component` parameter.

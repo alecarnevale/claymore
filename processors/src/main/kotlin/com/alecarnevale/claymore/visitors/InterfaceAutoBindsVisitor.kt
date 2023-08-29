@@ -25,13 +25,15 @@ internal class InterfaceAutoBindsVisitor(
     logger.info("$TAG visitClassDeclaration of $classDeclaration")
 
     // extract the KSType of arguments
-    val arguments = classDeclaration.annotations.iterator().next().arguments
-    val implementationKsType = arguments.firstOrNull { it.name?.getShortName() == InterfaceAutoBinds::implementation.name }?.value as? KSType
+    val interfaceAutobindsAnnotation = classDeclaration.annotations.firstOrNull { it.shortName.getShortName() == InterfaceAutoBinds::class.simpleName }
+
+    // extract arguments of the annotation
+    val implementationKsType = interfaceAutobindsAnnotation?.arguments?.firstOrNull { it.name?.getShortName() == InterfaceAutoBinds::implementation.name }?.value as? KSType
     if (implementationKsType == null) {
       logger.error("$TAG implementation class must be provided")
       return
     }
-    val componentKsType = arguments.firstOrNull { it.name?.getShortName() == InterfaceAutoBinds::component.name }?.value as? KSType
+    val componentKsType = interfaceAutobindsAnnotation?.arguments?.firstOrNull { it.name?.getShortName() == InterfaceAutoBinds::component.name }?.value as? KSType
     if (componentKsType == null) {
       logger.error("$TAG component class not found")
       return

@@ -52,8 +52,8 @@ internal class AutoBindsVisitor(
     }
 
     // extract the KSType of the component argument
-    val arguments = classDeclaration.annotations.iterator().next().arguments
-    val componentKsType = arguments.firstOrNull { it.name?.getShortName() == AutoBinds::component.name }?.value as? KSType
+    val autobindsAnnotation = classDeclaration.annotations.firstOrNull { it.shortName.getShortName() == AutoBinds::class.simpleName }
+    val componentKsType = autobindsAnnotation?.arguments?.firstOrNull { it.name?.getShortName() == AutoBinds::component.name }?.value as? KSType
     if (componentKsType == null) {
       logger.error("$TAG component class not found")
       return

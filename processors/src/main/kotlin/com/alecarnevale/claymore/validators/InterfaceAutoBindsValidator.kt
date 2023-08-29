@@ -11,7 +11,7 @@ import com.google.devtools.ksp.validate
 /**
  * This validator check if annotated symbols is an interface.
  */
-class InterfaceAutoBindsValidator(private val logger: KSPLogger) {
+internal class InterfaceAutoBindsValidator(private val logger: KSPLogger) {
   fun isValid(symbol: KSAnnotated): Boolean {
     return symbol.validate() && symbol.isAnInterface()
   }

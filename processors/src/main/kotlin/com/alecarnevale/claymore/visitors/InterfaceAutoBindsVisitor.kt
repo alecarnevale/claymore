@@ -15,7 +15,7 @@ import com.squareup.kotlinpoet.ksp.writeTo
  * This visitor check if provided implementation of [InterfaceAutoBinds] is a descendant of the annotated interface.
  * If true it generates the necessary hilt module.
  */
-class InterfaceAutoBindsVisitor(
+internal class InterfaceAutoBindsVisitor(
   private val codeGenerator: CodeGenerator,
   private val resolver: Resolver,
   private val logger: KSPLogger

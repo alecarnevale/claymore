@@ -11,7 +11,7 @@ import com.google.devtools.ksp.validate
 /**
  * This validator check if annotated symbols is a class.
  */
-class AutoBindsValidator(private val logger: KSPLogger) {
+internal class AutoBindsValidator(private val logger: KSPLogger) {
   fun isValid(symbol: KSAnnotated): Boolean {
     return symbol.validate() && symbol.isAClass()
   }

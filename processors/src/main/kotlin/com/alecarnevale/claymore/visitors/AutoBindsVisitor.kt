@@ -16,7 +16,7 @@ import com.squareup.kotlinpoet.ksp.writeTo
  * This visitor check if the class implements exactly an interface.
  * If true it generates the necessary hilt module to bind that class as the actual implementation.
  */
-class AutoBindsVisitor(
+internal class AutoBindsVisitor(
   private val codeGenerator: CodeGenerator,
   private val resolver: Resolver,
   private val logger: KSPLogger

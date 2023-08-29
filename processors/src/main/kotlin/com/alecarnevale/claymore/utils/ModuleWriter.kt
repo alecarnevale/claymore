@@ -1,9 +1,5 @@
-package com.alecarnevale.claymore.generator
+package com.alecarnevale.claymore.utils
 
-import com.alecarnevale.claymore.generator.utils.bindsAnnotation
-import com.alecarnevale.claymore.generator.utils.installInAnnotation
-import com.alecarnevale.claymore.generator.utils.moduleAnnotation
-import com.alecarnevale.claymore.generator.utils.moduleClassName
 import com.google.devtools.ksp.symbol.KSClassDeclaration
 import com.squareup.kotlinpoet.FileSpec
 import com.squareup.kotlinpoet.FunSpec

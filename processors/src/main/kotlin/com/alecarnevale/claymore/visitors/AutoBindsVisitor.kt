@@ -1,7 +1,7 @@
 package com.alecarnevale.claymore.visitors
 
 import com.alecarnevale.claymore.annotations.AutoBinds
-import com.alecarnevale.claymore.generator.ModuleWriter
+import com.alecarnevale.claymore.utils.ModuleWriter
 import com.google.devtools.ksp.processing.CodeGenerator
 import com.google.devtools.ksp.processing.KSPLogger
 import com.google.devtools.ksp.processing.Resolver

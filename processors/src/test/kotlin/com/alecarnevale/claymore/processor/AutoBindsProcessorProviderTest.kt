@@ -93,6 +93,28 @@ class AutoBindsProcessorProviderTest {
   }
 
   @Test
+  fun `GIVEN an interface Foo and an abstract class Bar that implements Foo, WHEN @AutoBinds is applied to Bar, THEN compilation error and hilt module is not generated`() {
+    val src = SourceFile.kotlin(
+      "Foo.kt",
+      """
+      package com.example
+
+      import com.alecarnevale.claymore.annotations.AutoBinds
+      
+      interface Foo
+
+      @AutoBinds
+      abstract class Bar: Foo
+      """,
+    )
+
+    val result = compileSourceFiles(src)
+
+    assertEquals(KotlinCompilation.ExitCode.COMPILATION_ERROR, result.result.exitCode)
+    result.assertZeroGeneratedSources()
+  }
+
+  @Test
   fun `GIVEN an interface Foo and a class Bar that implements Foo, WHEN @AutoBinds is applied to Bar, THEN hilt module is generated with SingletonComponent as default component`() {
     val src = SourceFile.kotlin(
       "Foo.kt",

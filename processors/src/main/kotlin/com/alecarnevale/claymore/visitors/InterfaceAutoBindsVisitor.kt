@@ -8,6 +8,7 @@ import com.google.devtools.ksp.processing.Resolver
 import com.google.devtools.ksp.symbol.KSClassDeclaration
 import com.google.devtools.ksp.symbol.KSType
 import com.google.devtools.ksp.symbol.KSVisitorVoid
+import com.google.devtools.ksp.symbol.Modifier
 import com.squareup.kotlinpoet.ksp.writeTo
 
 /**
@@ -56,9 +57,13 @@ class InterfaceAutoBindsVisitor(
       logger.error("$TAG implementation class not found")
       return
     }
+    if (implementationProvided.modifiers.contains(Modifier.ABSTRACT)) {
+      logger.error("$TAG implementation class must not be abstract")
+      return
+    }
     val componentProvided = resolver.getClassDeclarationByName(componentQualifiedName)
     if (componentProvided == null) {
-      logger.error("$TAG implementation class not found")
+      logger.error("$TAG component class not found")
       return
     }
 

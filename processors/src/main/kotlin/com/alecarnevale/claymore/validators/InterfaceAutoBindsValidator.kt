@@ -5,6 +5,7 @@ import com.google.devtools.ksp.processing.KSPLogger
 import com.google.devtools.ksp.symbol.ClassKind
 import com.google.devtools.ksp.symbol.KSAnnotated
 import com.google.devtools.ksp.symbol.KSClassDeclaration
+import com.google.devtools.ksp.symbol.Modifier
 import com.google.devtools.ksp.validate
 
 /**
@@ -16,12 +17,24 @@ class InterfaceAutoBindsValidator(private val logger: KSPLogger) {
   }
 
   private fun KSAnnotated.isAnInterface(): Boolean {
-    if (this !is KSClassDeclaration || this.classKind != ClassKind.INTERFACE) {
+    if (this !is KSClassDeclaration || this.isNotValidSupertype()) {
       logger.error("$TAG ${InterfaceAutoBinds::class.simpleName} annotation must annotates interface")
       return false
     }
 
     return true
+  }
+
+  private fun KSClassDeclaration.isNotValidSupertype(): Boolean = !isValidSupertype()
+
+  private fun KSClassDeclaration.isValidSupertype(): Boolean {
+    if (classKind == ClassKind.INTERFACE) {
+      return true
+    }
+    if (classKind == ClassKind.CLASS && this.modifiers.contains(Modifier.ABSTRACT)) {
+      return true
+    }
+    return false
   }
 }
 

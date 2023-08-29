@@ -223,6 +223,49 @@ class InterfaceAutoBindsProcessorProviderTest {
     )
   }
 
+  @Test
+  fun `GIVEN an abstract class Foo and a class Bar that implements Foo, WHEN @InterfaceAutoBinds is applied to Foo with Bar as implementation argument and with a specific component, THEN hilt module is generated using the provided component`() {
+    val src = SourceFile.kotlin(
+      "Foo.kt",
+      """
+      package com.example
+
+      import com.alecarnevale.claymore.annotations.InterfaceAutoBinds
+      import dagger.hilt.components.SingletonComponent
+      
+      @InterfaceAutoBinds(implementation = Bar::class, component = SingletonComponent::class)
+      abstract class Foo
+
+      class Bar: Foo
+      """,
+    )
+
+    val result = compileSourceFiles(src)
+
+    assertEquals(KotlinCompilation.ExitCode.OK, result.result.exitCode)
+
+    result.assertGeneratedSources("com/example/FooModule.kt")
+    result.assertGeneratedContent(
+      "com/example/FooModule.kt",
+      """
+      package com.example
+      
+      import dagger.Binds
+      import dagger.Module
+      import dagger.hilt.InstallIn
+      import dagger.hilt.components.SingletonComponent
+      
+      @Module
+      @InstallIn(SingletonComponent::class)
+      internal interface FooModule {
+        @Binds
+        public fun foo(`impl`: Bar): Foo
+      }
+
+      """,
+    )
+  }
+
   private fun compileSourceFiles(vararg sourceFiles: SourceFile): KspCompilationResult {
     val kotlinCompilation = KotlinCompilation().apply {
       sources = sourceFiles.toList()

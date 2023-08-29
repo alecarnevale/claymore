@@ -9,6 +9,7 @@ import com.google.devtools.ksp.symbol.ClassKind
 import com.google.devtools.ksp.symbol.KSClassDeclaration
 import com.google.devtools.ksp.symbol.KSType
 import com.google.devtools.ksp.symbol.KSVisitorVoid
+import com.google.devtools.ksp.symbol.Modifier
 import com.squareup.kotlinpoet.ksp.writeTo
 
 /**
@@ -45,8 +46,8 @@ class AutoBindsVisitor(
     // get the KSClassDeclaration of the interface implemented
     val interfaceDeclaration =
       superType.resolve().declaration.qualifiedName?.let { resolver.getClassDeclarationByName(it) }
-    if (interfaceDeclaration == null || interfaceDeclaration.classKind != ClassKind.INTERFACE) {
-      logger.error("$TAG expecting $interfaceDeclaration as an interface.")
+    if (interfaceDeclaration == null || interfaceDeclaration.isNotValidSupertype()) {
+      logger.error("$TAG expecting $interfaceDeclaration as an interface or abstract class.")
       return
     }
 
@@ -94,6 +95,18 @@ class AutoBindsVisitor(
       aggregating = false,
       originatingKSFiles = dependencies
     )
+  }
+
+  private fun KSClassDeclaration.isNotValidSupertype(): Boolean = !isValidSupertype()
+
+  private fun KSClassDeclaration.isValidSupertype(): Boolean {
+    if (classKind == ClassKind.INTERFACE) {
+      return true
+    }
+    if (classKind == ClassKind.CLASS && this.modifiers.contains(Modifier.ABSTRACT)) {
+      return true
+    }
+    return false
   }
 }
 

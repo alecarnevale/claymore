@@ -1,6 +1,6 @@
 package com.alecarnevale.claymore.processor
 
-import com.alecarnevale.claymore.processors.providers.InterfaceAutoBindsProcessorProvider
+import com.alecarnevale.claymore.providers.InterfaceAutoBindsProcessorProvider
 import com.tschuchort.compiletesting.KotlinCompilation
 import com.tschuchort.compiletesting.SourceFile
 import com.tschuchort.compiletesting.kspSourcesDir

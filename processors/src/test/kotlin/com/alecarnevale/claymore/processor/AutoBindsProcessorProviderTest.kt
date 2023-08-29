@@ -134,9 +134,9 @@ class AutoBindsProcessorProviderTest {
 
     assertEquals(KotlinCompilation.ExitCode.OK, result.result.exitCode)
 
-    result.assertGeneratedSources("com/example/FooModule.kt")
+    result.assertGeneratedSources("com/example/BarModule.kt")
     result.assertGeneratedContent(
-      "com/example/FooModule.kt",
+      "com/example/BarModule.kt",
       """
       package com.example
       
@@ -147,7 +147,7 @@ class AutoBindsProcessorProviderTest {
       
       @Module
       @InstallIn(SingletonComponent::class)
-      internal interface FooModule {
+      internal interface BarModule {
         @Binds
         public fun foo(`impl`: Bar): Foo
       }
@@ -177,9 +177,9 @@ class AutoBindsProcessorProviderTest {
 
     assertEquals(KotlinCompilation.ExitCode.OK, result.result.exitCode)
 
-    result.assertGeneratedSources("com/example/FooModule.kt")
+    result.assertGeneratedSources("com/example/BarModule.kt")
     result.assertGeneratedContent(
-      "com/example/FooModule.kt",
+      "com/example/BarModule.kt",
       """
       package com.example
       
@@ -190,7 +190,7 @@ class AutoBindsProcessorProviderTest {
       
       @Module
       @InstallIn(SingletonComponent::class)
-      internal interface FooModule {
+      internal interface BarModule {
         @Binds
         public fun foo(`impl`: Bar): Foo
       }
@@ -220,9 +220,9 @@ class AutoBindsProcessorProviderTest {
 
     assertEquals(KotlinCompilation.ExitCode.OK, result.result.exitCode)
 
-    result.assertGeneratedSources("com/example/FooModule.kt")
+    result.assertGeneratedSources("com/example/BarModule.kt")
     result.assertGeneratedContent(
-      "com/example/FooModule.kt",
+      "com/example/BarModule.kt",
       """
       package com.example
       
@@ -233,7 +233,7 @@ class AutoBindsProcessorProviderTest {
       
       @Module
       @InstallIn(SingletonComponent::class)
-      internal interface FooModule {
+      internal interface BarModule {
         @Binds
         public fun foo(`impl`: Bar): Foo
       }

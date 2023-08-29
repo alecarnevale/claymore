@@ -1,6 +1,6 @@
 package com.alecarnevale.claymore.visitors
 
-import com.alecarnevale.claymore.annotations.InterfaceAutoBinds
+import com.alecarnevale.claymore.annotations.AutoBinds
 import com.alecarnevale.claymore.generator.ModuleWriter
 import com.google.devtools.ksp.processing.CodeGenerator
 import com.google.devtools.ksp.processing.KSPLogger
@@ -52,7 +52,7 @@ class AutoBindsVisitor(
 
     // extract the KSType of the component argument
     val arguments = classDeclaration.annotations.iterator().next().arguments
-    val componentKsType = arguments.firstOrNull { it.name?.getShortName() == InterfaceAutoBinds::component.name }?.value as? KSType
+    val componentKsType = arguments.firstOrNull { it.name?.getShortName() == AutoBinds::component.name }?.value as? KSType
     if (componentKsType == null) {
       logger.error("$TAG component class not found")
       return

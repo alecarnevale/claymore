@@ -1,4 +1,4 @@
-package com.alecarnevale.claymore.generator.utils
+package com.alecarnevale.claymore.utils
 
 import com.google.devtools.ksp.symbol.KSClassDeclaration
 import com.squareup.kotlinpoet.AnnotationSpec

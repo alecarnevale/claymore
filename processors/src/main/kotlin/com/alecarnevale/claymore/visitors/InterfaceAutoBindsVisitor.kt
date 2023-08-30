@@ -1,20 +1,21 @@
 package com.alecarnevale.claymore.visitors
 
 import com.alecarnevale.claymore.annotations.InterfaceAutoBinds
-import com.alecarnevale.claymore.generator.ModuleWriter
+import com.alecarnevale.claymore.utils.ModuleWriter
 import com.google.devtools.ksp.processing.CodeGenerator
 import com.google.devtools.ksp.processing.KSPLogger
 import com.google.devtools.ksp.processing.Resolver
 import com.google.devtools.ksp.symbol.KSClassDeclaration
 import com.google.devtools.ksp.symbol.KSType
 import com.google.devtools.ksp.symbol.KSVisitorVoid
+import com.google.devtools.ksp.symbol.Modifier
 import com.squareup.kotlinpoet.ksp.writeTo
 
 /**
  * This visitor check if provided implementation of [InterfaceAutoBinds] is a descendant of the annotated interface.
  * If true it generates the necessary hilt module.
  */
-class InterfaceAutoBindsVisitor(
+internal class InterfaceAutoBindsVisitor(
   private val codeGenerator: CodeGenerator,
   private val resolver: Resolver,
   private val logger: KSPLogger
@@ -24,13 +25,15 @@ class InterfaceAutoBindsVisitor(
     logger.info("$TAG visitClassDeclaration of $classDeclaration")
 
     // extract the KSType of arguments
-    val arguments = classDeclaration.annotations.iterator().next().arguments
-    val implementationKsType = arguments.firstOrNull { it.name?.getShortName() == InterfaceAutoBinds::implementation.name }?.value as? KSType
+    val interfaceAutobindsAnnotation = classDeclaration.annotations.firstOrNull { it.shortName.getShortName() == InterfaceAutoBinds::class.simpleName }
+
+    // extract arguments of the annotation
+    val implementationKsType = interfaceAutobindsAnnotation?.arguments?.firstOrNull { it.name?.getShortName() == InterfaceAutoBinds::implementation.name }?.value as? KSType
     if (implementationKsType == null) {
       logger.error("$TAG implementation class must be provided")
       return
     }
-    val componentKsType = arguments.firstOrNull { it.name?.getShortName() == InterfaceAutoBinds::component.name }?.value as? KSType
+    val componentKsType = interfaceAutobindsAnnotation?.arguments?.firstOrNull { it.name?.getShortName() == InterfaceAutoBinds::component.name }?.value as? KSType
     if (componentKsType == null) {
       logger.error("$TAG component class not found")
       return
@@ -56,9 +59,13 @@ class InterfaceAutoBindsVisitor(
       logger.error("$TAG implementation class not found")
       return
     }
+    if (implementationProvided.modifiers.contains(Modifier.ABSTRACT)) {
+      logger.error("$TAG implementation class must not be abstract")
+      return
+    }
     val componentProvided = resolver.getClassDeclarationByName(componentQualifiedName)
     if (componentProvided == null) {
-      logger.error("$TAG implementation class not found")
+      logger.error("$TAG component class not found")
       return
     }
 

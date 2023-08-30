@@ -1,6 +1,6 @@
 package com.alecarnevale.claymore.processor
 
-import com.alecarnevale.claymore.processors.providers.AutoBindsProcessorProvider
+import com.alecarnevale.claymore.providers.AutoBindsProcessorProvider
 import com.tschuchort.compiletesting.KotlinCompilation
 import com.tschuchort.compiletesting.SourceFile
 import com.tschuchort.compiletesting.kspSourcesDir
@@ -93,6 +93,28 @@ class AutoBindsProcessorProviderTest {
   }
 
   @Test
+  fun `GIVEN an interface Foo and an abstract class Bar that implements Foo, WHEN @AutoBinds is applied to Bar, THEN compilation error and hilt module is not generated`() {
+    val src = SourceFile.kotlin(
+      "Foo.kt",
+      """
+      package com.example
+
+      import com.alecarnevale.claymore.annotations.AutoBinds
+      
+      interface Foo
+
+      @AutoBinds
+      abstract class Bar: Foo
+      """,
+    )
+
+    val result = compileSourceFiles(src)
+
+    assertEquals(KotlinCompilation.ExitCode.COMPILATION_ERROR, result.result.exitCode)
+    result.assertZeroGeneratedSources()
+  }
+
+  @Test
   fun `GIVEN an interface Foo and a class Bar that implements Foo, WHEN @AutoBinds is applied to Bar, THEN hilt module is generated with SingletonComponent as default component`() {
     val src = SourceFile.kotlin(
       "Foo.kt",
@@ -112,9 +134,9 @@ class AutoBindsProcessorProviderTest {
 
     assertEquals(KotlinCompilation.ExitCode.OK, result.result.exitCode)
 
-    result.assertGeneratedSources("com/example/FooModule.kt")
+    result.assertGeneratedSources("com/example/BarModule.kt")
     result.assertGeneratedContent(
-      "com/example/FooModule.kt",
+      "com/example/BarModule.kt",
       """
       package com.example
       
@@ -125,7 +147,7 @@ class AutoBindsProcessorProviderTest {
       
       @Module
       @InstallIn(SingletonComponent::class)
-      internal interface FooModule {
+      internal interface BarModule {
         @Binds
         public fun foo(`impl`: Bar): Foo
       }
@@ -155,9 +177,9 @@ class AutoBindsProcessorProviderTest {
 
     assertEquals(KotlinCompilation.ExitCode.OK, result.result.exitCode)
 
-    result.assertGeneratedSources("com/example/FooModule.kt")
+    result.assertGeneratedSources("com/example/BarModule.kt")
     result.assertGeneratedContent(
-      "com/example/FooModule.kt",
+      "com/example/BarModule.kt",
       """
       package com.example
       
@@ -168,7 +190,95 @@ class AutoBindsProcessorProviderTest {
       
       @Module
       @InstallIn(SingletonComponent::class)
-      internal interface FooModule {
+      internal interface BarModule {
+        @Binds
+        public fun foo(`impl`: Bar): Foo
+      }
+
+      """,
+    )
+  }
+
+  @Test
+  fun `GIVEN an abstract class Foo and a class Bar that implements Foo, WHEN @AutoBinds is applied to Bar with a specific component, THEN hilt module is generated using the provided component`() {
+    val src = SourceFile.kotlin(
+      "Foo.kt",
+      """
+      package com.example
+
+      import com.alecarnevale.claymore.annotations.AutoBinds
+      import dagger.hilt.components.SingletonComponent
+      
+      abstract class Foo
+
+      @AutoBinds(component = SingletonComponent::class)
+      class Bar: Foo
+      """,
+    )
+
+    val result = compileSourceFiles(src)
+
+    assertEquals(KotlinCompilation.ExitCode.OK, result.result.exitCode)
+
+    result.assertGeneratedSources("com/example/BarModule.kt")
+    result.assertGeneratedContent(
+      "com/example/BarModule.kt",
+      """
+      package com.example
+      
+      import dagger.Binds
+      import dagger.Module
+      import dagger.hilt.InstallIn
+      import dagger.hilt.components.SingletonComponent
+      
+      @Module
+      @InstallIn(SingletonComponent::class)
+      internal interface BarModule {
+        @Binds
+        public fun foo(`impl`: Bar): Foo
+      }
+
+      """,
+    )
+  }
+
+  @Test
+  fun `GIVEN an interface Foo and a class Bar that implements Foo, WHEN @AutoBinds is applied to Bar with a specific component, even if it's not the only annotation for Bar THEN hilt module is generated using the provided component`() {
+    val src = SourceFile.kotlin(
+      "Foo.kt",
+      """
+      package com.example
+
+      import com.alecarnevale.claymore.annotations.AutoBinds
+      import dagger.hilt.components.SingletonComponent
+      
+      interface Foo
+
+      @ExperimentalStdlibApi
+      @AutoBinds(component = SingletonComponent::class)
+      @OptIn
+      class Bar: Foo
+      """,
+    )
+
+    val result = compileSourceFiles(src)
+
+    assertEquals(KotlinCompilation.ExitCode.OK, result.result.exitCode)
+
+    result.assertGeneratedSources("com/example/BarModule.kt")
+    result.assertGeneratedContent(
+      "com/example/BarModule.kt",
+      """
+      package com.example
+      
+      import dagger.Binds
+      import dagger.Module
+      import dagger.hilt.InstallIn
+      import dagger.hilt.components.SingletonComponent
+      
+      @Module
+      @InstallIn(SingletonComponent::class)
+      internal interface BarModule {
         @Binds
         public fun foo(`impl`: Bar): Foo
       }

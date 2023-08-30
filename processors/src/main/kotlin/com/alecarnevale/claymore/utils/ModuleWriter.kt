@@ -1,9 +1,5 @@
-package com.alecarnevale.claymore.generator
+package com.alecarnevale.claymore.utils
 
-import com.alecarnevale.claymore.generator.utils.bindsAnnotation
-import com.alecarnevale.claymore.generator.utils.installInAnnotation
-import com.alecarnevale.claymore.generator.utils.moduleAnnotation
-import com.alecarnevale.claymore.generator.utils.moduleClassName
 import com.google.devtools.ksp.symbol.KSClassDeclaration
 import com.squareup.kotlinpoet.FileSpec
 import com.squareup.kotlinpoet.FunSpec
@@ -23,8 +19,8 @@ internal class ModuleWriter(
 
   fun write(): FileSpec {
     val fileSpec = FileSpec.builder(
-      packageName = interfaceDeclaration.toClassName().packageName,
-      fileName = interfaceDeclaration.moduleClassName()
+      packageName = implementationDeclaration.toClassName().packageName,
+      fileName = implementationDeclaration.moduleClassName()
     )
 
     val functionName =
@@ -32,7 +28,7 @@ internal class ModuleWriter(
 
     return fileSpec.addType(
       TypeSpec
-        .interfaceBuilder(interfaceDeclaration.moduleClassName())
+        .interfaceBuilder(implementationDeclaration.moduleClassName())
         .addModifiers(KModifier.INTERNAL)
         .addAnnotation(moduleAnnotation)
         .addAnnotation(installInAnnotation(componentDeclaration))

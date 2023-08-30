@@ -1,7 +1,7 @@
 package com.alecarnevale.claymore.visitors
 
-import com.alecarnevale.claymore.annotations.InterfaceAutoBinds
-import com.alecarnevale.claymore.generator.ModuleWriter
+import com.alecarnevale.claymore.annotations.AutoBinds
+import com.alecarnevale.claymore.utils.ModuleWriter
 import com.google.devtools.ksp.processing.CodeGenerator
 import com.google.devtools.ksp.processing.KSPLogger
 import com.google.devtools.ksp.processing.Resolver
@@ -9,13 +9,14 @@ import com.google.devtools.ksp.symbol.ClassKind
 import com.google.devtools.ksp.symbol.KSClassDeclaration
 import com.google.devtools.ksp.symbol.KSType
 import com.google.devtools.ksp.symbol.KSVisitorVoid
+import com.google.devtools.ksp.symbol.Modifier
 import com.squareup.kotlinpoet.ksp.writeTo
 
 /**
  * This visitor check if the class implements exactly an interface.
  * If true it generates the necessary hilt module to bind that class as the actual implementation.
  */
-class AutoBindsVisitor(
+internal class AutoBindsVisitor(
   private val codeGenerator: CodeGenerator,
   private val resolver: Resolver,
   private val logger: KSPLogger
@@ -45,14 +46,14 @@ class AutoBindsVisitor(
     // get the KSClassDeclaration of the interface implemented
     val interfaceDeclaration =
       superType.resolve().declaration.qualifiedName?.let { resolver.getClassDeclarationByName(it) }
-    if (interfaceDeclaration == null || interfaceDeclaration.classKind != ClassKind.INTERFACE) {
-      logger.error("$TAG expecting $interfaceDeclaration as an interface.")
+    if (interfaceDeclaration == null || interfaceDeclaration.isNotValidSupertype()) {
+      logger.error("$TAG expecting $interfaceDeclaration as an interface or abstract class.")
       return
     }
 
     // extract the KSType of the component argument
-    val arguments = classDeclaration.annotations.iterator().next().arguments
-    val componentKsType = arguments.firstOrNull { it.name?.getShortName() == InterfaceAutoBinds::component.name }?.value as? KSType
+    val autobindsAnnotation = classDeclaration.annotations.firstOrNull { it.shortName.getShortName() == AutoBinds::class.simpleName }
+    val componentKsType = autobindsAnnotation?.arguments?.firstOrNull { it.name?.getShortName() == AutoBinds::component.name }?.value as? KSType
     if (componentKsType == null) {
       logger.error("$TAG component class not found")
       return
@@ -94,6 +95,18 @@ class AutoBindsVisitor(
       aggregating = false,
       originatingKSFiles = dependencies
     )
+  }
+
+  private fun KSClassDeclaration.isNotValidSupertype(): Boolean = !isValidSupertype()
+
+  private fun KSClassDeclaration.isValidSupertype(): Boolean {
+    if (classKind == ClassKind.INTERFACE) {
+      return true
+    }
+    if (classKind == ClassKind.CLASS && this.modifiers.contains(Modifier.ABSTRACT)) {
+      return true
+    }
+    return false
   }
 }
 

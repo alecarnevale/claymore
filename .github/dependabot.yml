@@ -5,7 +5,14 @@
 
 version: 2
 updates:
-  - package-ecosystem: gradle
+  - package-ecosystem: "gradle"
     directory: "/"
     schedule:
       interval: "weekly"
+    groups:
+      kotlin:
+        patterns:
+          - "org.jetbrains.kotlin.jvm*"
+          - "org.jetbrains.kotlin.android*"
+          - "org.jetbrains.kotlin.kapt*"
+          - "com.google.devtools.ksp*"

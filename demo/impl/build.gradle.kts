@@ -9,7 +9,7 @@ dependencies {
   compileOnly("javax.inject:javax.inject:1")
 
   implementation("com.google.dagger:hilt-core:2.46.1")
-  kapt("com.google.dagger:hilt-compiler:2.46.1")
+  kapt("com.google.dagger:hilt-compiler:2.48")
 
   // claymore library dependency added from maven central (not local)
   compileOnly("io.github.alecarnevale:claymore-annotations:1.3.2")

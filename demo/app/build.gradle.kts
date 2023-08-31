@@ -59,7 +59,7 @@ dependencies {
   debugImplementation("androidx.compose.ui:ui-tooling:1.4.3")
 
   implementation("com.google.dagger:hilt-android:2.47")
-  kapt("com.google.dagger:hilt-compiler:2.46.1")
+  kapt("com.google.dagger:hilt-compiler:2.48")
 
   testImplementation("junit:junit:4.13.2")
   testImplementation("org.robolectric:robolectric:4.10.3")

@@ -1,5 +1,5 @@
 plugins {
-  id("org.jetbrains.kotlin.jvm")
+  alias(libs.plugins.kotlin)
   id("maven-publish")
   id("signing")
 }
@@ -65,5 +65,5 @@ signing {
 }
 
 dependencies {
-  compileOnly("com.google.dagger:hilt-core:2.46.1")
+  compileOnly(libs.hilt.core)
 }

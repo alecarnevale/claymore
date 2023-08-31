@@ -1,9 +1,9 @@
 plugins {
-  id("com.android.application")
-  id("org.jetbrains.kotlin.android")
-  id("org.jetbrains.kotlin.kapt")
-  id("com.google.dagger.hilt.android")
-  id("com.google.devtools.ksp")
+  alias(libs.plugins.android.application)
+  alias(libs.plugins.kotlin.android)
+  alias(libs.plugins.kapt)
+  alias(libs.plugins.hilt)
+  alias(libs.plugins.ksp)
 }
 
 android {
@@ -37,6 +37,7 @@ android {
     compose = true
   }
   composeOptions {
+    // TODO find a way to move into libs.versions.toml
     kotlinCompilerExtensionVersion = "1.4.7"
   }
   testOptions {
@@ -49,22 +50,22 @@ android {
 dependencies {
   implementation(project(":demo:impl"))
 
-  implementation("androidx.appcompat:appcompat:1.6.1")
+  implementation(libs.androidx.appcompat)
 
-  implementation("androidx.compose.foundation:foundation:1.4.3")
-  implementation("androidx.compose.material:material:1.4.3")
-  implementation("androidx.compose.ui:ui:1.4.3")
-  implementation("androidx.activity:activity-compose:1.7.1")
-  implementation("androidx.compose.ui:ui-tooling-preview:1.4.3")
-  debugImplementation("androidx.compose.ui:ui-tooling:1.4.3")
+  implementation(libs.compose.foundation)
+  implementation(libs.compose.material)
+  implementation(libs.compose.ui)
+  implementation(libs.androidx.activity.compose)
+  implementation(libs.compose.ui.tooling.preview)
+  debugImplementation(libs.compose.ui.tooling)
 
-  implementation("com.google.dagger:hilt-android:2.47")
-  kapt("com.google.dagger:hilt-compiler:2.46.1")
+  implementation(libs.hilt.android)
+  kapt(libs.hilt.compiler)
 
-  testImplementation("junit:junit:4.13.2")
-  testImplementation("org.robolectric:robolectric:4.10.3")
-  testImplementation("androidx.compose.ui:ui-test-junit4:1.4.3")
-  debugImplementation("androidx.compose.ui:ui-test-manifest:1.4.3")
+  testImplementation(libs.junit)
+  testImplementation(libs.robolectric)
+  testImplementation(libs.compose.ui.test.junit4)
+  debugImplementation(libs.compose.ui.test.manifest)
 
   // claymore library dependency added from maven central (not local)
   compileOnly("io.github.alecarnevale:claymore-annotations:1.3.2")

@@ -1,15 +1,15 @@
 plugins {
-  id("org.jetbrains.kotlin.jvm")
-  id("com.google.devtools.ksp")
-  id("org.jetbrains.kotlin.kapt")
+  alias(libs.plugins.kotlin)
+  alias(libs.plugins.ksp)
+  alias(libs.plugins.kapt)
 }
 
 dependencies {
   api(project(":demo:api"))
-  compileOnly("javax.inject:javax.inject:1")
+  compileOnly(libs.javax.inject)
 
-  implementation("com.google.dagger:hilt-core:2.46.1")
-  kapt("com.google.dagger:hilt-compiler:2.46.1")
+  implementation(libs.hilt.core)
+  kapt(libs.hilt.compiler)
 
   // claymore library dependency added from maven central (not local)
   compileOnly("io.github.alecarnevale:claymore-annotations:1.3.2")

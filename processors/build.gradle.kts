@@ -1,5 +1,5 @@
 plugins {
-  id("org.jetbrains.kotlin.jvm")
+  alias(libs.plugins.kotlin)
   id("maven-publish")
   id("signing")
 }
@@ -67,17 +67,16 @@ signing {
 dependencies {
   // despite the fact those are used only at compile time they cannot be compileOnly,
   // otherwise access to java class won't be feasible
-  implementation("com.google.dagger:dagger:2.46.1")
-  implementation("com.google.dagger:hilt-core:2.46.1")
+  implementation(libs.dagger)
+  implementation(libs.hilt.core)
 
   implementation(project(":annotations"))
 
-  implementation("com.google.devtools.ksp:symbol-processing-api:1.8.21-1.0.11")
-  implementation("com.squareup:kotlinpoet:1.13.2")
-  implementation("com.squareup:kotlinpoet-ksp:1.13.2")
+  implementation(libs.ksp)
+  implementation(libs.bundles.kotlinpoet)
 
-  testImplementation("org.junit.jupiter:junit-jupiter:5.9.2")
-  testImplementation("com.github.tschuchortdev:kotlin-compile-testing-ksp:1.5.0")
+  testImplementation(libs.junit.jupiter)
+  testImplementation(libs.ksp.testing)
 }
 
 tasks.named<Test>("test") {

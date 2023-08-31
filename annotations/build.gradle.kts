@@ -65,5 +65,5 @@ signing {
 }
 
 dependencies {
-  compileOnly("com.google.dagger:hilt-core:2.46.1")
+  compileOnly("com.google.dagger:hilt-core:2.48")
 }

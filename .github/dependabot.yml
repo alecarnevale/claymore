@@ -12,7 +12,5 @@ updates:
     groups:
       kotlin:
         patterns:
-          - "org.jetbrains.kotlin.jvm*"
-          - "org.jetbrains.kotlin.android*"
-          - "org.jetbrains.kotlin.kapt*"
-          - "com.google.devtools.ksp*"
+          - "kotlin"
+          - "ksp"

@@ -4,6 +4,7 @@ plugins {
   alias(libs.plugins.kapt)
   alias(libs.plugins.hilt)
   alias(libs.plugins.ksp)
+  id("claymore-dependency")
 }
 
 android {
@@ -66,12 +67,4 @@ dependencies {
   testImplementation(libs.robolectric)
   testImplementation(libs.compose.ui.test.junit4)
   debugImplementation(libs.compose.ui.test.manifest)
-
-  // claymore library dependency added from maven central (not local)
-  compileOnly("io.github.alecarnevale:claymore-annotations:1.3.2")
-  ksp("io.github.alecarnevale:claymore-processors:1.3.2")
-
-  // only for developing phase, remember comment previous
-  // compileOnly(project(":annotations"))
-  // ksp(project(":processors"))
 }

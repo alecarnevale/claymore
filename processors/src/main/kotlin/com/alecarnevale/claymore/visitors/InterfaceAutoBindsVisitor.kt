@@ -33,7 +33,7 @@ internal class InterfaceAutoBindsVisitor(
       logger.error("$TAG implementation class must be provided")
       return
     }
-    val componentKsType = interfaceAutobindsAnnotation?.arguments?.firstOrNull { it.name?.getShortName() == InterfaceAutoBinds::component.name }?.value as? KSType
+    val componentKsType = interfaceAutobindsAnnotation.arguments.firstOrNull { it.name?.getShortName() == InterfaceAutoBinds::component.name }?.value as? KSType
     if (componentKsType == null) {
       logger.error("$TAG component class not found")
       return

@@ -1,0 +1,24 @@
+name: Pipeline with remote dependencies
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+      - name: Run build with Gradle Wrapper
+        run: ./gradlew :processors:build
+      - name: Run demo test with Gradle Wrapper
+        run: ./gradlew :demo:app:testDebugUnitTest -PfetchRemoteDependency

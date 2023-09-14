@@ -20,8 +20,6 @@ internal class AutoBindsProcessor(
   private val validator = AutoBindsValidator(logger)
 
   override fun process(resolver: Resolver): List<KSAnnotated> {
-    // TODO this log is temporary, just to prove everything work
-    logger.warn("Your are using unreleased version")
     val visitor = AutoBindsVisitor(codeGenerator, resolver, logger)
 
     val annotationName = AutoBinds::class.qualifiedName ?: return emptyList()

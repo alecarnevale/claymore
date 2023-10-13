@@ -60,7 +60,7 @@ dependencies {
   debugImplementation(libs.compose.ui.tooling)
 
   implementation(libs.hilt.android)
-  kapt(libs.hilt.compiler)
+  ksp(libs.hilt.compiler)
 
   testImplementation(libs.junit)
   testImplementation(libs.robolectric)

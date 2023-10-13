@@ -38,8 +38,7 @@ android {
     compose = true
   }
   composeOptions {
-    // TODO find a way to move into libs.versions.toml
-    kotlinCompilerExtensionVersion = "1.4.7"
+    kotlinCompilerExtensionVersion = libs.versions.compose.compiler.get()
   }
   testOptions {
     unitTests {
@@ -61,7 +60,7 @@ dependencies {
   debugImplementation(libs.compose.ui.tooling)
 
   implementation(libs.hilt.android)
-  kapt(libs.hilt.compiler)
+  ksp(libs.hilt.compiler)
 
   testImplementation(libs.junit)
   testImplementation(libs.robolectric)

@@ -10,5 +10,5 @@ dependencies {
   compileOnly(libs.javax.inject)
 
   implementation(libs.hilt.core)
-  kapt(libs.hilt.compiler)
+  ksp(libs.hilt.compiler)
 }

@@ -7,20 +7,21 @@ import com.google.devtools.ksp.processing.KSPLogger
 import com.google.devtools.ksp.processing.Resolver
 import com.google.devtools.ksp.symbol.ClassKind
 import com.google.devtools.ksp.symbol.KSClassDeclaration
-import com.google.devtools.ksp.symbol.KSType
-import com.google.devtools.ksp.symbol.KSVisitorVoid
 import com.google.devtools.ksp.symbol.Modifier
 import com.squareup.kotlinpoet.ksp.writeTo
+import kotlin.reflect.KClass
 
 /**
  * This visitor check if the class implements exactly an interface.
  * If true it generates the necessary hilt module to bind that class as the actual implementation.
  */
 internal class AutoBindsVisitor(
-  private val codeGenerator: CodeGenerator,
-  private val resolver: Resolver,
-  private val logger: KSPLogger
-) : KSVisitorVoid() {
+  override val codeGenerator: CodeGenerator,
+  override val resolver: Resolver,
+  override val logger: KSPLogger
+) : Visitor() {
+
+  override val kclass: KClass<*> = AutoBinds::class
 
   override fun visitClassDeclaration(classDeclaration: KSClassDeclaration, data: Unit) {
     logger.info("$TAG visitClassDeclaration of $classDeclaration")
@@ -51,28 +52,9 @@ internal class AutoBindsVisitor(
       return
     }
 
-    // extract the KSType of the component argument
-    val autobindsAnnotation = classDeclaration.annotations.firstOrNull { it.shortName.getShortName() == AutoBinds::class.simpleName }
-    val componentKsType = autobindsAnnotation?.arguments?.firstOrNull { it.name?.getShortName() == AutoBinds::component.name }?.value as? KSType
-    if (componentKsType == null) {
-      logger.error("$TAG component class not found")
-      return
-    }
-    logger.info("$TAG component argument provided is $componentKsType")
-
-    // extract the KSName of the component argument
-    val componentQualifiedName = componentKsType.declaration.qualifiedName
-    if (componentQualifiedName == null) {
-      logger.error("$TAG qualified name is null")
-      return
-    }
-
-    // extract the KSClassDeclaration of the component argument
-    val componentProvided = resolver.getClassDeclarationByName(componentQualifiedName)
-    if (componentProvided == null) {
-      logger.error("$TAG implementation class not found")
-      return
-    }
+    // extract the KSClassDeclaration of the arguments
+    val componentProvided = classDeclaration.extractParameter(AutoBinds::component.name) ?: return
+    val intoSet = classDeclaration.extractBooleanParameter(AutoBinds::intoSet.name) ?: return
 
     // define the sources file that generated the module
     val implementationSourceFile = classDeclaration.containingFile
@@ -88,7 +70,8 @@ internal class AutoBindsVisitor(
     val writer = ModuleWriter(
       interfaceDeclaration = interfaceDeclaration,
       implementationDeclaration = classDeclaration,
-      componentDeclaration = componentProvided
+      componentDeclaration = componentProvided,
+      intoSet = intoSet,
     )
     writer.write().writeTo(
       codeGenerator = codeGenerator,

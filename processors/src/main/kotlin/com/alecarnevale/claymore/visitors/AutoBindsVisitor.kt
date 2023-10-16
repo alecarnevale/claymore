@@ -51,28 +51,8 @@ internal class AutoBindsVisitor(
       return
     }
 
-    // extract the KSType of the component argument
-    val autobindsAnnotation = classDeclaration.annotations.firstOrNull { it.shortName.getShortName() == AutoBinds::class.simpleName }
-    val componentKsType = autobindsAnnotation?.arguments?.firstOrNull { it.name?.getShortName() == AutoBinds::component.name }?.value as? KSType
-    if (componentKsType == null) {
-      logger.error("$TAG component class not found")
-      return
-    }
-    logger.info("$TAG component argument provided is $componentKsType")
-
-    // extract the KSName of the component argument
-    val componentQualifiedName = componentKsType.declaration.qualifiedName
-    if (componentQualifiedName == null) {
-      logger.error("$TAG qualified name is null")
-      return
-    }
-
-    // extract the KSClassDeclaration of the component argument
-    val componentProvided = resolver.getClassDeclarationByName(componentQualifiedName)
-    if (componentProvided == null) {
-      logger.error("$TAG implementation class not found")
-      return
-    }
+    // extract the KSClassDeclaration of the arguments
+    val componentProvided = classDeclaration.extractParameter(AutoBinds::component.name) ?: return
 
     // define the sources file that generated the module
     val implementationSourceFile = classDeclaration.containingFile
@@ -98,6 +78,34 @@ internal class AutoBindsVisitor(
   }
 
   private fun KSClassDeclaration.isNotValidSupertype(): Boolean = !isValidSupertype()
+
+  private fun KSClassDeclaration.extractParameter(parameterName: String): KSClassDeclaration? {
+    // extract the KSType
+    val autobindsAnnotation =
+      annotations.firstOrNull { it.shortName.getShortName() == AutoBinds::class.simpleName }
+    val parameterKsType =
+      autobindsAnnotation?.arguments?.firstOrNull { it.name?.getShortName() == parameterName }?.value as? KSType
+    if (parameterKsType == null) {
+      logger.error("$TAG parameter class not found for $parameterName")
+      return null
+    }
+
+    // extract the KSName
+    val parameterQualifiedName = parameterKsType.declaration.qualifiedName
+    if (parameterQualifiedName == null) {
+      logger.error("$TAG qualified name is null for $parameterName")
+      return null
+    }
+
+    // extract the KSClassDeclaration
+    val parameterDeclaration = resolver.getClassDeclarationByName(parameterQualifiedName)
+    if (parameterDeclaration == null) {
+      logger.error("$TAG implementation class not found for $parameterName")
+      return null
+    }
+
+    return parameterDeclaration
+  }
 
   private fun KSClassDeclaration.isValidSupertype(): Boolean {
     if (classKind == ClassKind.INTERFACE) {

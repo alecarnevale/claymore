@@ -24,48 +24,14 @@ internal class InterfaceAutoBindsVisitor(
   override fun visitClassDeclaration(classDeclaration: KSClassDeclaration, data: Unit) {
     logger.info("$TAG visitClassDeclaration of $classDeclaration")
 
-    // extract the KSType of arguments
-    val interfaceAutobindsAnnotation = classDeclaration.annotations.firstOrNull { it.shortName.getShortName() == InterfaceAutoBinds::class.simpleName }
+    // extract the KSClassDeclaration of the arguments
+    val implementationProvided =
+      classDeclaration.extractParameter(InterfaceAutoBinds::implementation.name) ?: return
+    val componentProvided =
+      classDeclaration.extractParameter(InterfaceAutoBinds::component.name) ?: return
 
-    // extract arguments of the annotation
-    val implementationKsType = interfaceAutobindsAnnotation?.arguments?.firstOrNull { it.name?.getShortName() == InterfaceAutoBinds::implementation.name }?.value as? KSType
-    if (implementationKsType == null) {
-      logger.error("$TAG implementation class must be provided")
-      return
-    }
-    val componentKsType = interfaceAutobindsAnnotation.arguments.firstOrNull { it.name?.getShortName() == InterfaceAutoBinds::component.name }?.value as? KSType
-    if (componentKsType == null) {
-      logger.error("$TAG component class not found")
-      return
-    }
-    logger.info("$TAG implementation argument provided is $implementationKsType")
-    logger.info("$TAG component argument provided is $componentKsType")
-
-    // extract the KSName of arguments
-    val implementationQualifiedName = implementationKsType.declaration.qualifiedName
-    if (implementationQualifiedName == null) {
-      logger.error("$TAG qualified name is null")
-      return
-    }
-    val componentQualifiedName = componentKsType.declaration.qualifiedName
-    if (componentQualifiedName == null) {
-      logger.error("$TAG qualified name is null")
-      return
-    }
-
-    // extract the KSClassDeclaration of arguments
-    val implementationProvided = resolver.getClassDeclarationByName(implementationQualifiedName)
-    if (implementationProvided == null) {
-      logger.error("$TAG implementation class not found")
-      return
-    }
     if (implementationProvided.modifiers.contains(Modifier.ABSTRACT)) {
       logger.error("$TAG implementation class must not be abstract")
-      return
-    }
-    val componentProvided = resolver.getClassDeclarationByName(componentQualifiedName)
-    if (componentProvided == null) {
-      logger.error("$TAG component class not found")
       return
     }
 
@@ -97,6 +63,34 @@ internal class InterfaceAutoBindsVisitor(
       aggregating = false,
       originatingKSFiles = dependencies
     )
+  }
+
+  private fun KSClassDeclaration.extractParameter(parameterName: String): KSClassDeclaration? {
+    // extract the KSType
+    val autobindsAnnotation =
+      annotations.firstOrNull { it.shortName.getShortName() == InterfaceAutoBinds::class.simpleName }
+    val parameterKsType =
+      autobindsAnnotation?.arguments?.firstOrNull { it.name?.getShortName() == parameterName }?.value as? KSType
+    if (parameterKsType == null) {
+      logger.error("$TAG parameter class not found for $parameterName")
+      return null
+    }
+
+    // extract the KSName
+    val parameterQualifiedName = parameterKsType.declaration.qualifiedName
+    if (parameterQualifiedName == null) {
+      logger.error("$TAG qualified name is null for $parameterName")
+      return null
+    }
+
+    // extract the KSClassDeclaration
+    val parameterDeclaration = resolver.getClassDeclarationByName(parameterQualifiedName)
+    if (parameterDeclaration == null) {
+      logger.error("$TAG implementation class not found for $parameterName")
+      return null
+    }
+
+    return parameterDeclaration
   }
 }
 

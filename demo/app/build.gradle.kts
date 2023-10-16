@@ -49,6 +49,7 @@ android {
 
 dependencies {
   implementation(project(":demo:impl"))
+  implementation(project(":demo:multibindings"))
 
   implementation(libs.androidx.appcompat)
 

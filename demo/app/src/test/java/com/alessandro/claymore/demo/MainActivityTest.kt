@@ -31,4 +31,15 @@ class MainActivityTest {
       }
     }
   }
+
+  @Test
+  fun `Multibindings annotation provided`() {
+    ActivityScenario.launch(MainActivity::class.java).use { scenario ->
+      scenario.onActivity {
+        composeTestRule.onNodeWithText("This is BazImpl, provided by: BazProviderImpl1").assertIsDisplayed()
+        composeTestRule.onNodeWithText("This is BazImpl, provided by: BazProviderImpl2").assertIsDisplayed()
+        composeTestRule.onNodeWithText("This is BazImpl, provided by: BazProviderImpl3").assertIsDisplayed()
+      }
+    }
+  }
 }

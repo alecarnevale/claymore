@@ -8,7 +8,6 @@ import com.google.devtools.ksp.processing.Resolver
 import com.google.devtools.ksp.symbol.ClassKind
 import com.google.devtools.ksp.symbol.KSClassDeclaration
 import com.google.devtools.ksp.symbol.KSType
-import com.google.devtools.ksp.symbol.KSVisitorVoid
 import com.google.devtools.ksp.symbol.Modifier
 import com.squareup.kotlinpoet.ksp.writeTo
 
@@ -17,10 +16,10 @@ import com.squareup.kotlinpoet.ksp.writeTo
  * If true it generates the necessary hilt module to bind that class as the actual implementation.
  */
 internal class AutoBindsVisitor(
-  private val codeGenerator: CodeGenerator,
-  private val resolver: Resolver,
-  private val logger: KSPLogger
-) : KSVisitorVoid() {
+  override val codeGenerator: CodeGenerator,
+  override val resolver: Resolver,
+  override val logger: KSPLogger
+) : Visitor() {
 
   override fun visitClassDeclaration(classDeclaration: KSClassDeclaration, data: Unit) {
     logger.info("$TAG visitClassDeclaration of $classDeclaration")

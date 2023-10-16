@@ -7,9 +7,9 @@ import com.google.devtools.ksp.processing.KSPLogger
 import com.google.devtools.ksp.processing.Resolver
 import com.google.devtools.ksp.symbol.ClassKind
 import com.google.devtools.ksp.symbol.KSClassDeclaration
-import com.google.devtools.ksp.symbol.KSType
 import com.google.devtools.ksp.symbol.Modifier
 import com.squareup.kotlinpoet.ksp.writeTo
+import kotlin.reflect.KClass
 
 /**
  * This visitor check if the class implements exactly an interface.
@@ -20,6 +20,8 @@ internal class AutoBindsVisitor(
   override val resolver: Resolver,
   override val logger: KSPLogger
 ) : Visitor() {
+
+  override val kclass: KClass<*> = AutoBinds::class
 
   override fun visitClassDeclaration(classDeclaration: KSClassDeclaration, data: Unit) {
     logger.info("$TAG visitClassDeclaration of $classDeclaration")
@@ -77,34 +79,6 @@ internal class AutoBindsVisitor(
   }
 
   private fun KSClassDeclaration.isNotValidSupertype(): Boolean = !isValidSupertype()
-
-  private fun KSClassDeclaration.extractParameter(parameterName: String): KSClassDeclaration? {
-    // extract the KSType
-    val autobindsAnnotation =
-      annotations.firstOrNull { it.shortName.getShortName() == AutoBinds::class.simpleName }
-    val parameterKsType =
-      autobindsAnnotation?.arguments?.firstOrNull { it.name?.getShortName() == parameterName }?.value as? KSType
-    if (parameterKsType == null) {
-      logger.error("$TAG parameter class not found for $parameterName")
-      return null
-    }
-
-    // extract the KSName
-    val parameterQualifiedName = parameterKsType.declaration.qualifiedName
-    if (parameterQualifiedName == null) {
-      logger.error("$TAG qualified name is null for $parameterName")
-      return null
-    }
-
-    // extract the KSClassDeclaration
-    val parameterDeclaration = resolver.getClassDeclarationByName(parameterQualifiedName)
-    if (parameterDeclaration == null) {
-      logger.error("$TAG implementation class not found for $parameterName")
-      return null
-    }
-
-    return parameterDeclaration
-  }
 
   private fun KSClassDeclaration.isValidSupertype(): Boolean {
     if (classKind == ClassKind.INTERFACE) {

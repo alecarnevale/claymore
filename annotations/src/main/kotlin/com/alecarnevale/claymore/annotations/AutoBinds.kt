@@ -10,5 +10,6 @@ import kotlin.reflect.KClass
 @Target(AnnotationTarget.CLASS)
 @Retention(AnnotationRetention.SOURCE)
 annotation class AutoBinds(
-  val component: KClass<*> = SingletonComponent::class
+  val component: KClass<*> = SingletonComponent::class,
+  val intoSet: Boolean = false,
 )

@@ -14,7 +14,8 @@ import com.squareup.kotlinpoet.ksp.toClassName
 internal class ModuleWriter(
   private val interfaceDeclaration: KSClassDeclaration,
   private val implementationDeclaration: KSClassDeclaration,
-  private val componentDeclaration: KSClassDeclaration
+  private val componentDeclaration: KSClassDeclaration,
+  private val intoSet: Boolean,
 ) {
 
   fun write(): FileSpec {
@@ -35,6 +36,11 @@ internal class ModuleWriter(
         .addFunction(
           FunSpec.builder(functionName)
             .addAnnotation(bindsAnnotation)
+            .apply {
+              if (intoSet) {
+                addAnnotation(intoSetAnnotation)
+              }
+            }
             .addModifiers(KModifier.ABSTRACT)
             .addParameter("impl", implementationDeclaration.toClassName())
             .returns(interfaceDeclaration.toClassName())

@@ -12,5 +12,6 @@ import kotlin.reflect.KClass
 @Retention(AnnotationRetention.SOURCE)
 annotation class InterfaceAutoBinds(
   val implementation: KClass<*>,
-  val component: KClass<*> = SingletonComponent::class
+  val component: KClass<*> = SingletonComponent::class,
+  val intoSet: Boolean = false,
 )

@@ -30,6 +30,8 @@ internal class InterfaceAutoBindsVisitor(
       classDeclaration.extractParameter(InterfaceAutoBinds::implementation.name) ?: return
     val componentProvided =
       classDeclaration.extractParameter(InterfaceAutoBinds::component.name) ?: return
+    val intoSet =
+      classDeclaration.extractBooleanParameter(InterfaceAutoBinds::intoSet.name) ?: return
 
     if (implementationProvided.modifiers.contains(Modifier.ABSTRACT)) {
       logger.error("$TAG implementation class must not be abstract")
@@ -57,7 +59,8 @@ internal class InterfaceAutoBindsVisitor(
     val writer = ModuleWriter(
       interfaceDeclaration = classDeclaration,
       implementationDeclaration = implementationProvided,
-      componentDeclaration = componentProvided
+      componentDeclaration = componentProvided,
+      intoSet = intoSet
     )
     writer.write().writeTo(
       codeGenerator = codeGenerator,

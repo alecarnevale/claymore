@@ -7,13 +7,19 @@ import com.squareup.kotlinpoet.MemberName
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
+import dagger.multibindings.IntoSet
 
 private val module = Module::class.java.toClassName()
 private val installIn = InstallIn::class.java.toClassName()
 private val binds = Binds::class.java.toClassName()
+private val intoSet = IntoSet::class.java.toClassName()
 
 internal val moduleAnnotation = AnnotationSpec
   .builder(module)
+  .build()
+
+internal val intoSetAnnotation = AnnotationSpec
+  .builder(intoSet)
   .build()
 
 internal fun installInAnnotation(component: KSClassDeclaration) = AnnotationSpec

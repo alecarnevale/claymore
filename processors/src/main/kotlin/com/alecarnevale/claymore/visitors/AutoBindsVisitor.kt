@@ -54,6 +54,7 @@ internal class AutoBindsVisitor(
 
     // extract the KSClassDeclaration of the arguments
     val componentProvided = classDeclaration.extractParameter(AutoBinds::component.name) ?: return
+    val intoSet = classDeclaration.extractBooleanParameter(AutoBinds::intoSet.name) ?: return
 
     // define the sources file that generated the module
     val implementationSourceFile = classDeclaration.containingFile
@@ -69,7 +70,8 @@ internal class AutoBindsVisitor(
     val writer = ModuleWriter(
       interfaceDeclaration = interfaceDeclaration,
       implementationDeclaration = classDeclaration,
-      componentDeclaration = componentProvided
+      componentDeclaration = componentProvided,
+      intoSet = intoSet,
     )
     writer.write().writeTo(
       codeGenerator = codeGenerator,

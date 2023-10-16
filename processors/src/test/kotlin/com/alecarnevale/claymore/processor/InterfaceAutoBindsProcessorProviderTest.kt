@@ -311,6 +311,182 @@ class InterfaceAutoBindsProcessorProviderTest {
     )
   }
 
+  @Test
+  fun `GIVEN an interface Foo and a class Bar that implements Foo, WHEN @InterfaceAutoBinds is applied to Foo with Bar as implementation argument and with intoSet as false, THEN hilt module is generated without IntoSet annotation`() {
+    val src = SourceFile.kotlin(
+      "Foo.kt",
+      """
+      package com.example
+
+      import com.alecarnevale.claymore.annotations.InterfaceAutoBinds
+      import dagger.hilt.components.SingletonComponent
+      
+      @InterfaceAutoBinds(implementation = Bar::class, intoSet = false)
+      interface Foo
+
+      class Bar: Foo
+      """,
+    )
+
+    val result = compileSourceFiles(src)
+
+    assertEquals(KotlinCompilation.ExitCode.OK, result.result.exitCode)
+
+    result.assertGeneratedSources("com/example/BarModule.kt")
+    result.assertGeneratedContent(
+      "com/example/BarModule.kt",
+      """
+      package com.example
+      
+      import dagger.Binds
+      import dagger.Module
+      import dagger.hilt.InstallIn
+      import dagger.hilt.components.SingletonComponent
+      
+      @Module
+      @InstallIn(SingletonComponent::class)
+      internal interface BarModule {
+        @Binds
+        public fun foo(`impl`: Bar): Foo
+      }
+
+      """,
+    )
+  }
+
+  @Test
+  fun `GIVEN an abstract class Foo and a class Bar that implements Foo, WHEN @InterfaceAutoBinds is applied to Foo with Bar as implementation argument and with intoSet as false, THEN hilt module is generated without IntoSet annotation`() {
+    val src = SourceFile.kotlin(
+      "Foo.kt",
+      """
+      package com.example
+
+      import com.alecarnevale.claymore.annotations.InterfaceAutoBinds
+      import dagger.hilt.components.SingletonComponent
+      
+      @InterfaceAutoBinds(implementation = Bar::class, intoSet = false)
+      abstract class Foo
+
+      class Bar: Foo
+      """,
+    )
+
+    val result = compileSourceFiles(src)
+
+    assertEquals(KotlinCompilation.ExitCode.OK, result.result.exitCode)
+
+    result.assertGeneratedSources("com/example/BarModule.kt")
+    result.assertGeneratedContent(
+      "com/example/BarModule.kt",
+      """
+      package com.example
+      
+      import dagger.Binds
+      import dagger.Module
+      import dagger.hilt.InstallIn
+      import dagger.hilt.components.SingletonComponent
+      
+      @Module
+      @InstallIn(SingletonComponent::class)
+      internal interface BarModule {
+        @Binds
+        public fun foo(`impl`: Bar): Foo
+      }
+
+      """,
+    )
+  }
+
+  @Test
+  fun `GIVEN an interface Foo and a class Bar that implements Foo, WHEN @InterfaceAutoBinds is applied to Foo with Bar as implementation argument and with intoSet as true, THEN hilt module is generated with IntoSet annotation`() {
+    val src = SourceFile.kotlin(
+      "Foo.kt",
+      """
+      package com.example
+
+      import com.alecarnevale.claymore.annotations.InterfaceAutoBinds
+      import dagger.hilt.components.SingletonComponent
+      
+      @InterfaceAutoBinds(implementation = Bar::class, intoSet = true)
+      interface Foo
+
+      class Bar: Foo
+      """,
+    )
+
+    val result = compileSourceFiles(src)
+
+    assertEquals(KotlinCompilation.ExitCode.OK, result.result.exitCode)
+
+    result.assertGeneratedSources("com/example/BarModule.kt")
+    result.assertGeneratedContent(
+      "com/example/BarModule.kt",
+      """
+      package com.example
+      
+      import dagger.Binds
+      import dagger.Module
+      import dagger.hilt.InstallIn
+      import dagger.hilt.components.SingletonComponent
+      import dagger.multibindings.IntoSet
+      
+      @Module
+      @InstallIn(SingletonComponent::class)
+      internal interface BarModule {
+        @Binds
+        @IntoSet
+        public fun foo(`impl`: Bar): Foo
+      }
+
+      """,
+    )
+  }
+
+  @Test
+  fun `GIVEN an abstract class Foo and a class Bar that implements Foo, WHEN @InterfaceAutoBinds is applied to Foo with Bar as implementation argument and with intoSet as true, THEN hilt module is generated with IntoSet annotation`() {
+    val src = SourceFile.kotlin(
+      "Foo.kt",
+      """
+      package com.example
+
+      import com.alecarnevale.claymore.annotations.InterfaceAutoBinds
+      import dagger.hilt.components.SingletonComponent
+      
+      @InterfaceAutoBinds(implementation = Bar::class, intoSet = true)
+      abstract class Foo
+
+      class Bar: Foo
+      """,
+    )
+
+    val result = compileSourceFiles(src)
+
+    assertEquals(KotlinCompilation.ExitCode.OK, result.result.exitCode)
+
+    result.assertGeneratedSources("com/example/BarModule.kt")
+    result.assertGeneratedContent(
+      "com/example/BarModule.kt",
+      """
+      package com.example
+      
+      import dagger.Binds
+      import dagger.Module
+      import dagger.hilt.InstallIn
+      import dagger.hilt.components.SingletonComponent
+      import dagger.multibindings.IntoSet
+      
+      @Module
+      @InstallIn(SingletonComponent::class)
+      internal interface BarModule {
+        @Binds
+        @IntoSet
+        public fun foo(`impl`: Bar): Foo
+      }
+
+      """,
+    )
+  }
+
   private fun compileSourceFiles(vararg sourceFiles: SourceFile): KspCompilationResult {
     val kotlinCompilation = KotlinCompilation().apply {
       sources = sourceFiles.toList()

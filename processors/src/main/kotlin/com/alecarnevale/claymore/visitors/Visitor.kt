@@ -43,4 +43,17 @@ abstract class Visitor : KSVisitorVoid() {
 
     return parameterDeclaration
   }
+
+  protected fun KSClassDeclaration.extractBooleanParameter(parameterName: String): Boolean? {
+    // extract the KSType
+    val annotation = annotations.firstOrNull { it.shortName.getShortName() == kclass.simpleName }
+    val parameterValue =
+      annotation?.arguments?.firstOrNull { it.name?.getShortName() == parameterName }?.value as? Boolean
+    if (parameterValue == null) {
+      logger.error("$tag parameter value not found for $parameterName")
+      return null
+    }
+
+    return parameterValue
+  }
 }

@@ -18,7 +18,7 @@ android {
     versionCode = 1
     versionName = "1.0"
 
-    testInstrumentationRunner = "android.support.test.runner.AndroidJUnitRunner"
+    testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
   }
 
   buildTypes {
@@ -44,6 +44,18 @@ android {
     unitTests {
       isIncludeAndroidResources = true
     }
+    managedDevices {
+      devices {
+        maybeCreate<com.android.build.api.dsl.ManagedVirtualDevice>("nexusOneApi30").apply {
+          // Use device profiles you typically see in Android Studio.
+          device = "Nexus One"
+          // Use only API levels 27 and higher.
+          apiLevel = 30
+          // To include Google services, use "google".
+          systemImageSource = "aosp-atd"
+        }
+      }
+    }
   }
 }
 
@@ -67,4 +79,7 @@ dependencies {
   testImplementation(libs.robolectric)
   testImplementation(libs.compose.ui.test.junit4)
   debugImplementation(libs.compose.ui.test.manifest)
+
+  androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+  androidTestImplementation("androidx.test.ext:junit:1.1.5")
 }

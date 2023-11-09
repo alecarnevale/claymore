@@ -8,6 +8,6 @@ class MainActivity {
   @Test
   fun testPackageName() {
     val appContext = InstrumentationRegistry.getInstrumentation().targetContext
-    assertEquals("com.alessandro.claymore.demo", appContext.packageName)
+    assertEquals("wrong.package.name", appContext.packageName)
   }
 }

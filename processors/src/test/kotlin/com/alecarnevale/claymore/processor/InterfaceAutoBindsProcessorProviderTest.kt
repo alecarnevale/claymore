@@ -191,9 +191,13 @@ class InterfaceAutoBindsProcessorProviderTest {
       import dagger.hilt.components.SingletonComponent
       
       @InterfaceAutoBinds(implementation = Bar::class, component = SingletonComponent::class)
-      interface Foo
+      interface Foo {
+        fun unresolvedSymbolMustNotBotherUs(unresolved: Unresolved)
+      }
 
-      class Bar: Foo
+      class Bar: Foo {
+        override fun unresolvedSymbolMustNotBotherUs(unresolved: Unresolved) {}
+      }
       """,
     )
 

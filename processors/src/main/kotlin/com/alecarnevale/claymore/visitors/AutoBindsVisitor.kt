@@ -26,27 +26,9 @@ internal class AutoBindsVisitor(
   override fun visitClassDeclaration(classDeclaration: KSClassDeclaration, data: Unit) {
     logger.info("$TAG visitClassDeclaration of $classDeclaration")
 
-    // check that the class implements an interface only
-    val superTypes = classDeclaration.superTypes
-    val superType = when (superTypes.count()) {
-      0 -> {
-        logger.error("$TAG $classDeclaration musts implement an interface.")
-        return
-      }
-
-      1 -> {
-        superTypes.single()
-      }
-
-      else -> {
-        logger.error("$TAG $classDeclaration musts implement at most one interface.")
-        return
-      }
-    }
-
     // get the KSClassDeclaration of the interface implemented
     val interfaceDeclaration =
-      superType.resolve().declaration.qualifiedName?.let { resolver.getClassDeclarationByName(it) }
+      classDeclaration.superTypes.single().resolve().declaration.qualifiedName?.let { resolver.getClassDeclarationByName(it) }
     if (interfaceDeclaration == null || interfaceDeclaration.isNotValidSupertype()) {
       logger.error("$TAG expecting $interfaceDeclaration as an interface or abstract class.")
       return

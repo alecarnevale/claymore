@@ -257,7 +257,9 @@ class AutoBindsProcessorProviderTest {
       @ExperimentalStdlibApi
       @AutoBinds(component = SingletonComponent::class)
       @OptIn
-      class Bar: Foo
+      class Bar: Foo {
+        fun unresolvedSymbolMustNotBotherUs(unresolved: Unresolved) {}
+      }
       """,
     )
 
@@ -377,6 +379,52 @@ class AutoBindsProcessorProviderTest {
 
       """,
     )
+  }
+
+  @Test
+  fun `GIVEN two interface Foo and Faz and a class Bar that implements both interfaces, WHEN @AutoBinds is applied to Bar, THEN compilation error and hilt module is not generated`() {
+    val src = SourceFile.kotlin(
+      "Foo.kt",
+      """
+      package com.example
+
+      import com.alecarnevale.claymore.annotations.AutoBinds
+      import dagger.hilt.components.SingletonComponent
+      
+      interface Foo
+      
+      interface Faz
+
+      @AutoBinds(component = SingletonComponent::class)
+      class Bar: Foo, Faz
+      """,
+    )
+
+    val result = compileSourceFiles(src)
+
+    assertEquals(KotlinCompilation.ExitCode.COMPILATION_ERROR, result.result.exitCode)
+    result.assertZeroGeneratedSources()
+  }
+
+  @Test
+  fun `GIVEN a class Bar that implements a unknown interface Foo, WHEN @AutoBinds is applied to Bar, THEN compilation error and hilt module is not generated`() {
+    val src = SourceFile.kotlin(
+      "Foo.kt",
+      """
+      package com.example
+
+      import com.alecarnevale.claymore.annotations.AutoBinds
+      import dagger.hilt.components.SingletonComponent
+
+      @AutoBinds(component = SingletonComponent::class)
+      class Bar: Foo
+      """,
+    )
+
+    val result = compileSourceFiles(src)
+
+    assertEquals(KotlinCompilation.ExitCode.COMPILATION_ERROR, result.result.exitCode)
+    result.assertZeroGeneratedSources()
   }
 
   private fun compileSourceFiles(vararg sourceFiles: SourceFile): KspCompilationResult {

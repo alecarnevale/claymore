@@ -6,14 +6,13 @@ import com.google.devtools.ksp.symbol.ClassKind
 import com.google.devtools.ksp.symbol.KSAnnotated
 import com.google.devtools.ksp.symbol.KSClassDeclaration
 import com.google.devtools.ksp.symbol.Modifier
-import com.google.devtools.ksp.validate
 
 /**
  * This validator check if annotated symbols is an interface.
  */
 internal class InterfaceAutoBindsValidator(private val logger: KSPLogger) {
   fun isValid(symbol: KSAnnotated): Boolean {
-    return symbol.validate() && symbol.isAnInterface()
+    return symbol.isAnInterface()
   }
 
   private fun KSAnnotated.isAnInterface(): Boolean {

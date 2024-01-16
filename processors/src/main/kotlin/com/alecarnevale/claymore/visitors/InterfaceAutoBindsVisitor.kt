@@ -55,7 +55,7 @@ internal class InterfaceAutoBindsVisitor(
     // it doesn't need to be specified as dependency (originatingKSFiles)
     val dependencies = listOf(interfaceSourceFile)
 
-    // this is and isolating output, since no new change on other files will affect this
+    // this is an isolating output, since no new change on others files will affect this
     val writer = ModuleWriter(
       interfaceDeclaration = classDeclaration,
       implementationDeclaration = implementationProvided,

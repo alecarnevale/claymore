@@ -1,2 +1,3 @@
 com.alecarnevale.claymore.providers.InterfaceAutoBindsProcessorProvider
 com.alecarnevale.claymore.providers.AutoBindsProcessorProvider
+com.alecarnevale.claymore.providers.AutoUninstallProcessorProvider

@@ -9,12 +9,14 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.alessandro.claymore.demo.autouninstall.AutoUninstallActivity
 import com.alessandro.claymore.demo.modelproviders.BarProvider
 import com.alessandro.claymore.demo.modelproviders.BazProvider
 import com.alessandro.claymore.demo.modelproviders.FooProvider
@@ -45,9 +47,14 @@ class MainActivity : AppCompatActivity() {
       Content(
         fooString = foo.get(),
         barString = bar.get(),
-        bazStrings = bazs.map { it.get() }
+        bazStrings = bazs.map { it.get() },
+        onClickButton = ::launchAutoUninstallActivity
       )
     }
+  }
+
+  private fun launchAutoUninstallActivity() {
+    startActivity(AutoUninstallActivity.intent(this))
   }
 }
 
@@ -56,6 +63,7 @@ private fun Content(
   fooString: String,
   barString: String,
   bazStrings: List<String>,
+  onClickButton: () -> Unit
 ) {
   Column(
     modifier = Modifier
@@ -72,6 +80,10 @@ private fun Content(
         Text(text = bazStrings[it])
       }
     }
+    Spacer(modifier = Modifier.height(50.dp))
+    Button(onClick = { onClickButton() }) {
+      Text(text = "AutoUninstall")
+    }
   }
 }
 
@@ -81,6 +93,7 @@ private fun Preview() {
   Content(
     fooString = "Foo string",
     barString = "Bar string",
-    bazStrings = listOf("Baz one", "Baz two", "Baz three")
+    bazStrings = listOf("Baz one", "Baz two", "Baz three"),
+    onClickButton = {}
   )
 }

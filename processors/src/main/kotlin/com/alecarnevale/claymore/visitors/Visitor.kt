@@ -44,6 +44,28 @@ abstract class Visitor : KSVisitorVoid() {
     return parameterDeclaration
   }
 
+  protected fun KSClassDeclaration.extractParameters(parameterName: String): List<KSClassDeclaration>? {
+    // extract all the KSTypes
+    val annotation = annotations.firstOrNull { it.shortName.getShortName() == kclass.simpleName }
+    @Suppress("UNCHECKED_CAST")
+    val parameterKsTypes =
+      annotation?.arguments?.firstOrNull { it.name?.getShortName() == parameterName }?.value as? List<KSType>
+    if (parameterKsTypes == null) {
+      logger.error("$tag parameter class not found for $parameterName")
+      return null
+    }
+
+    // resolve all the KSTypes
+    val implementationsProvided: List<KSClassDeclaration> =
+      parameterKsTypes.mapNotNull { parameterKsType ->
+        parameterKsType.declaration.qualifiedName?.let { parameterKsName ->
+          resolver.getClassDeclarationByName(parameterKsName)
+        }
+      }
+
+    return implementationsProvided
+  }
+
   protected fun KSClassDeclaration.extractBooleanParameter(parameterName: String): Boolean? {
     // extract the KSType
     val annotation = annotations.firstOrNull { it.shortName.getShortName() == kclass.simpleName }

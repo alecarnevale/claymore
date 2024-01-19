@@ -12,10 +12,14 @@ internal class ClaymoreDependencyPlugin: Plugin<Project> {
       project.logger.log(LogLevel.LIFECYCLE, "You are using remote claymore version")
       project.dependencies.add("compileOnly", project.libs("claymore.annotation"))
       project.dependencies.add("ksp", project.libs("claymore.processors"))
+      project.dependencies.add("testCompileOnly", project.libs("claymore.annotations"))
+      project.dependencies.add("kspTest", project.libs("claymore.processors"))
     } else {
       project.logger.log(LogLevel.LIFECYCLE, "You are using local claymore version")
       project.dependencies.add("compileOnly", project.project(":annotations"))
       project.dependencies.add("ksp", project.project(":processors"))
+      project.dependencies.add("testCompileOnly", project.project(":annotations"))
+      project.dependencies.add("kspTest", project.project(":processors"))
     }
   }
 

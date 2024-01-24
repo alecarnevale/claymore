@@ -18,10 +18,6 @@ internal val moduleAnnotation = AnnotationSpec
   .builder(module)
   .build()
 
-internal val intoSetAnnotation = AnnotationSpec
-  .builder(intoSet)
-  .build()
-
 internal fun installInAnnotation(component: KSClassDeclaration) = AnnotationSpec
   .builder(installIn)
   .addMember("%M::class", component.toMemberName())

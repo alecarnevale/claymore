@@ -36,7 +36,16 @@ internal class AutoBindsVisitor(
 
     // extract the KSClassDeclaration of the arguments
     val componentProvided = classDeclaration.extractParameter(AutoBinds::component.name) ?: return
-    val intoSet = classDeclaration.extractBooleanParameter(AutoBinds::intoSet.name) ?: return
+    val annotationsProvided = classDeclaration.extractParameters(AutoBinds::annotations.name) ?: return
+    // check that annotations provided are actual annotation
+    annotationsProvided.forEach { annotation ->
+      (annotation.classKind != ClassKind.ANNOTATION_CLASS).also { notAnnotation ->
+        if (notAnnotation) {
+          logger.error("$TAG $annotation is not a valid annotation")
+          return
+        }
+      }
+    }
 
     // define the sources file that generated the module
     val implementationSourceFile = classDeclaration.containingFile
@@ -53,7 +62,7 @@ internal class AutoBindsVisitor(
       interfaceDeclaration = interfaceDeclaration,
       implementationDeclaration = classDeclaration,
       componentDeclaration = componentProvided,
-      intoSet = intoSet,
+      annotationsDeclaration = annotationsProvided,
     )
     writer.write().writeTo(
       codeGenerator = codeGenerator,

@@ -47,6 +47,7 @@ abstract class Visitor : KSVisitorVoid() {
   protected fun KSClassDeclaration.extractParameters(parameterName: String): List<KSClassDeclaration>? {
     // extract all the KSTypes
     val annotation = annotations.firstOrNull { it.shortName.getShortName() == kclass.simpleName }
+
     @Suppress("UNCHECKED_CAST")
     val parameterKsTypes =
       annotation?.arguments?.firstOrNull { it.name?.getShortName() == parameterName }?.value as? List<KSType>
@@ -64,18 +65,5 @@ abstract class Visitor : KSVisitorVoid() {
       }
 
     return implementationsProvided
-  }
-
-  protected fun KSClassDeclaration.extractBooleanParameter(parameterName: String): Boolean? {
-    // extract the KSType
-    val annotation = annotations.firstOrNull { it.shortName.getShortName() == kclass.simpleName }
-    val parameterValue =
-      annotation?.arguments?.firstOrNull { it.name?.getShortName() == parameterName }?.value as? Boolean
-    if (parameterValue == null) {
-      logger.error("$tag parameter value not found for $parameterName")
-      return null
-    }
-
-    return parameterValue
   }
 }

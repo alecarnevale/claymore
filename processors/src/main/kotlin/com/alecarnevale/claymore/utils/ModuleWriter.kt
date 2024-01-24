@@ -10,12 +10,13 @@ import com.squareup.kotlinpoet.ksp.toClassName
 /**
  * Write a hilt module that binds [implementationDeclaration] for [interfaceDeclaration],
  * the binds is installed in [componentDeclaration].
+ * Attach each annotation provided in [annotationsDeclaration] to the generated function.
  */
 internal class ModuleWriter(
   private val interfaceDeclaration: KSClassDeclaration,
   private val implementationDeclaration: KSClassDeclaration,
   private val componentDeclaration: KSClassDeclaration,
-  private val intoSet: Boolean,
+  private val annotationsDeclaration: List<KSClassDeclaration>,
 ) {
 
   fun write(): FileSpec {
@@ -37,8 +38,8 @@ internal class ModuleWriter(
           FunSpec.builder(functionName)
             .addAnnotation(bindsAnnotation)
             .apply {
-              if (intoSet) {
-                addAnnotation(intoSetAnnotation)
+              annotationsDeclaration.forEach { annotation ->
+                addAnnotation(annotation.toClassName())
               }
             }
             .addModifiers(KModifier.ABSTRACT)

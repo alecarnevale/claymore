@@ -15,7 +15,7 @@ class MainActivityTest {
   val composeTestRule = createComposeRule()
 
   @Test
-  fun `InterfaceAutoBinds annotation provides FooImpl`() {
+  fun `AutoBinds annotation provides FooImpl`() {
     ActivityScenario.launch(MainActivity::class.java).use { scenario ->
       scenario.onActivity {
         composeTestRule.onNodeWithText("This is FooImpl, provided by: FooProviderImpl").assertIsDisplayed()

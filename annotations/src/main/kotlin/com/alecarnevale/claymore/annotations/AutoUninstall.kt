@@ -4,9 +4,9 @@ import dagger.hilt.components.SingletonComponent
 import kotlin.reflect.KClass
 
 /**
- * This annotation is used to uninstall module generated with [AutoBinds] and [InterfaceAutoBinds].
+ * This annotation is used to uninstall module generated with [AutoBinds].
  *
- * @param implementations classes for which [AutoBinds] or [InterfaceAutoBinds] has been applied,
+ * @param implementations classes for which [AutoBinds] has been applied,
  * and related module must be uninstalled. Implementation class expected.
  * @param components where install the new test module.
  */

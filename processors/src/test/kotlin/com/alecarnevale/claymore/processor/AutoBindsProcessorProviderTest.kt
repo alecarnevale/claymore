@@ -290,7 +290,7 @@ class AutoBindsProcessorProviderTest {
   }
 
   @Test
-  fun `GIVEN an interface Foo and a class Bar that implements Foo, WHEN @AutoBinds is applied to Bar with intoSet as false THEN hilt module is generated without IntoSet annotation`() {
+  fun `GIVEN an interface Foo and a class Bar that implements Foo, WHEN @AutoBinds is applied to Bar with a list of wrong annotations, THEN compilation error and hilt module is not generated`() {
     val src = SourceFile.kotlin(
       "Foo.kt",
       """
@@ -301,41 +301,21 @@ class AutoBindsProcessorProviderTest {
       
       interface Foo
 
-      @ExperimentalStdlibApi
-      @AutoBinds(intoSet = false)
-      @OptIn
+      object ThisIsNotAnnotation
+
+      @AutoBinds(component = SingletonComponent::class, annotations = [ThisIsNotAnnotation::class])
       class Bar: Foo
       """,
     )
 
     val result = compileSourceFiles(src)
 
-    assertEquals(KotlinCompilation.ExitCode.OK, result.result.exitCode)
-
-    result.assertGeneratedSources("com/example/BarModule.kt")
-    result.assertGeneratedContent(
-      "com/example/BarModule.kt",
-      """
-      package com.example
-      
-      import dagger.Binds
-      import dagger.Module
-      import dagger.hilt.InstallIn
-      import dagger.hilt.components.SingletonComponent
-      
-      @Module
-      @InstallIn(SingletonComponent::class)
-      internal interface BarModule {
-        @Binds
-        public fun foo(`impl`: Bar): Foo
-      }
-
-      """,
-    )
+    assertEquals(KotlinCompilation.ExitCode.COMPILATION_ERROR, result.result.exitCode)
+    result.assertZeroGeneratedSources()
   }
 
   @Test
-  fun `GIVEN an interface Foo and a class Bar that implements Foo, WHEN @AutoBinds is applied to Bar with intoSet as true THEN hilt module is generated with IntoSet annotation`() {
+  fun `GIVEN an interface Foo and a class Bar that implements Foo, WHEN @AutoBinds is applied to Bar with a list of annotations, THEN hilt module is generated and the binding function is annotated with all annotations`() {
     val src = SourceFile.kotlin(
       "Foo.kt",
       """
@@ -343,12 +323,14 @@ class AutoBindsProcessorProviderTest {
 
       import com.alecarnevale.claymore.annotations.AutoBinds
       import dagger.hilt.components.SingletonComponent
+      import dagger.multibindings.IntoSet
+      import javax.inject.Singleton
       
       interface Foo
 
-      @ExperimentalStdlibApi
-      @AutoBinds(intoSet = true)
-      @OptIn
+      annotation class CustomQualifier
+
+      @AutoBinds(component = SingletonComponent::class, annotations = [IntoSet::class, Singleton::class, CustomQualifier::class])
       class Bar: Foo
       """,
     )
@@ -368,12 +350,15 @@ class AutoBindsProcessorProviderTest {
       import dagger.hilt.InstallIn
       import dagger.hilt.components.SingletonComponent
       import dagger.multibindings.IntoSet
+      import javax.inject.Singleton
       
       @Module
       @InstallIn(SingletonComponent::class)
       internal interface BarModule {
         @Binds
         @IntoSet
+        @Singleton
+        @CustomQualifier
         public fun foo(`impl`: Bar): Foo
       }
 

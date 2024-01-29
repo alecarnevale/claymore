@@ -8,7 +8,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -16,13 +16,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.alessandro.claymore.demo.autouninstall.AutoUninstallActivity
-import com.alessandro.claymore.demo.modelproviders.BarProvider
-import com.alessandro.claymore.demo.modelproviders.BazProvider
-import com.alessandro.claymore.demo.modelproviders.FooProvider
-import com.alessandro.claymore.demo.models.Bar
-import com.alessandro.claymore.demo.models.Baz
-import com.alessandro.claymore.demo.models.Foo
+import com.alessandro.claymore.demo.annotations.CustomQualifierActivity
+import com.alessandro.claymore.demo.annotations.MultiBindingActivity
+import com.alessandro.claymore.demo.services.DeepThought
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -30,59 +26,52 @@ import javax.inject.Inject
 class MainActivity : AppCompatActivity() {
 
   @Inject
-  lateinit var fooProvider: FooProvider
-  private val foo: Foo by lazy { fooProvider.get() }
-
-  @Inject
-  lateinit var barProvider: BarProvider
-  private val bar: Bar by lazy { barProvider.get() }
-
-  @Inject
-  lateinit var bazProviders: Set<@JvmSuppressWildcards BazProvider>
-  private val bazs: List<Baz> by lazy { bazProviders.map { it.get() } }
+  lateinit var deepThought: DeepThought
+  private val ultimateAnswer: String by lazy { deepThought.getAnswer() }
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     setContent {
       Content(
-        fooString = foo.get(),
-        barString = bar.get(),
-        bazStrings = bazs.map { it.get() },
-        onClickButton = ::launchAutoUninstallActivity
+        ultimateAnswer = ultimateAnswer,
+        onMultiBindingClickButton = ::launchMultiBindingActivity,
+        onCustomQualifierClickButton = ::launchCustomQualifierActivity
       )
     }
   }
 
-  private fun launchAutoUninstallActivity() {
-    startActivity(AutoUninstallActivity.intent(this))
+  private fun launchMultiBindingActivity() {
+    startActivity(MultiBindingActivity.intent(this))
+  }
+
+  private fun launchCustomQualifierActivity() {
+    startActivity(CustomQualifierActivity.intent(this))
   }
 }
 
 @Composable
 private fun Content(
-  fooString: String,
-  barString: String,
-  bazStrings: List<String>,
-  onClickButton: () -> Unit
+  ultimateAnswer: String,
+  onMultiBindingClickButton: () -> Unit,
+  onCustomQualifierClickButton: () -> Unit
 ) {
   Column(
     modifier = Modifier
-      .fillMaxSize(),
+      .fillMaxSize()
+      .padding(24.dp),
     verticalArrangement = Arrangement.Center,
     horizontalAlignment = Alignment.CenterHorizontally
   ) {
-    Text(text = fooString)
-    Spacer(modifier = Modifier.height(50.dp))
-    Text(text = barString)
-    Spacer(modifier = Modifier.height(50.dp))
-    LazyColumn {
-      items(count = bazStrings.size) {
-        Text(text = bazStrings[it])
-      }
+    Text(text = "The Answer to the Ultimate Question of Life, the Universe, and Everything is...")
+    Spacer(modifier = Modifier.height(24.dp))
+    Text(text = ultimateAnswer)
+    Spacer(modifier = Modifier.height(48.dp))
+    Button(onClick = { onMultiBindingClickButton() }) {
+      Text(text = "Go to MultiBinding")
     }
-    Spacer(modifier = Modifier.height(50.dp))
-    Button(onClick = { onClickButton() }) {
-      Text(text = "AutoUninstall")
+    Spacer(modifier = Modifier.height(24.dp))
+    Button(onClick = { onCustomQualifierClickButton() }) {
+      Text(text = "Go to Qualifier")
     }
   }
 }
@@ -91,9 +80,8 @@ private fun Content(
 @Composable
 private fun Preview() {
   Content(
-    fooString = "Foo string",
-    barString = "Bar string",
-    bazStrings = listOf("Baz one", "Baz two", "Baz three"),
-    onClickButton = {}
+    ultimateAnswer = "42",
+    onMultiBindingClickButton = {},
+    onCustomQualifierClickButton = {}
   )
 }

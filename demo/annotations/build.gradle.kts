@@ -1,5 +1,5 @@
 plugins {
-  alias(libs.plugins.android.application)
+  alias(libs.plugins.android.library)
   alias(libs.plugins.kotlin.android)
   alias(libs.plugins.hilt)
   alias(libs.plugins.ksp)
@@ -7,25 +7,13 @@ plugins {
 }
 
 android {
-  namespace = "com.alessandro.claymore.demo"
+  namespace = "com.alessandro.claymore.demo.annotations"
   compileSdk = 33
 
   defaultConfig {
-    applicationId = "com.alessandro.claymore.demo"
     minSdk = 23
-    targetSdk = 33
-    versionCode = 1
-    versionName = "1.0"
-
-    testInstrumentationRunner = "android.support.test.runner.AndroidJUnitRunner"
   }
 
-  buildTypes {
-    release {
-      isMinifyEnabled = false
-      proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
-    }
-  }
   compileOptions {
     sourceCompatibility = JavaVersion.VERSION_17
     targetCompatibility = JavaVersion.VERSION_17
@@ -47,9 +35,9 @@ android {
 }
 
 dependencies {
-  implementation(project(":demo:impl"))
-  implementation(project(":demo:annotations"))
+  compileOnly(libs.javax.inject)
 
+  implementation(project(":demo:api"))
   implementation(libs.androidx.appcompat)
 
   implementation(libs.compose.foundation)
@@ -66,4 +54,7 @@ dependencies {
   testImplementation(libs.robolectric)
   testImplementation(libs.compose.ui.test.junit4)
   debugImplementation(libs.compose.ui.test.manifest)
+
+  testImplementation(libs.hilt.testing)
+  kspTest(libs.hilt.compiler)
 }

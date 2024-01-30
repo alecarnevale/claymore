@@ -1,7 +1,6 @@
 plugins {
   alias(libs.plugins.kotlin)
   alias(libs.plugins.ksp)
-  alias(libs.plugins.kapt)
   id("claymore-dependency")
 }
 

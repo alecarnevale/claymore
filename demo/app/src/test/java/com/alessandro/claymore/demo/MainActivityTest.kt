@@ -15,30 +15,13 @@ class MainActivityTest {
   val composeTestRule = createComposeRule()
 
   @Test
-  fun `AutoBinds annotation provides FooImpl`() {
+  fun `AutoBinds annotation provides 42 as the right answer`() {
     ActivityScenario.launch(MainActivity::class.java).use { scenario ->
       scenario.onActivity {
-        composeTestRule.onNodeWithText("This is FooImpl, provided by: FooProviderImpl").assertIsDisplayed()
-      }
-    }
-  }
-
-  @Test
-  fun `AutoBinds annotation provides BarImpl`() {
-    ActivityScenario.launch(MainActivity::class.java).use { scenario ->
-      scenario.onActivity {
-        composeTestRule.onNodeWithText("This is BarImpl, provided by: BarProviderImpl").assertIsDisplayed()
-      }
-    }
-  }
-
-  @Test
-  fun `Multibindings annotation provided`() {
-    ActivityScenario.launch(MainActivity::class.java).use { scenario ->
-      scenario.onActivity {
-        composeTestRule.onNodeWithText("This is BazImpl, provided by: BazProviderImpl1").assertIsDisplayed()
-        composeTestRule.onNodeWithText("This is BazImpl, provided by: BazProviderImpl2").assertIsDisplayed()
-        composeTestRule.onNodeWithText("This is BazImpl, provided by: BazProviderImpl3").assertIsDisplayed()
+        with(composeTestRule) {
+          onNodeWithText("The Answer to the Ultimate Question of Life, the Universe, and Everything is...").assertIsDisplayed()
+          onNodeWithText("42").assertIsDisplayed()
+        }
       }
     }
   }

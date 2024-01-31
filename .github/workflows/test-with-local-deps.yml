@@ -24,4 +24,4 @@ jobs:
       - name: Run build with Gradle Wrapper
         run: ./gradlew :processors:build
       - name: Run demo test with Gradle Wrapper
-        run: ./gradlew :demo:app:testDebugUnitTest
+        run: ./gradlew :demo:app:testDebugUnitTest :demo:annotations:testDebugUnitTest

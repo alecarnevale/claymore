@@ -95,8 +95,8 @@ without referencing the generated modules.
 
 ### Download
 Claymore is available in Maven Central Repository:
-- [annotations](https://central.sonatype.com/artifact/io.github.alecarnevale/claymore-annotations/1.3.2)
-- [processors](https://central.sonatype.com/artifact/io.github.alecarnevale/claymore-processors/1.3.2)
+- [annotations](https://central.sonatype.com/artifact/io.github.alecarnevale/claymore-annotations/1.4.0)
+- [processors](https://central.sonatype.com/artifact/io.github.alecarnevale/claymore-processors/1.4.0)
 
 ### Gradle
 ```

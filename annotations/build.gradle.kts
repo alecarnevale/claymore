@@ -18,7 +18,7 @@ publishing {
     create<MavenPublication>("annotations") {
       groupId = "io.github.alecarnevale"
       artifactId = "claymore-annotations"
-      version = "1.3.2"
+      version = "2.0.0"
       from(components["java"])
 
       repositories {

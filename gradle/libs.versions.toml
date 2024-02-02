@@ -18,7 +18,7 @@ robolectric = "4.11.1"
 [libraries]
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "androidx-appcompat" }
 androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "androidx-activity-compose" }
-claymore-annotation = { group = "io.github.alecarnevale", name = "claymore-annotations", version.ref = "claymore" }
+claymore-annotations = { group = "io.github.alecarnevale", name = "claymore-annotations", version.ref = "claymore" }
 claymore-processors = { group = "io.github.alecarnevale", name = "claymore-processors", version.ref = "claymore" }
 compose-foundation = { group = "androidx.compose.foundation", name = "foundation", version.ref = "compose" }
 compose-material = { group = "androidx.compose.material", name = "material", version.ref = "compose" }

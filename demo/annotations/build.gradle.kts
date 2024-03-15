@@ -37,7 +37,6 @@ android {
 dependencies {
   compileOnly(libs.javax.inject)
 
-  implementation(project(":demo:api"))
   implementation(libs.androidx.appcompat)
 
   implementation(libs.compose.foundation)

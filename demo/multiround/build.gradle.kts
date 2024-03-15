@@ -1,31 +1,20 @@
 plugins {
-  alias(libs.plugins.android.application)
+  alias(libs.plugins.android.library)
   alias(libs.plugins.kotlin.android)
+  alias(libs.plugins.kotlin.parcelize)
   alias(libs.plugins.hilt)
   alias(libs.plugins.ksp)
   id("claymore-dependency")
 }
 
 android {
-  namespace = "com.alessandro.claymore.demo"
+  namespace = "com.alessandro.claymore.demo.multiround"
   compileSdk = 33
 
   defaultConfig {
-    applicationId = "com.alessandro.claymore.demo"
     minSdk = 23
-    targetSdk = 33
-    versionCode = 1
-    versionName = "1.0"
-
-    testInstrumentationRunner = "android.support.test.runner.AndroidJUnitRunner"
   }
 
-  buildTypes {
-    release {
-      isMinifyEnabled = false
-      proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
-    }
-  }
   compileOptions {
     sourceCompatibility = JavaVersion.VERSION_17
     targetCompatibility = JavaVersion.VERSION_17
@@ -47,9 +36,7 @@ android {
 }
 
 dependencies {
-  implementation(project(":demo:impl"))
-  implementation(project(":demo:annotations"))
-  implementation(project(":demo:multiround"))
+  compileOnly(libs.javax.inject)
 
   implementation(libs.androidx.appcompat)
 
@@ -62,9 +49,4 @@ dependencies {
 
   implementation(libs.hilt.android)
   ksp(libs.hilt.compiler)
-
-  testImplementation(libs.junit)
-  testImplementation(libs.robolectric)
-  testImplementation(libs.compose.ui.test.junit4)
-  debugImplementation(libs.compose.ui.test.manifest)
 }

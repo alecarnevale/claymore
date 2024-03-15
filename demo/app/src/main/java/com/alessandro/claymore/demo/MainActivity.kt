@@ -19,6 +19,8 @@ import androidx.compose.ui.unit.dp
 import com.alessandro.claymore.demo.annotations.CustomQualifierActivity
 import com.alessandro.claymore.demo.annotations.MultiBindingActivity
 import com.alessandro.claymore.demo.multiround.allies.AlliesActivityIntent
+import com.alessandro.claymore.demo.multiround.models.Villain
+import com.alessandro.claymore.demo.multiround.villains.VillainsActivityIntent
 import com.alessandro.claymore.demo.services.DeepThought
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -33,6 +35,9 @@ class MainActivity : AppCompatActivity() {
   @Inject
   lateinit var alliesActivityIntent: AlliesActivityIntent
 
+  @Inject
+  lateinit var villainsActivityIntent: VillainsActivityIntent
+
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     setContent {
@@ -41,6 +46,7 @@ class MainActivity : AppCompatActivity() {
         onMultiBindingClickButton = ::launchMultiBindingActivity,
         onCustomQualifierClickButton = ::launchCustomQualifierActivity,
         onAlliesMultiroundClickButton = ::launchAlliesActivity,
+        onVillainsMultiroundClickButton = ::launchVillainsActivity,
       )
     }
   }
@@ -56,6 +62,10 @@ class MainActivity : AppCompatActivity() {
   private fun launchAlliesActivity() {
     startActivity(alliesActivityIntent("Splinter", "April"))
   }
+
+  private fun launchVillainsActivity() {
+    startActivity(villainsActivityIntent(Villain("Shredder"), Villain("Karai")))
+  }
 }
 
 @Composable
@@ -64,6 +74,7 @@ private fun Content(
   onMultiBindingClickButton: () -> Unit,
   onCustomQualifierClickButton: () -> Unit,
   onAlliesMultiroundClickButton: () -> Unit,
+  onVillainsMultiroundClickButton: () -> Unit,
 ) {
   Column(
     modifier = Modifier
@@ -87,6 +98,10 @@ private fun Content(
     Button(onClick = { onAlliesMultiroundClickButton() }) {
       Text(text = "Go to Allies Multiple round")
     }
+    Spacer(modifier = Modifier.height(24.dp))
+    Button(onClick = { onVillainsMultiroundClickButton() }) {
+      Text(text = "Go to Villains Multiple round")
+    }
   }
 }
 
@@ -98,5 +113,6 @@ private fun Preview() {
     onMultiBindingClickButton = {},
     onCustomQualifierClickButton = {},
     onAlliesMultiroundClickButton = {},
+    onVillainsMultiroundClickButton = {},
   )
 }

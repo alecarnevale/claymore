@@ -3,6 +3,7 @@
 
     <application>
         <activity android:name=".allies.AlliesActivity" android:theme="@style/Theme.AppCompat.Light" />
+        <activity android:name=".villains.VillainsActivity" android:theme="@style/Theme.AppCompat.Light" />
     </application>
 
 </manifest>

@@ -7,6 +7,7 @@ import kotlin.reflect.KClass
  * the input of the activity and returns an Intent.
  * @param activityClass the activity for which the invoke function will be used to retrieve the intent to start it.
  */
+@ExperimentalAnnotation
 annotation class AutoProvides(
   val activityClass: KClass<*>
 )

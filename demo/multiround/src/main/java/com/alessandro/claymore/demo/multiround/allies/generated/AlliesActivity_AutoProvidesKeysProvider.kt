@@ -1,7 +1,7 @@
 package com.alessandro.claymore.demo.multiround.allies.generated
 
+/*
 import com.alecarnevale.claymore.annotations.AutoBinds
-import com.alessandro.claymore.demo.multiround.AutoProvidesKeysProvider
 import com.alessandro.claymore.demo.multiround.allies.AlliesActivityIntent
 import javax.inject.Inject
 import kotlin.reflect.KClass
@@ -22,3 +22,4 @@ internal class AlliesActivity_AutoProvidesKeysProvider @Inject constructor() :
     private const val secondAlly: String = "AlliesActivity_AutoProvidesKeysProvider_secondAlly"
   }
 }
+ */

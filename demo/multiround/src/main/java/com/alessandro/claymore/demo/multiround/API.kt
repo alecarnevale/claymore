@@ -12,11 +12,3 @@ import kotlin.reflect.KClass
     Se non c'è allora deferra questa annotation al turno successivo, e genera una nuova annotation.
     Salva quindi nella mappa l'entry: { key: activity, value: annotation appena generata}.
  */
-
-annotation class AutoProvides(
-  val activityClass: KClass<*>
-)
-
-interface AutoProvidesKeysProvider {
-  operator fun get(annotation: KClass<out Annotation>): String
-}

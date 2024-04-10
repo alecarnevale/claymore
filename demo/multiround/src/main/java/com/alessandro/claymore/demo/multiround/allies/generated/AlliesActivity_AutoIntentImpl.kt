@@ -1,21 +1,20 @@
 package com.alessandro.claymore.demo.multiround.allies.generated
 
+/*
 import android.content.Context
 import android.content.Intent
 import com.alecarnevale.claymore.annotations.AutoBinds
-import com.alessandro.claymore.demo.multiround.AutoProvidesKeysProvider
 import com.alessandro.claymore.demo.multiround.allies.AlliesActivity
 import com.alessandro.claymore.demo.multiround.allies.AlliesActivityIntent
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
-/*
     Input:
       - AlliesActivity::class
       - AlliesActivity_AutoQualifier  <-- non conosciuto al primo round
       - @FirstAlly firstAlly
       - @SecondAlly secondAlly
- */
+
 
 @AutoBinds
 internal class AlliesActivity_AutoIntentImpl @Inject constructor(
@@ -28,3 +27,4 @@ internal class AlliesActivity_AutoIntentImpl @Inject constructor(
       .putExtra(autoProvidesKeysProvider[AlliesActivityIntent.SecondAlly::class], secondAlly)
   }
 }
+ */

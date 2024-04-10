@@ -1,7 +1,7 @@
 package com.alessandro.claymore.demo.multiround.villains.generated
 
+/*
 import com.alecarnevale.claymore.annotations.AutoBinds
-import com.alessandro.claymore.demo.multiround.AutoProvidesKeysProvider
 import com.alessandro.claymore.demo.multiround.villains.VillainsActivityIntent
 import javax.inject.Inject
 import kotlin.reflect.KClass
@@ -24,3 +24,4 @@ internal class VillainsActivity_AutoProvidesKeysProvider @Inject constructor() :
       "VillainsActivity_AutoProvidesKeysProvider_secondVillain"
   }
 }
+ */

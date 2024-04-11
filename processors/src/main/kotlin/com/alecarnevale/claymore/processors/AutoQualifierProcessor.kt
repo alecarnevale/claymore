@@ -24,7 +24,12 @@ internal class AutoQualifierProcessor(
   private val codeGenerator: CodeGenerator
 ) : SymbolProcessor {
 
+  private var round = 0
+  private val TAG: String
+    get()= "Claymore - AutoQualifierProcessor($round):"
+
   override fun process(resolver: Resolver): List<KSAnnotated> {
+    round++
     val validator = AutoQualifierValidator(resolver, logger)
 
     // retrieve all AutoProvides annotation to understand which _AutoQualifier must be generated
@@ -60,7 +65,7 @@ internal class AutoQualifierProcessor(
             )
             logger.info("$TAG New ${autoQualifierFileSpec.name} generated for $classDeclaration")
           } else {
-            logger.info("$TAG ${(autoQualifierAnnotation as KSClassDeclaration).simpleName} already exists for $classDeclaration")
+            logger.info("$TAG ${(autoQualifierAnnotation as KSClassDeclaration).simpleName.asString()} already exists for $classDeclaration")
           }
         }
     }
@@ -68,5 +73,3 @@ internal class AutoQualifierProcessor(
     return emptyList()
   }
 }
-
-private const val TAG = "Claymore - AutoQualifierProcessor:"

@@ -1,3 +1,4 @@
 com.alecarnevale.claymore.providers.AutoBindsProcessorProvider
 com.alecarnevale.claymore.providers.AutoUninstallProcessorProvider
 com.alecarnevale.claymore.providers.AutoQualifierProcessorProvider
+com.alecarnevale.claymore.providers.AutoProvidesProcessorProvider

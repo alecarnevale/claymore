@@ -6,7 +6,7 @@ import com.google.devtools.ksp.symbol.KSClassDeclaration
 import com.google.devtools.ksp.symbol.KSType
 import com.google.devtools.ksp.processing.KSPLogger
 
-fun KSAnnotated.extractParameter(
+internal fun KSAnnotated.extractParameter(
   annotationName: String?,
   parameterName: String?,
   resolver: Resolver,

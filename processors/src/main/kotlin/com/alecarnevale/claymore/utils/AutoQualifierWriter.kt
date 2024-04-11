@@ -9,7 +9,7 @@ import com.squareup.kotlinpoet.ksp.toClassName
 /**
  * Generate the MyActivity_AutoQualifier annotation starting from [activityDeclaration].
  */
-internal class QualifierWriter(
+internal class AutoQualifierWriter(
   private val activityDeclaration: KSClassDeclaration,
 ) {
 

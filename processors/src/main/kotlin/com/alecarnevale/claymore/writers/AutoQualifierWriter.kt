@@ -1,5 +1,7 @@
-package com.alecarnevale.claymore.utils
+package com.alecarnevale.claymore.writers
 
+import com.alecarnevale.claymore.utils.keyProviderQualifierAnnotation
+import com.alecarnevale.claymore.utils.qualifierAnnotation
 import com.google.devtools.ksp.symbol.KSClassDeclaration
 import com.squareup.kotlinpoet.FileSpec
 import com.squareup.kotlinpoet.KModifier

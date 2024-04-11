@@ -5,7 +5,7 @@ package com.alecarnevale.claymore.processors
 import com.alecarnevale.claymore.annotations.AutoProvides
 import com.alecarnevale.claymore.annotations.ExperimentalAnnotation
 import com.alecarnevale.claymore.annotations.keyprovider.KeyProviderQualifier
-import com.alecarnevale.claymore.utils.AutoQualifierWriter
+import com.alecarnevale.claymore.writers.AutoQualifierWriter
 import com.alecarnevale.claymore.utils.extractParameter
 import com.alecarnevale.claymore.validators.AutoQualifierValidator
 import com.google.devtools.ksp.processing.CodeGenerator

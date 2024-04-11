@@ -1,6 +1,8 @@
-package com.alecarnevale.claymore.utils
+package com.alecarnevale.claymore.writers
 
 import com.alecarnevale.claymore.annotations.AutoBinds
+import com.alecarnevale.claymore.utils.moduleAnnotation
+import com.alecarnevale.claymore.utils.retrieveModuleClassName
 import com.google.devtools.ksp.symbol.KSClassDeclaration
 import com.squareup.kotlinpoet.AnnotationSpec
 import com.squareup.kotlinpoet.ClassName

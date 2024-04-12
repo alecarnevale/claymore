@@ -8,6 +8,7 @@ import com.alecarnevale.claymore.annotations.keyprovider.KeyProviderQualifier
 import com.alecarnevale.claymore.utils.extractParameter
 import com.alecarnevale.claymore.validators.AutoProvidesValidator
 import com.alecarnevale.claymore.validators.AutoQualifierValidator
+import com.alecarnevale.claymore.visitors.AutoProvidesVisitor
 import com.google.devtools.ksp.processing.CodeGenerator
 import com.google.devtools.ksp.processing.KSPLogger
 import com.google.devtools.ksp.processing.Resolver
@@ -30,6 +31,8 @@ internal class AutoProvidesProcessor(
 
   override fun process(resolver: Resolver): List<KSAnnotated> {
     round++
+    val visitor = AutoProvidesVisitor(codeGenerator = codeGenerator, resolver = resolver, logger = logger)
+
     val autoProvidesValidator = AutoProvidesValidator(resolver, logger)
     val autoQualifierValidator = AutoQualifierValidator(resolver, logger)
 
@@ -58,6 +61,7 @@ internal class AutoProvidesProcessor(
         deferred.add(it)
       } else {
         logger.info("$TAG Not deferring $it")
+        it.accept(visitor, autoQualifierAnnotation)
       }
     }
 

@@ -1,11 +1,11 @@
-package com.alecarnevale.claymore.api
+package com.alecarnevale.claymore.annotations.keyprovider
 
 import kotlin.reflect.KClass
 
 /**
  * Provides the key used for the annotation when need to be serialized/deserialized in a bundle.
- * For internal use only.
+ * For claymore processor use only: this is not intended to be used externally.
  */
-internal interface AutoProvidesKeysProvider {
+interface AutoProvidesKeysProvider {
   operator fun get(annotation: KClass<out Annotation>): String
 }

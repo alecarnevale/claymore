@@ -31,7 +31,16 @@ internal class AutoProvidesVisitor(
   override fun visitClassDeclaration(classDeclaration: KSClassDeclaration, data: KSAnnotated) {
     logger.info("$TAG visitClassDeclaration of $classDeclaration with data $data")
 
-    writer.writeAutoProvidesKeysProvider(classDeclaration, data as KSClassDeclaration).writeTo(
+    val invokeFunctionParams = classDeclaration
+      .getAllFunctions()
+      .singleOrNull { it.simpleName.getShortName() == "invoke" }
+      ?.parameters ?: emptyList()
+
+    writer.writeAutoProvidesKeysProvider(
+      activityIntentDeclaration = classDeclaration,
+      autoQualifierDeclaration = data as KSClassDeclaration,
+      parameters = invokeFunctionParams
+    ).writeTo(
       codeGenerator = codeGenerator,
       aggregating = false,
       originatingKSFiles = listOf(classDeclaration.containingFile!!)

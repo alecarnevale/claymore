@@ -45,7 +45,16 @@ class AutoProvidesProcessorProviderTest {
 
         @AutoProvides(activityClass = Foo::class)
         interface Bar {
-          operator fun invoke(): Intent
+          @Qualifier
+          annotation class FirstQualifier
+        
+          @Qualifier
+          annotation class SecondQualifier
+
+          operator fun invoke(
+            @FirstQualifier firstParameter: String,
+            @SecondQualifier secondParameter: String,
+          ): Intent
         }
       """,
     )
@@ -61,11 +70,28 @@ class AutoProvidesProcessorProviderTest {
         package com.example
         
         import com.alecarnevale.claymore.annotations.AutoBinds
-        import com.alecarnevale.claymore.api.AutoProvidesKeysProvider
+        import com.alecarnevale.claymore.annotations.keyprovider.AutoProvidesKeysProvider
+        import com.example.Bar.FirstQualifier
+        import com.example.Bar.SecondQualifier
         import javax.inject.Inject
+        import kotlin.Annotation
+        import kotlin.String
+        import kotlin.reflect.KClass
 
         @AutoBinds(annotations = [Foo_AutoQualifier::class])
-        internal class Bar_AutoProvidesKeysProvider @Inject constructor() : AutoProvidesKeysProvider
+        internal class Bar_AutoProvidesKeysProvider @Inject constructor() : AutoProvidesKeysProvider {
+          override operator fun `get`(`annotation`: KClass<out Annotation>): String = when(annotation) {
+            FirstQualifier::class -> firstParameter
+            SecondQualifier::class -> secondParameter
+            else -> throw Exception("Unexpected Annotation")
+          }
+        
+          private companion object {
+            private const val firstParameter: String = "Bar_AutoProvidesKeysProvider_firstParameter"
+
+            private const val secondParameter: String = "Bar_AutoProvidesKeysProvider_secondParameter"
+          }
+        }
 
       """,
     )

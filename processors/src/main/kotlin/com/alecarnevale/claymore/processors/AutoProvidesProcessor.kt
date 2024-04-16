@@ -14,8 +14,6 @@ import com.google.devtools.ksp.processing.KSPLogger
 import com.google.devtools.ksp.processing.Resolver
 import com.google.devtools.ksp.processing.SymbolProcessor
 import com.google.devtools.ksp.symbol.KSAnnotated
-import com.google.devtools.ksp.symbol.KSClassDeclaration
-import kotlin.math.log
 
 /**
  * Find and process any symbol annotated with [AutoProvides].
@@ -43,9 +41,9 @@ internal class AutoProvidesProcessor(
     val keyProvidersAnnotated = resolver.getSymbolsWithAnnotation(keyProviderAnnotation)
 
     val deferred = mutableListOf<KSAnnotated>()
-    autoProvidesAnnotated.filter { autoProvidesValidator.isValid(it) }.forEach {
+    autoProvidesAnnotated.filter { autoProvidesValidator.isValid(it) }.forEach { activityIntent ->
       val activityClass = requireNotNull(
-        it.extractParameter(
+        activityIntent.extractParameter(
           annotationName = AutoProvides::class.simpleName,
           parameterName = AutoProvides::activityClass.name,
           resolver = resolver,
@@ -57,11 +55,11 @@ internal class AutoProvidesProcessor(
         keyProvidersAnnotated = keyProvidersAnnotated
       )
       if (autoQualifierAnnotation == null) {
-        logger.info("$TAG Deferring $it to the next round")
-        deferred.add(it)
+        logger.info("$TAG Deferring $activityIntent to the next round")
+        deferred.add(activityIntent)
       } else {
-        logger.info("$TAG Not deferring $it")
-        it.accept(visitor, autoQualifierAnnotation)
+        logger.info("$TAG Not deferring $activityIntent")
+        activityIntent.accept(visitor, autoQualifierAnnotation)
       }
     }
 

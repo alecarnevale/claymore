@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test
 class AutoProvidesProcessorProviderTest {
 
   @Test
-  fun `GIVEN an interface Foo and a KeyProviderQualifier annotation Foo_AutoQualifier, WHEN @AutoProvides is applied to Bar with a Foo as activity class argument THEN an implementation of AutoProvidesKeysProvider for Foo is generated`() {
+  fun `GIVEN an class Foo, an interface Bar with invoke function, and a KeyProviderQualifier annotation Foo_AutoQualifier, WHEN @AutoProvides is applied to Bar with a Foo as activity class argument THEN an implementation of AutoProvidesKeysProvider for Foo is generated`() {
     val foo = SourceFile.kotlin(
       "Foo.kt",
       """
@@ -63,7 +63,7 @@ class AutoProvidesProcessorProviderTest {
 
     assertEquals(KotlinCompilation.ExitCode.OK, result.result.exitCode)
 
-    result.assertGeneratedSources("com/example/Bar_AutoProvidesKeysProvider.kt")
+    result.assertGeneratedSources("com/example/Bar_AutoProvidesKeysProvider.kt", "com/example/Bar_AutoIntentImpl.kt")
     result.assertGeneratedContent(
       "com/example/Bar_AutoProvidesKeysProvider.kt",
       """
@@ -90,6 +90,80 @@ class AutoProvidesProcessorProviderTest {
             private const val firstParameter: String = "Bar_AutoProvidesKeysProvider_firstParameter"
 
             private const val secondParameter: String = "Bar_AutoProvidesKeysProvider_secondParameter"
+          }
+        }
+
+      """,
+    )
+  }
+
+  @Test
+  fun `GIVEN an class Foo, an interface Bar with invoke function, and a KeyProviderQualifier annotation Foo_AutoQualifier, WHEN @AutoProvides is applied to Bar with a Foo as activity class argument THEN an implementation of Bar is generated`() {
+    val foo = SourceFile.kotlin(
+      "Foo.kt",
+      """
+        package com.example
+
+        class Foo
+      """
+    )
+
+    val fooAutoQualifier = SourceFile.kotlin(
+      "Foo_AutoQualifier.kt",
+      """
+        package com.example
+
+        import com.alecarnevale.claymore.annotations.keyprovider.KeyProviderQualifier
+        import javax.inject.Qualifier
+        
+        @KeyProviderQualifier(activityClass = Foo::class)
+        @Qualifier
+        annotation class Foo_AutoQualifier
+      """
+    )
+
+    val bar = SourceFile.kotlin(
+      "Bar.kt",
+      """
+        package com.example
+
+        import android.content.Intent
+        import com.alecarnevale.claymore.annotations.AutoProvides
+
+        @AutoProvides(activityClass = Foo::class)
+        interface Bar {
+          @Qualifier
+          annotation class FirstQualifier
+        
+          @Qualifier
+          annotation class SecondQualifier
+
+          operator fun invoke(
+            @FirstQualifier firstParameter: String,
+            @SecondQualifier secondParameter: String,
+          ): Intent
+        }
+      """,
+    )
+
+    val result = compileSourceFiles(foo, fooAutoQualifier, bar)
+
+    assertEquals(KotlinCompilation.ExitCode.OK, result.result.exitCode)
+
+    result.assertGeneratedSources("com/example/Bar_AutoProvidesKeysProvider.kt", "com/example/Bar_AutoIntentImpl.kt")
+    result.assertGeneratedContent(
+      "com/example/Bar_AutoIntentImpl.kt",
+      """
+        package com.example
+        
+        import android.content.Intent
+        import com.alecarnevale.claymore.annotations.AutoBinds
+        import javax.inject.Inject
+        import kotlin.String
+
+        @AutoBinds
+        internal class Bar_AutoIntentImpl @Inject constructor() : Bar {
+          override operator fun invoke(firstParameter: String, secondParameter: String): Intent {
           }
         }
 

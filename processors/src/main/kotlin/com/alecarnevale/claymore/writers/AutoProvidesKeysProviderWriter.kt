@@ -25,13 +25,13 @@ import com.squareup.kotlinpoet.ksp.toClassName
 import javax.inject.Inject
 import kotlin.reflect.KClass
 
-internal class AutoProvidesWriter() {
+/**
+ * Generate the _AutoProvidesKeysProvider implementation of [AutoProvidesKeysProvider],
+ * that override the get method to retrieve the key for a given annotation.
+ */
+internal class AutoProvidesKeysProviderWriter {
 
-  /**
-   * Generate the _AutoProvidesKeysProvider implementation of [AutoProvidesKeysProvider],
-   * that override the get method to retrieve the key for a given annotation.
-   */
-  fun writeAutoProvidesKeysProvider(
+  fun write(
     activityIntentDeclaration: KSClassDeclaration,
     autoQualifierDeclaration: KSClassDeclaration,
     parameters: List<KSValueParameter>

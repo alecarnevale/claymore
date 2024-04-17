@@ -4,7 +4,7 @@ package com.alecarnevale.claymore.visitors
 
 import com.alecarnevale.claymore.annotations.AutoProvides
 import com.alecarnevale.claymore.annotations.ExperimentalAnnotation
-import com.alecarnevale.claymore.writers.AutoProvidesWriter
+import com.alecarnevale.claymore.writers.AutoProvidesKeysProviderWriter
 import com.google.devtools.ksp.processing.CodeGenerator
 import com.google.devtools.ksp.processing.KSPLogger
 import com.google.devtools.ksp.processing.Resolver
@@ -26,7 +26,7 @@ internal class AutoProvidesVisitor(
 
   val kclass: KClass<*> = AutoProvides::class
 
-  private val writer = AutoProvidesWriter()
+  private val writer = AutoProvidesKeysProviderWriter()
 
   override fun visitClassDeclaration(classDeclaration: KSClassDeclaration, data: KSAnnotated) {
     logger.info("$TAG visitClassDeclaration of $classDeclaration with data $data")
@@ -36,7 +36,7 @@ internal class AutoProvidesVisitor(
       .singleOrNull { it.simpleName.getShortName() == "invoke" }
       ?.parameters ?: emptyList()
 
-    writer.writeAutoProvidesKeysProvider(
+    writer.write(
       activityIntentDeclaration = classDeclaration,
       autoQualifierDeclaration = data as KSClassDeclaration,
       parameters = invokeFunctionParams

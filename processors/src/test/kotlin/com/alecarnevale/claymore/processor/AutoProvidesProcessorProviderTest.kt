@@ -156,13 +156,24 @@ class AutoProvidesProcessorProviderTest {
       """
         package com.example
         
+        import android.content.Context
         import android.content.Intent
         import com.alecarnevale.claymore.annotations.AutoBinds
+        import com.alecarnevale.claymore.annotations.keyprovider.AutoProvidesKeysProvider
+        import dagger.hilt.android.qualifiers.ApplicationContext
         import javax.inject.Inject
         import kotlin.String
 
         @AutoBinds
         internal class Bar_AutoIntentImpl @Inject constructor() : Bar {
+          @Inject
+          @Foo_AutoQualifier
+          internal lateinit var autoProvidesKeysProvider: AutoProvidesKeysProvider
+
+          @Inject
+          @ApplicationContext
+          internal lateinit var context: Context
+
           override operator fun invoke(firstParameter: String, secondParameter: String): Intent {
           }
         }

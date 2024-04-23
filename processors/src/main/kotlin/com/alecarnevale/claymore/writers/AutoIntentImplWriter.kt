@@ -6,11 +6,13 @@ import com.alecarnevale.claymore.annotations.AutoBinds
 import com.alecarnevale.claymore.annotations.AutoProvides
 import com.alecarnevale.claymore.annotations.keyprovider.AutoProvidesKeysProvider
 import com.alecarnevale.claymore.utils.applicationContext
+import com.alecarnevale.claymore.utils.asMemberName
 import com.alecarnevale.claymore.utils.context
 import com.alecarnevale.claymore.utils.intent
 import com.google.devtools.ksp.symbol.KSClassDeclaration
 import com.google.devtools.ksp.symbol.KSValueParameter
 import com.squareup.kotlinpoet.AnnotationSpec
+import com.squareup.kotlinpoet.CodeBlock
 import com.squareup.kotlinpoet.DelicateKotlinPoetApi
 import com.squareup.kotlinpoet.FileSpec
 import com.squareup.kotlinpoet.FunSpec
@@ -29,10 +31,10 @@ internal class AutoIntentImplWriter {
 
   fun write(
     activityIntentDeclaration: KSClassDeclaration,
+    activityDeclaration: KSClassDeclaration,
     autoQualifierDeclaration: KSClassDeclaration,
     parameters: List<KSValueParameter>
   ): FileSpec {
-    println(autoQualifierDeclaration)
     val className = "${activityIntentDeclaration.toClassName().simpleName}_AutoIntentImpl"
 
     val fileSpec = FileSpec.builder(
@@ -50,6 +52,22 @@ internal class AutoIntentImplWriter {
         .builder(AutoBinds::class.java)
         .build()
 
+    val invokeFunctionBody =
+      CodeBlock
+        .builder()
+        .addStatement("val intent = %L(context, %L::class.java)", intent.simpleName, activityDeclaration.toClassName().simpleName)
+        .apply {
+          parameters.forEach { param ->
+            addStatement(
+              "intent.putExtra(autoProvidesKeysProvider[%M::class], %L)",
+              param.annotations.first().asMemberName(),
+              param.name!!.asString()
+            )
+          }
+        }
+        .addStatement("return intent")
+        .build()
+
     val invokeFunction =
       FunSpec
         .builder("invoke")
@@ -64,6 +82,7 @@ internal class AutoIntentImplWriter {
           }
         }
         .returns(intent)
+        .addCode(invokeFunctionBody)
         .build()
 
     val autoProvidesKeysProvider =

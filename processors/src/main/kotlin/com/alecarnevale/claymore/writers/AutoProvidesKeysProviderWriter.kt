@@ -4,7 +4,7 @@ package com.alecarnevale.claymore.writers
 
 import com.alecarnevale.claymore.annotations.AutoBinds
 import com.alecarnevale.claymore.annotations.keyprovider.AutoProvidesKeysProvider
-import com.google.devtools.ksp.symbol.KSAnnotation
+import com.alecarnevale.claymore.utils.asMemberName
 import com.google.devtools.ksp.symbol.KSClassDeclaration
 import com.google.devtools.ksp.symbol.KSValueParameter
 import com.squareup.kotlinpoet.AnnotationSpec
@@ -14,7 +14,6 @@ import com.squareup.kotlinpoet.DelicateKotlinPoetApi
 import com.squareup.kotlinpoet.FileSpec
 import com.squareup.kotlinpoet.FunSpec
 import com.squareup.kotlinpoet.KModifier
-import com.squareup.kotlinpoet.MemberName
 import com.squareup.kotlinpoet.ParameterSpec
 import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
 import com.squareup.kotlinpoet.PropertySpec
@@ -122,9 +121,4 @@ internal class AutoProvidesKeysProviderWriter {
         .build()
     ).build()
   }
-
-  private fun KSAnnotation.asMemberName(): MemberName =
-    annotationType.resolve().toClassName().let {
-      MemberName(it.enclosingClassName()!!, it.simpleName)
-    }
 }

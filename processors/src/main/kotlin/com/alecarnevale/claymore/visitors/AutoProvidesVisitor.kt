@@ -4,6 +4,8 @@ package com.alecarnevale.claymore.visitors
 
 import com.alecarnevale.claymore.annotations.AutoProvides
 import com.alecarnevale.claymore.annotations.ExperimentalAnnotation
+import com.alecarnevale.claymore.annotations.keyprovider.KeyProviderQualifier
+import com.alecarnevale.claymore.utils.extractParameter
 import com.alecarnevale.claymore.writers.AutoIntentImplWriter
 import com.alecarnevale.claymore.writers.AutoProvidesKeysProviderWriter
 import com.google.devtools.ksp.processing.CodeGenerator
@@ -48,8 +50,18 @@ internal class AutoProvidesVisitor(
       originatingKSFiles = listOf(classDeclaration.containingFile!!)
     )
 
+    val activityDeclaration = requireNotNull(
+      data.extractParameter(
+        KeyProviderQualifier::class.simpleName,
+        KeyProviderQualifier::activityClass.name,
+        resolver = resolver,
+        logger = logger
+      )
+    )
+
     autoIntentImplWriter.write(
       activityIntentDeclaration = classDeclaration,
+      activityDeclaration = activityDeclaration,
       autoQualifierDeclaration = data,
       parameters = invokeFunctionParams
     ).writeTo(

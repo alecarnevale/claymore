@@ -160,6 +160,8 @@ class AutoProvidesProcessorProviderTest {
         import android.content.Intent
         import com.alecarnevale.claymore.annotations.AutoBinds
         import com.alecarnevale.claymore.annotations.keyprovider.AutoProvidesKeysProvider
+        import com.example.Bar.FirstQualifier
+        import com.example.Bar.SecondQualifier
         import dagger.hilt.android.qualifiers.ApplicationContext
         import javax.inject.Inject
         import kotlin.String
@@ -175,6 +177,10 @@ class AutoProvidesProcessorProviderTest {
           internal lateinit var context: Context
 
           override operator fun invoke(firstParameter: String, secondParameter: String): Intent {
+            val intent = Intent(context, Foo::class.java)
+            intent.putExtra(autoProvidesKeysProvider[FirstQualifier::class], firstParameter)
+            intent.putExtra(autoProvidesKeysProvider[SecondQualifier::class], secondParameter)
+            return intent
           }
         }
 

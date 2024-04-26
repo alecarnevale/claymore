@@ -63,7 +63,7 @@ class AutoProvidesProcessorProviderTest {
 
     assertEquals(KotlinCompilation.ExitCode.OK, result.result.exitCode)
 
-    result.assertGeneratedSources("com/example/Bar_AutoProvidesKeysProvider.kt", "com/example/Bar_AutoIntentImpl.kt")
+    result.assertGeneratedSources("com/example/Bar_AutoProvidesKeysProvider.kt", "com/example/Bar_AutoIntentImpl.kt", "com/example/Bar_AutoViewModelModule.kt")
     result.assertGeneratedContent(
       "com/example/Bar_AutoProvidesKeysProvider.kt",
       """
@@ -150,7 +150,7 @@ class AutoProvidesProcessorProviderTest {
 
     assertEquals(KotlinCompilation.ExitCode.OK, result.result.exitCode)
 
-    result.assertGeneratedSources("com/example/Bar_AutoProvidesKeysProvider.kt", "com/example/Bar_AutoIntentImpl.kt")
+    result.assertGeneratedSources("com/example/Bar_AutoProvidesKeysProvider.kt", "com/example/Bar_AutoIntentImpl.kt", "com/example/Bar_AutoViewModelModule.kt")
     result.assertGeneratedContent(
       "com/example/Bar_AutoIntentImpl.kt",
       """
@@ -182,6 +182,96 @@ class AutoProvidesProcessorProviderTest {
             intent.putExtra(autoProvidesKeysProvider[SecondQualifier::class], secondParameter)
             return intent
           }
+        }
+
+      """,
+    )
+  }
+
+
+  @Test
+  fun `GIVEN an class Foo, an interface Bar with invoke function, and a KeyProviderQualifier annotation Foo_AutoQualifier, WHEN @AutoProvides is applied to Bar with a Foo as activity class argument THEN a ViewModelModule for Foo is generated`() {
+    val foo = SourceFile.kotlin(
+      "Foo.kt",
+      """
+        package com.example
+
+        class Foo
+      """
+    )
+
+    val fooAutoQualifier = SourceFile.kotlin(
+      "Foo_AutoQualifier.kt",
+      """
+        package com.example
+
+        import com.alecarnevale.claymore.annotations.keyprovider.KeyProviderQualifier
+        import javax.inject.Qualifier
+        
+        @KeyProviderQualifier(activityClass = Foo::class)
+        @Qualifier
+        annotation class Foo_AutoQualifier
+      """
+    )
+
+    val bar = SourceFile.kotlin(
+      "Bar.kt",
+      """
+        package com.example
+
+        import android.content.Intent
+        import com.alecarnevale.claymore.annotations.AutoProvides
+
+        @AutoProvides(activityClass = Foo::class)
+        interface Bar {
+          @Qualifier
+          annotation class FirstQualifier
+        
+          @Qualifier
+          annotation class SecondQualifier
+
+          operator fun invoke(
+            @FirstQualifier firstParameter: String,
+            @SecondQualifier secondParameter: String,
+          ): Intent
+        }
+      """,
+    )
+
+    val result = compileSourceFiles(foo, fooAutoQualifier, bar)
+
+    assertEquals(KotlinCompilation.ExitCode.OK, result.result.exitCode)
+
+    result.assertGeneratedSources("com/example/Bar_AutoProvidesKeysProvider.kt", "com/example/Bar_AutoIntentImpl.kt", "com/example/Bar_AutoViewModelModule.kt")
+    result.assertGeneratedContent(
+      "com/example/Bar_AutoViewModelModule.kt",
+      """
+        package com.example
+        
+        import androidx.lifecycle.SavedStateHandle
+        import com.alecarnevale.claymore.annotations.keyprovider.AutoProvidesKeysProvider
+        import com.example.Bar.FirstQualifier
+        import com.example.Bar.SecondQualifier
+        import dagger.Module
+        import dagger.Provides
+        import dagger.hilt.InstallIn
+        import dagger.hilt.android.components.ViewModelComponent
+        import kotlin.String
+
+        @Module
+        @InstallIn(ViewModelComponent::class)
+        internal class Bar_AutoViewModelModule {
+          @Provides
+          @Bar.FirstQualifier
+          internal fun firstParameter(handle: SavedStateHandle, @Foo_AutoQualifier
+              autoProvidesKeysProvider: AutoProvidesKeysProvider): String =
+              requireNotNull(handle[autoProvidesKeysProvider[FirstQualifier::class]])
+        
+          @Provides
+          @Bar.SecondQualifier
+          internal fun secondParameter(handle: SavedStateHandle, @Foo_AutoQualifier
+              autoProvidesKeysProvider: AutoProvidesKeysProvider): String =
+              requireNotNull(handle[autoProvidesKeysProvider[SecondQualifier::class]])
         }
 
       """,

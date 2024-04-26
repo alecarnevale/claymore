@@ -8,6 +8,7 @@ import com.alecarnevale.claymore.annotations.keyprovider.KeyProviderQualifier
 import com.alecarnevale.claymore.utils.extractParameter
 import com.alecarnevale.claymore.writers.AutoIntentImplWriter
 import com.alecarnevale.claymore.writers.AutoProvidesKeysProviderWriter
+import com.alecarnevale.claymore.writers.AutoViewModelModuleWriter
 import com.google.devtools.ksp.processing.CodeGenerator
 import com.google.devtools.ksp.processing.KSPLogger
 import com.google.devtools.ksp.processing.Resolver
@@ -31,6 +32,7 @@ internal class AutoProvidesVisitor(
 
   private val autoProvidesKeysProviderWriter = AutoProvidesKeysProviderWriter()
   private val autoIntentImplWriter = AutoIntentImplWriter()
+  private val autoViewModelModuleWriter = AutoViewModelModuleWriter()
 
   override fun visitClassDeclaration(classDeclaration: KSClassDeclaration, data: KSAnnotated) {
     logger.info("$TAG visitClassDeclaration of $classDeclaration with data $data")
@@ -62,6 +64,16 @@ internal class AutoProvidesVisitor(
     autoIntentImplWriter.write(
       activityIntentDeclaration = classDeclaration,
       activityDeclaration = activityDeclaration,
+      autoQualifierDeclaration = data,
+      parameters = invokeFunctionParams
+    ).writeTo(
+      codeGenerator = codeGenerator,
+      aggregating = false,
+      originatingKSFiles = listOf(classDeclaration.containingFile!!)
+    )
+
+    autoViewModelModuleWriter.write(
+      activityIntentDeclaration = classDeclaration,
       autoQualifierDeclaration = data,
       parameters = invokeFunctionParams
     ).writeTo(

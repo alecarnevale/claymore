@@ -78,6 +78,68 @@ object TestModule {
 _claymore_ will generate a module that replaces generated `MyImplementationModule` and `MyOtherImplementationModule` for you.
 Again, you can set the component where replace the modules, otherwise `SingletonComponent` is used by default.
 
+### AutoProvides annotation
+`AutoProvides` is an experimental annotation that wants to erase all the boilerplate code needed to inject parameter into an _Android_ `ViewModel` through [SavedStateHandle](https://developer.android.com/reference/androidx/lifecycle/SavedStateHandle).
+
+Given the following scenario:
+- `FirstActivity` wants to start `SecondActivity` and pass `Foo` and `Bar` as input;
+- `SecondActivity` uses `SecondViewModel`;
+- `SecondViewModel` expect `Foo` and `Bar` to be injected as properties.
+
+So we can use `AutoProvides` annotation on top of an interface that define an `invoke` operator function that take all inputs as parameter and return an `Intent`.
+Such interface works as a contract between the two activities and the view model, defining what are expected as inputs.
+
+```
+@AutoProvides(activityClass = SecondActivity::class)
+interface SecondActivityIntent {
+  // this can be read as a contract on how to start the SecondActivity
+  
+  // qualifiers are needed to avoid clash between same input type
+  @Qualifier
+  annotation class FirstArg
+
+  @Qualifier
+  annotation class SecondArg
+
+  operator fun invoke(
+    @FirstArg firstArg: String,
+    @SecondArg secondArg: String,
+  ): Intent
+}
+
+@AndroidEntryPoint
+class SecondActivity: Activity() {
+  val viewModel: SecondViewModel by viewModels()
+  ...
+}
+
+@HiltViewModel
+class SecondViewModel @Inject constructor(
+  @SecondActivityIntent.FirstArg firstArg: String,
+  @SecondActivityIntent.SecondArg secondArg: String,
+): ViewModel() {
+  ...
+}
+
+@AndroiEntryPoint
+class FirstActivity: Activity() {
+  
+  // the injection is provided by claymore itself
+  @Inject lateinit var secondActivityIntent: SecondActivityIntent
+  
+  ...
+
+  fun startSecondActivity() {
+    startActivity(
+      secondActivityIntent(
+        firstArg = "Foo",
+        secondArg = "Bar",
+      )
+    )
+  }
+}
+```
+
 ## 🎮 Demo
 Take a look at the `:demo` module for a [sample usage](https://github.com/alecarnevale/claymore/tree/master/demo).
 
@@ -86,10 +148,12 @@ In this simple project we have:
 - `impl` module where the service implementation is defined, and annotated with `AutoBinds`;
 - `app` module where DI starts and service is requested.
 
-Moreover the `annotations` module define other services to show the usage of `AutoBinds.annotations` parameter.
+---
 
-In the `annotations` module the `AutoUninstall` annotation is used in the test source set to replace the implementations with fakes
-without referencing the generated modules.
+Moreover:
+-  the `annotations` module define other services to show the usage of `AutoBinds.annotations` parameter;
+- inside the `annotations` module the `AutoUninstall` annotation is used in the test source set to replace the implementations with fakes without referencing the generated modules;
+- inside `multiround` module you can find a sample usage of `AutoProvides` annotation.
 
 ## 🛠️ Installation
 

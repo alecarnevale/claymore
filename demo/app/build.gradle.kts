@@ -8,12 +8,12 @@ plugins {
 
 android {
   namespace = "com.alessandro.claymore.demo"
-  compileSdk = 33
+  compileSdk = 34
 
   defaultConfig {
     applicationId = "com.alessandro.claymore.demo"
     minSdk = 23
-    targetSdk = 33
+    targetSdk = 34
     versionCode = 1
     versionName = "1.0"
 
@@ -39,6 +39,7 @@ android {
   composeOptions {
     kotlinCompilerExtensionVersion = libs.versions.compose.compiler.get()
   }
+  @Suppress("UnstableApiUsage")
   testOptions {
     unitTests {
       isIncludeAndroidResources = true

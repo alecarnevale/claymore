@@ -8,7 +8,7 @@ plugins {
 
 android {
   namespace = "com.alessandro.claymore.demo.annotations"
-  compileSdk = 33
+  compileSdk = 34
 
   defaultConfig {
     minSdk = 23
@@ -27,6 +27,7 @@ android {
   composeOptions {
     kotlinCompilerExtensionVersion = libs.versions.compose.compiler.get()
   }
+  @Suppress("UnstableApiUsage")
   testOptions {
     unitTests {
       isIncludeAndroidResources = true

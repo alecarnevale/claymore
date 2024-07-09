@@ -8,7 +8,7 @@ plugins {
 
 android {
   namespace = "com.alessandro.claymore.demo.annotations"
-  compileSdk = 33
+  compileSdk = 34
 
   defaultConfig {
     minSdk = 23

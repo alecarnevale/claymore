@@ -1,5 +1,8 @@
 package com.alessandro.claymore.demo.multiround.allies.generated
 
+// Not used, @AutoProvides annotation will generate this automatically ;)
+// after a successful build take a look at :multiround/build/generated/ksp/debug/kotlin/com/alessandro/claymore/demo/multiround
+
 /*
 import android.content.Context
 import android.content.Intent
@@ -8,12 +11,6 @@ import com.alessandro.claymore.demo.multiround.allies.AlliesActivity
 import com.alessandro.claymore.demo.multiround.allies.AlliesActivityIntent
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
-
-    Input:
-      - AlliesActivity::class
-      - AlliesActivity_AutoQualifier  <-- non conosciuto al primo round
-      - @FirstAlly firstAlly
-      - @SecondAlly secondAlly
 
 
 @AutoBinds

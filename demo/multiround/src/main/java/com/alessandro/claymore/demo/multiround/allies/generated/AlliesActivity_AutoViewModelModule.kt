@@ -1,5 +1,8 @@
 package com.alessandro.claymore.demo.multiround.allies.generated
 
+// Not used, @AutoProvides annotation will generate this automatically ;)
+// after a successful build take a look at :multiround/build/generated/ksp/debug/kotlin/com/alessandro/claymore/demo/multiround
+
 /*
 import androidx.lifecycle.SavedStateHandle
 import com.alecarnevale.claymore.providers.AutoProvidesKeysProvider
@@ -8,12 +11,6 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ViewModelComponent
-
-    Input:
-      - AlliesActivity::class
-      - AlliesActivity_AutoQualifier  <-- non conosciuto al primo round
-      - @FirstAlly firstAlly
-      - @SecondAlly secondAlly
 
 @Module
 @InstallIn(ViewModelComponent::class)

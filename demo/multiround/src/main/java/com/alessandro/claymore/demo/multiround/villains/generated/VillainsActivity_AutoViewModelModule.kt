@@ -1,5 +1,8 @@
 package com.alessandro.claymore.demo.multiround.villains.generated
 
+// Not used, @AutoProvides annotation will generate this automatically ;)
+// after a successful build take a look at :multiround/build/generated/ksp/debug/kotlin/com/alessandro/claymore/demo/multiround
+
 /*
 import androidx.lifecycle.SavedStateHandle
 import com.alessandro.claymore.demo.multiround.models.Villain
@@ -8,12 +11,6 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ViewModelComponent
-
-    Input:
-      - VillainsActivity::class
-      - VillainsActivity_AutoQualifier  <-- non conosciuto al primo round
-      - @FirstVillain firstVillain
-      - @SecondVillain secondVillain
 
 @Module
 @InstallIn(ViewModelComponent::class)

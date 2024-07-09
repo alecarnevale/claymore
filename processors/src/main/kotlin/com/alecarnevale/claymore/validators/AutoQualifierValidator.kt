@@ -22,8 +22,8 @@ internal class AutoQualifierValidator(
   ): KSAnnotated? {
     val keyProviderAnnotation = keyProvidersAnnotated.singleOrNull {
       it.extractParameter(
-        KeyProviderQualifier::class.simpleName,
-        KeyProviderQualifier::activityClass.name,
+        annotationName = KeyProviderQualifier::class.simpleName,
+        parameterName = KeyProviderQualifier::activityClass.name,
         resolver = resolver,
         logger = logger
       ) == activityClass

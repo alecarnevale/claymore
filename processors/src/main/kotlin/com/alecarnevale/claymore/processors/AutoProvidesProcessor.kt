@@ -28,7 +28,6 @@ internal class AutoProvidesProcessor(
     get()= "Claymore - AutoProvidesProcessor($round):"
 
   override fun process(resolver: Resolver): List<KSAnnotated> {
-    round++
     val visitor = AutoProvidesVisitor(codeGenerator = codeGenerator, resolver = resolver, logger = logger)
 
     val autoProvidesValidator = AutoProvidesValidator(resolver, logger)
@@ -63,6 +62,7 @@ internal class AutoProvidesProcessor(
       }
     }
 
+    round++
     return deferred
   }
 }

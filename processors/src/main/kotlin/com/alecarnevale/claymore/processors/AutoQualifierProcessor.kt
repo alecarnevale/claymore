@@ -29,7 +29,6 @@ internal class AutoQualifierProcessor(
     get()= "Claymore - AutoQualifierProcessor($round):"
 
   override fun process(resolver: Resolver): List<KSAnnotated> {
-    round++
     val validator = AutoQualifierValidator(resolver, logger)
 
     // retrieve all AutoProvides annotation to understand which _AutoQualifier must be generated
@@ -70,6 +69,7 @@ internal class AutoQualifierProcessor(
         }
     }
 
+    round++
     return emptyList()
   }
 }

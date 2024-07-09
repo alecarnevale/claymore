@@ -18,6 +18,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.alessandro.claymore.demo.annotations.CustomQualifierActivity
 import com.alessandro.claymore.demo.annotations.MultiBindingActivity
+import com.alessandro.claymore.demo.multiround.allies.AlliesActivityIntent
+import com.alessandro.claymore.demo.multiround.models.Villain
+import com.alessandro.claymore.demo.multiround.villains.VillainsActivityIntent
 import com.alessandro.claymore.demo.services.DeepThought
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -29,13 +32,21 @@ class MainActivity : AppCompatActivity() {
   lateinit var deepThought: DeepThought
   private val ultimateAnswer: String by lazy { deepThought.getAnswer() }
 
+  @Inject
+  lateinit var alliesActivityIntent: AlliesActivityIntent
+
+  @Inject
+  lateinit var villainsActivityIntent: VillainsActivityIntent
+
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     setContent {
       Content(
         ultimateAnswer = ultimateAnswer,
         onMultiBindingClickButton = ::launchMultiBindingActivity,
-        onCustomQualifierClickButton = ::launchCustomQualifierActivity
+        onCustomQualifierClickButton = ::launchCustomQualifierActivity,
+        onAlliesMultiroundClickButton = ::launchAlliesActivity,
+        onVillainsMultiroundClickButton = ::launchVillainsActivity,
       )
     }
   }
@@ -47,13 +58,23 @@ class MainActivity : AppCompatActivity() {
   private fun launchCustomQualifierActivity() {
     startActivity(CustomQualifierActivity.intent(this))
   }
+
+  private fun launchAlliesActivity() {
+    startActivity(alliesActivityIntent("Splinter", "April"))
+  }
+
+  private fun launchVillainsActivity() {
+    startActivity(villainsActivityIntent(Villain("Shredder"), Villain("Karai")))
+  }
 }
 
 @Composable
 private fun Content(
   ultimateAnswer: String,
   onMultiBindingClickButton: () -> Unit,
-  onCustomQualifierClickButton: () -> Unit
+  onCustomQualifierClickButton: () -> Unit,
+  onAlliesMultiroundClickButton: () -> Unit,
+  onVillainsMultiroundClickButton: () -> Unit,
 ) {
   Column(
     modifier = Modifier
@@ -73,6 +94,14 @@ private fun Content(
     Button(onClick = { onCustomQualifierClickButton() }) {
       Text(text = "Go to Qualifier")
     }
+    Spacer(modifier = Modifier.height(24.dp))
+    Button(onClick = { onAlliesMultiroundClickButton() }) {
+      Text(text = "Go to Allies Multiple round")
+    }
+    Spacer(modifier = Modifier.height(24.dp))
+    Button(onClick = { onVillainsMultiroundClickButton() }) {
+      Text(text = "Go to Villains Multiple round")
+    }
   }
 }
 
@@ -82,6 +111,8 @@ private fun Preview() {
   Content(
     ultimateAnswer = "42",
     onMultiBindingClickButton = {},
-    onCustomQualifierClickButton = {}
+    onCustomQualifierClickButton = {},
+    onAlliesMultiroundClickButton = {},
+    onVillainsMultiroundClickButton = {},
   )
 }

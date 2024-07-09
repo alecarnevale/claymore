@@ -2,7 +2,7 @@ package com.alecarnevale.claymore.visitors
 
 import com.alecarnevale.claymore.annotations.AutoBinds
 import com.alecarnevale.claymore.annotations.AutoUninstall
-import com.alecarnevale.claymore.utils.TestModuleWriter
+import com.alecarnevale.claymore.writers.TestModuleWriter
 import com.google.devtools.ksp.processing.CodeGenerator
 import com.google.devtools.ksp.processing.KSPLogger
 import com.google.devtools.ksp.processing.Resolver

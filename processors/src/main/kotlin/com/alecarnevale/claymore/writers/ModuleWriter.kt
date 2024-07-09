@@ -1,5 +1,9 @@
-package com.alecarnevale.claymore.utils
+package com.alecarnevale.claymore.writers
 
+import com.alecarnevale.claymore.utils.bindsAnnotation
+import com.alecarnevale.claymore.utils.installInAnnotation
+import com.alecarnevale.claymore.utils.moduleAnnotation
+import com.alecarnevale.claymore.utils.moduleClassName
 import com.google.devtools.ksp.symbol.KSClassDeclaration
 import com.squareup.kotlinpoet.FileSpec
 import com.squareup.kotlinpoet.FunSpec

@@ -21,4 +21,5 @@ jobs:
       - name: Run build with Gradle Wrapper
         run: ./gradlew :processors:build
       - name: Run demo test with Gradle Wrapper
+        # TODO: add :demo:multiround:testDebugUnitTest after the release of AutoProvides on remote repo
         run: ./gradlew :demo:app:testDebugUnitTest :demo:annotations:testDebugUnitTest -PfetchRemoteDependency

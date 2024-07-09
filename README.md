@@ -124,3 +124,4 @@ dependencies {
 
 ## 🙏 Thanks to
 - KotlinPoet https://github.com/square/kotlinpoet
+- Kotlin Compile Testing https://github.com/tschuchortdev/kotlin-compile-testing

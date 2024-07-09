@@ -20,7 +20,13 @@ import com.squareup.kotlinpoet.ksp.writeTo
 import kotlin.reflect.KClass
 
 /**
+ * This visitor receives the _AutoQualifier annotation as input and
+ * look at the "invoke" function defined by the interface visited.
  *
+ * Generates_
+ *  - _AutoProvidesKeysProvider implementation for the requested _AutoQualifier;
+ *  - _AutoIntentImpl to be injected in the caller activity;
+ *  - _AutoViewModelModule that provides the right argument into the ViewModelComponent.
  */
 internal class AutoProvidesVisitor(
   val codeGenerator: CodeGenerator,

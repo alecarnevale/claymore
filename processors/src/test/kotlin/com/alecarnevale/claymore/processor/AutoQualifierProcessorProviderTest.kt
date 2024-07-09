@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test
 class AutoQualifierProcessorProviderTest {
 
   @Test
-  fun `GIVEN a class Foo, WHEN @AutoProvides is applied to Foo with a Bar activity class as argument THEN annotation with KeyProviderQualifier annotation is generated with Bar activity class as argument`() {
+  fun `GIVEN a class Bar WHEN @AutoProvides is applied to an interface Foo with Bar activity class as argument THEN annotation with KeyProviderQualifier annotation is generated with Bar activity class as argument`() {
     val bar = SourceFile.kotlin(
       "Bar.kt",
       """
@@ -29,7 +29,7 @@ class AutoQualifierProcessorProviderTest {
         import com.alecarnevale.claymore.annotations.AutoProvides
 
         @AutoProvides(activityClass = Bar::class)
-        class Foo
+        interface Foo
       """,
     )
 
@@ -52,6 +52,50 @@ class AutoQualifierProcessorProviderTest {
 
       """,
     )
+  }
+
+  @Test
+  fun `GIVEN a class Bar and an annotation annotated with KeyProviderQualifier for Bar WHEN @AutoProvides is applied to an interface Foo with Bar activity class as argument THEN no more annotation with KeyProviderQualifier annotation is generated`() {
+    val bar = SourceFile.kotlin(
+      "Bar.kt",
+      """
+        package com.example
+
+        class Bar
+      """
+    )
+
+    val foo = SourceFile.kotlin(
+      "Foo.kt",
+      """
+        package com.example
+
+        import com.alecarnevale.claymore.annotations.AutoProvides
+
+        @AutoProvides(activityClass = Bar::class)
+        interface Foo
+      """,
+    )
+
+    val bar_AutoQualifier = SourceFile.kotlin(
+      "Bar_AutoQualifier.kt",
+      """
+        package com.example
+        
+        import com.alecarnevale.claymore.annotations.keyprovider.KeyProviderQualifier
+        import javax.inject.Qualifier
+
+        @Qualifier
+        @KeyProviderQualifier(Bar::class)
+        internal annotation class Bar_AutoQualifier
+
+      """,
+    )
+
+    val result = compileSourceFiles(foo, bar, bar_AutoQualifier)
+
+    assertEquals(KotlinCompilation.ExitCode.OK, result.result.exitCode)
+    result.assertZeroGeneratedSources()
   }
 
   private fun compileSourceFiles(vararg sourceFiles: SourceFile): KspCompilationResult {

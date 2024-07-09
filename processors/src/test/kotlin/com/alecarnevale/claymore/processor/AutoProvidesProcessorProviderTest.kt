@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test
 class AutoProvidesProcessorProviderTest {
 
   @Test
-  fun `GIVEN an class Foo, an interface Bar with invoke function, and a KeyProviderQualifier annotation Foo_AutoQualifier, WHEN @AutoProvides is applied to Bar with a Foo as activity class argument THEN an implementation of AutoProvidesKeysProvider for Foo is generated`() {
+  fun `GIVEN a class Foo, an interface Bar with invoke function, and a KeyProviderQualifier annotation Foo_AutoQualifier, WHEN @AutoProvides is applied to Bar with a Foo as activity class argument THEN an implementation of AutoProvidesKeysProvider for Foo is generated`() {
     val foo = SourceFile.kotlin(
       "Foo.kt",
       """
@@ -98,7 +98,7 @@ class AutoProvidesProcessorProviderTest {
   }
 
   @Test
-  fun `GIVEN an class Foo, an interface Bar with invoke function, and a KeyProviderQualifier annotation Foo_AutoQualifier, WHEN @AutoProvides is applied to Bar with a Foo as activity class argument THEN an implementation of Bar is generated`() {
+  fun `GIVEN a class Foo, an interface Bar with invoke function, and a KeyProviderQualifier annotation Foo_AutoQualifier, WHEN @AutoProvides is applied to Bar with a Foo as activity class argument THEN an implementation of Bar is generated`() {
     val foo = SourceFile.kotlin(
       "Foo.kt",
       """
@@ -190,7 +190,7 @@ class AutoProvidesProcessorProviderTest {
 
 
   @Test
-  fun `GIVEN an class Foo, an interface Bar with invoke function, and a KeyProviderQualifier annotation Foo_AutoQualifier, WHEN @AutoProvides is applied to Bar with a Foo as activity class argument THEN a ViewModelModule for Foo is generated`() {
+  fun `GIVEN a class Foo, an interface Bar with invoke function, and a KeyProviderQualifier annotation Foo_AutoQualifier, WHEN @AutoProvides is applied to Bar with a Foo as activity class argument THEN a ViewModelModule for Foo is generated`() {
     val foo = SourceFile.kotlin(
       "Foo.kt",
       """
@@ -276,6 +276,48 @@ class AutoProvidesProcessorProviderTest {
 
       """,
     )
+  }
+
+  @Test
+  fun `GIVEN a class Foo, an interface Bar with invoke function, but no KeyProviderQualifier annotation Foo_AutoQualifier, WHEN @AutoProvides is applied to Bar with a Foo as activity class argument THEN no compilation error but nothing is generated`() {
+    val foo = SourceFile.kotlin(
+      "Foo.kt",
+      """
+        package com.example
+
+        class Foo
+      """
+    )
+
+    val bar = SourceFile.kotlin(
+      "Bar.kt",
+      """
+        package com.example
+
+        import android.content.Intent
+        import com.alecarnevale.claymore.annotations.AutoProvides
+
+        @AutoProvides(activityClass = Foo::class)
+        interface Bar {
+          @Qualifier
+          annotation class FirstQualifier
+        
+          @Qualifier
+          annotation class SecondQualifier
+
+          operator fun invoke(
+            @FirstQualifier firstParameter: String,
+            @SecondQualifier secondParameter: String,
+          ): Intent
+        }
+      """,
+    )
+
+    val result = compileSourceFiles(foo, bar)
+
+    assertEquals(KotlinCompilation.ExitCode.OK, result.result.exitCode)
+
+    result.assertZeroGeneratedSources()
   }
 
   private fun compileSourceFiles(vararg sourceFiles: SourceFile): KspCompilationResult {

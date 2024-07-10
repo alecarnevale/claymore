@@ -13,14 +13,14 @@ plugins {
 allprojects {
   pluginManager.withPlugin(rootProject.libs.plugins.kotlin.asProvider().get().pluginId) {
     tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().all {
-      kotlinOptions {
+      compilerOptions {
         allWarningsAsErrors = true
       }
     }
   }
   pluginManager.withPlugin(rootProject.libs.plugins.kotlin.android.get().pluginId) {
     tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().all {
-      kotlinOptions {
+      compilerOptions {
         allWarningsAsErrors = true
       }
     }

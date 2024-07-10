@@ -159,8 +159,8 @@ Moreover:
 
 ### Download
 Claymore is available in Maven Central Repository:
-- [annotations](https://central.sonatype.com/artifact/io.github.alecarnevale/claymore-annotations/1.4.0)
-- [processors](https://central.sonatype.com/artifact/io.github.alecarnevale/claymore-processors/1.4.0)
+- [annotations](https://central.sonatype.com/artifact/io.github.alecarnevale/claymore-annotations)
+- [processors](https://central.sonatype.com/artifact/io.github.alecarnevale/claymore-processors)
 
 ### Gradle
 ```

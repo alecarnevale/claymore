@@ -1,6 +1,7 @@
 plugins {
   alias(libs.plugins.android.library)
   alias(libs.plugins.kotlin.android)
+  alias(libs.plugins.kotlin.compose.compiler)
   alias(libs.plugins.kotlin.parcelize)
   alias(libs.plugins.hilt)
   alias(libs.plugins.ksp)
@@ -21,12 +22,6 @@ android {
   }
   kotlinOptions {
     jvmTarget = "17"
-  }
-  buildFeatures {
-    compose = true
-  }
-  composeOptions {
-    kotlinCompilerExtensionVersion = libs.versions.compose.compiler.get()
   }
   @Suppress("UnstableApiUsage")
   testOptions {

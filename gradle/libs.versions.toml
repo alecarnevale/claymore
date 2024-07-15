@@ -1,6 +1,6 @@
 [versions]
 android-gradle-plugin = "8.5.1"
-androidx-appcompat = "1.6.1"
+androidx-appcompat = "1.7.0"
 androidx-activity-compose = "1.9.0"
 claymore = "2.1.0"
 compose = "1.6.8"

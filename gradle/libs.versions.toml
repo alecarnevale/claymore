@@ -11,7 +11,7 @@ junit-jupiter = "5.11.2"
 kotlin = "2.0.21"
 kotlinpoet = "1.18.1"
 ksp = "2.0.21-1.0.25"
-ksp-testing = "1.5.0"
+ksp-testing = "1.6.0"
 robolectric = "4.13"
 
 [libraries]

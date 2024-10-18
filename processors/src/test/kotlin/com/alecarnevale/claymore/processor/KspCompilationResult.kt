@@ -2,9 +2,11 @@ package com.alecarnevale.claymore.processor
 
 import com.tschuchort.compiletesting.KotlinCompilation
 import org.intellij.lang.annotations.Language
+import org.jetbrains.kotlin.compiler.plugin.ExperimentalCompilerApi
 import org.junit.jupiter.api.Assertions.assertEquals
 import java.io.File
 
+@OptIn(ExperimentalCompilerApi::class)
 internal data class KspCompilationResult(
   private val sourcesDir: File,
   val result: KotlinCompilation.Result,

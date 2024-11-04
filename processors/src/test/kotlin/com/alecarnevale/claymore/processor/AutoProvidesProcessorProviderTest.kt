@@ -265,15 +265,11 @@ class AutoProvidesProcessorProviderTest {
         internal class Bar_AutoViewModelModule {
           @Provides
           @Bar.FirstQualifier
-          internal fun firstParameter(handle: SavedStateHandle, @Foo_AutoQualifier
-              autoProvidesKeysProvider: AutoProvidesKeysProvider): String =
-              requireNotNull(handle[autoProvidesKeysProvider[FirstQualifier::class]])
+          internal fun firstParameter(handle: SavedStateHandle, @Foo_AutoQualifier autoProvidesKeysProvider: AutoProvidesKeysProvider): String = requireNotNull(handle[autoProvidesKeysProvider[FirstQualifier::class]])
         
           @Provides
           @Bar.SecondQualifier
-          internal fun secondParameter(handle: SavedStateHandle, @Foo_AutoQualifier
-              autoProvidesKeysProvider: AutoProvidesKeysProvider): String =
-              requireNotNull(handle[autoProvidesKeysProvider[SecondQualifier::class]])
+          internal fun secondParameter(handle: SavedStateHandle, @Foo_AutoQualifier autoProvidesKeysProvider: AutoProvidesKeysProvider): String = requireNotNull(handle[autoProvidesKeysProvider[SecondQualifier::class]])
         }
 
       """,

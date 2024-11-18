@@ -12,7 +12,7 @@ kotlin = "2.0.21"
 kotlinpoet = "2.0.0"
 ksp = "2.0.21-1.0.27"
 ksp-testing = "1.6.0"
-robolectric = "4.13"
+robolectric = "4.14"
 
 [libraries]
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "androidx-appcompat" }

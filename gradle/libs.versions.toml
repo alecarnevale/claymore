@@ -2,7 +2,7 @@
 android-gradle-plugin = "8.7.2"
 androidx-appcompat = "1.7.0"
 androidx-activity-compose = "1.9.3"
-claymore = "2.1.0"
+claymore = "2.2.0"
 compose = "1.7.5"
 dagger = "2.52"
 javax-inject = "1"

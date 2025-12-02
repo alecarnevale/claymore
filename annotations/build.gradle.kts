@@ -23,13 +23,7 @@ publishing {
 
       repositories {
         maven {
-          name = "Nexus"
-          url = uri("https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/") // Github Package
-          credentials {
-            username = properties["ossrhUsername"] as String?
-            password = properties["ossrhPassword"] as String?
-
-          }
+          setUrl(layout.buildDirectory.dir("staging-deploy"))
         }
       }
 

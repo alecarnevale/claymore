@@ -10,3 +10,5 @@ local.properties
 
 ### Kotin compiler
 .kotlin
+
+out/jreleaser

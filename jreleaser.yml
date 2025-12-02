@@ -1,0 +1,25 @@
+project:
+  name: claymore
+  version: 2.2.0
+  description: A library that writes an hilt module for a requested interface implementation.
+  authors:
+    - Alessandro Carnevale
+  license: Apache-2.0
+  links:
+    homepage: https://github.com/alecarnevale/claymore
+  inceptionYear: 2022
+  languages:
+    java:
+      groupId: io.github.alecarnevale
+      multiProject: true
+
+deploy:
+  maven:
+    mavenCentral:
+      sonatype:
+        active: RELEASE
+        url: https://central.sonatype.com/api/v1/publisher
+        stagingRepositories:
+          - annotations/build/staging-deploy
+          - processors/build/staging-deploy
+        sign: false

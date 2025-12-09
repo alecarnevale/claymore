@@ -10,7 +10,7 @@ junit = "4.13.2"
 junit-jupiter = "5.11.3"
 kotlin = "2.2.21"
 kotlinpoet = "2.0.0"
-ksp = "2.0.21-1.0.28"
+ksp = "2.1.0-1.0.29"
 ksp-testing = "1.6.0"
 robolectric = "4.14.1"
 
